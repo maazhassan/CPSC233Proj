@@ -10,7 +10,6 @@ public class Move {
 	
 	private Square start;
 	private Square end;
-	private Player player;
 	
 	//not sure about these yet
 	private boolean valid;
@@ -23,10 +22,9 @@ public class Move {
 	 * @param player The player making the move.
 	 */
 	
-	public Move(Square start, Square end, Player player) {
+	public Move(Square start, Square end) {
 		this.start = start;
 		this.end = end;
-		this.player = player;
 	}
 
 }
