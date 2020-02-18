@@ -15,7 +15,7 @@ public class Square {
 	/**
 	 * Creates a square with the given information.
 	 * @param x The x-coordinate of the square.
-	 * @param y THe y-coordinate of the square.
+	 * @param y The y-coordinate of the square.
 	 * @param piece The piece that sits on the square, if any.
 	 */
 	

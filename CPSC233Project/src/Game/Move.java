@@ -19,12 +19,18 @@ public class Move {
 	 * Creates a chess move.
 	 * @param start The starting square.
 	 * @param end The ending square.
-	 * @param player The player making the move.
 	 */
 	
 	public Move(Square start, Square end) {
 		this.start = start;
 		this.end = end;
 	}
-
+	
+	public Square getStart() {
+		return this.start;
+	}
+	
+	public Square getEnd() {
+		return this.end;
+	}
 }

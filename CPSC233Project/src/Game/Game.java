@@ -54,14 +54,30 @@ public class Game {
 		}
 	}
 	
-	public void playMove(Move move) {
+	public boolean playMove(Move move, Player p1, Player p2) {
 		
+		Piece pieceMoved = move.getStart().getPiece();
+		
+		if (!pieceMoved.canMove(board, move.getStart(), move.getEnd())) {
+			System.out.println("That piece cannot move there!");
+			return false;
+		}
+		
+		//Check if a piece is killed
+		
+		//Check if this move castles if the piece moved is a king
+		
+		//Move the piece
+		
+		//Switch players once the move is made
+		if (this.currentPlayer == p1) {
+			this.currentPlayer = p2;
+		}
+		else {
+			this.currentPlayer = p1;
+		}
+		return true;
 	}
-	
-	public boolean isGameOver() {
-		return this.gameOver;
-	}
-	
 	
 	//main method, contains pseudocode right now, everyone contribute to this
 	public static void main(String[] args) {
@@ -137,15 +153,9 @@ public class Game {
 		chessGame.initializeGame(p1, p2);
 		
 		//Move loop (WIP)
-		while (!chessGame.isGameOver()) {
-			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board));
+		while (!chessGame.gameOver) {
+			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
 			
-			if (chessGame.currentPlayer == p1) {
-				chessGame.currentPlayer = p2;
-			}
-			else {
-				chessGame.currentPlayer = p1;
-			}
 		}
 	}
 }
