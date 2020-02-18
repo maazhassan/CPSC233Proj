@@ -44,7 +44,7 @@ public class Game {
 	
 	public void initializeGame(Player p1, Player p2) {
 		
-		board.resetBoard();
+		board = new Board(p1.isWhite())
 		
 		if (p1.isWhite()) {
 			this.currentPlayer = p1;
