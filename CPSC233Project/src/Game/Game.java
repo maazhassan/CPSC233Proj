@@ -44,7 +44,7 @@ public class Game {
 	
 	public void initializeGame(Player p1, Player p2) {
 		
-		board = new Board(p1.isWhite())
+		this.board = new Board(p1.isWhite());
 		
 		if (p1.isWhite()) {
 			this.currentPlayer = p1;
@@ -95,7 +95,7 @@ public class Game {
 		 * 
 		 * - Repeat until checkmate/stalemate, then end the game.
 		 */
-		
+
 		Game chessGame = new Game();
 		Scanner input = new Scanner(System.in);
 		HumanPlayer p1 = null;

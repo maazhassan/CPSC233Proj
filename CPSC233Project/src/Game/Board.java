@@ -12,7 +12,7 @@ public class Board {
 
     private boolean isBottomWhite;
 
-    private Board(boolean isBottomWhite) {
+    public Board(boolean isBottomWhite) {
         this.isBottomWhite = isBottomWhite;
 
         // Initialization of some stuff
