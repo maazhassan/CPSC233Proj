@@ -38,6 +38,31 @@ public class Bishop extends Piece {
 		for (int x = 0 ; x < 7 - endX ;x++) {
 			for (int y = 0; y < 7 - endY ; y++) {
 				int currentX = startX - x;
+				int currentY = startY + y;
+				if (board.getSquare(currentX, currentY).getPiece() != null) {
+					return false;
+				}
+			}
+		
+		}
+		
+		// Backwards
+		// "/"
+		for (int x = 0 ; x < 7 - endX ;x++) {
+			for (int y = 0; y < 7 - endY ; y++) {
+				int currentX = startX - x;
+				int currentY = startY - y;
+				if (board.getSquare(currentX, currentY).getPiece() != null) {
+					return false;
+				}
+			}
+		
+		}
+		
+		// "\"
+		for (int x = 0 ; x < 7 - endX ;x++) {
+			for (int y = 0; y < 7 - endY ; y++) {
+				int currentX = startX + x;
 				int currentY = startY - y;
 				if (board.getSquare(currentX, currentY).getPiece() != null) {
 					return false;
