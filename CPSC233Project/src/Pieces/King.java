@@ -22,7 +22,11 @@ public class King extends Piece {
         		for (int y = 0; y < 8; y++) {
         			Square square = board.getSquare(x,y);
         			Piece pieceOnSquare = square.getPiece();
-        			if (pieceOnSquare.canMove(board, square, end)) return false;
+        			if (pieceOnSquare != null) {
+        				if (pieceOnSquare.isWhite() != this.isWhite()) {
+        					if (pieceOnSquare.canMove(board, square, end)) return false;
+        				}
+        			}
         		}
         	}
         	return true;

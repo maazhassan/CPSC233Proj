@@ -3,7 +3,6 @@ import Game.*;
 
 public abstract class Piece {
 	private boolean white;
-	private boolean alive;
 
     public Piece(boolean isWhite) {
         this.setWhite(isWhite);

@@ -3,7 +3,7 @@ import Pieces.*;
 
 /*
  * Represents the chess board containing data of the pieces.
- * (0, 0) represents the top-left of the board. (8, 8) represents bottom-right.
+ * (0, 0) represents the top-left of the board. (7, 7) represents bottom-right.
  */
 public class Board {
 
