@@ -19,38 +19,47 @@ public class ComputerPlayer extends Player {
 		Random rand = new Random();
 		
 		//Loops through every square on the board
-		//Finds the squares that have available pieces on them (not null, same color as player)
-		//Adds the square to the squares ArrayList
 		for (int x = 0; x < 8; x++) {
     		for (int y = 0; y < 8; y++) {
+    			//Finds the squares that have available pieces on them (not null, same color as player)
     			Piece pieceOnSquare = board.getSquare(x, y).getPiece();
     			if (pieceOnSquare != null) {
     				if (pieceOnSquare.isWhite() == this.isWhite()) {
+    					//Adds the square to the squares ArrayList
     					squares.add(board.getSquare(x, y));
     				}
     			}
     		}
 		}
 		
-		//Generates a random index number
-		//Returns the Square object at that index in the squares ArrayList
-		//Then gets the piece that sits on that square
-		int randSquareIndex = rand.nextInt(squares.size());
-		Square randSquare = squares.get(randSquareIndex);
-		Piece randPiece = randSquare.getPiece();
+		Move randMove = null;
 		
-		//Loops through every square and checks if the piece can move to it
-		//If it can, then adds a Move object to the moves ArrayList
-		for (int x = 0; x < 8; x++) {
-    		for (int y = 0; y < 8; y++) {
-    			if (randPiece.canMove(board, randSquare, board.getSquare(x, y))) {
-    				moves.add(new Move(randSquare, board.getSquare(x, y)));
-    			}
-    		}
+		while (randMove == null) {
+			//Generates a random index number
+			int randSquareIndex = rand.nextInt(squares.size());
+			
+			//Returns the Square object at that index in the squares ArrayList
+			Square randSquare = squares.get(randSquareIndex);
+			Piece randPiece = randSquare.getPiece();	//Then gets the piece that sits on that square
+
+			//Loops through every square and checks if the piece can move to it
+			//If it can, then adds a Move object to the moves ArrayList
+			for (int x = 0; x < 8; x++) {
+				for (int y = 0; y < 8; y++) {
+					if (randPiece.canMove(board, randSquare, board.getSquare(x, y))) {
+						moves.add(new Move(randSquare, board.getSquare(x, y)));
+					}
+				}
+			}
+			
+			//If there are no moves for the chosen random piece, choose another and try again
+			if (moves.size() == 0) continue;
+			
+			//Generates a random index number, and returns the move at that index in the moves ArrayList
+			int randMoveIndex = rand.nextInt(moves.size());
+			randMove = moves.get(randMoveIndex);   //update condition
 		}
 		
-		//Generates a random index number, and returns the move at that index in the moves ArrayList
-		int randMoveIndex = rand.nextInt(moves.size());
-		return moves.get(randMoveIndex);
+		return randMove;
 	}
 }

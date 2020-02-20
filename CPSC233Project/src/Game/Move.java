@@ -1,8 +1,7 @@
 package Game;
-import Pieces.*;
 
 /**
- * Represents a move. (unfinished)
+ * Represents a move.
  *
  */
 
@@ -10,10 +9,6 @@ public class Move {
 	
 	private Square start;
 	private Square end;
-	
-	//not sure about these yet
-	private boolean valid;
-	private boolean pieceKilled;
 	
 	/**
 	 * Creates a chess move.

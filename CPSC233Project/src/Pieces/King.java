@@ -3,6 +3,7 @@ package Pieces;
 import Game.*;
 
 public class King extends Piece {
+	
     public King(boolean isWhite) {
         super(isWhite);
     }
@@ -18,17 +19,8 @@ public class King extends Piece {
         if (Math.abs(end.getX() - start.getX()) <= 1 && Math.abs(end.getY() - start.getY()) <= 1) {
         	// Check if any piece on the board is able to attack the king
         	// if the king were to move to this square i.e. put the king in check
-        	for (int x = 0; x < 8; x++) {
-        		for (int y = 0; y < 8; y++) {
-        			Square square = board.getSquare(x,y);
-        			Piece pieceOnSquare = square.getPiece();
-        			if (pieceOnSquare != null) {
-        				if (pieceOnSquare.isWhite() != this.isWhite()) {
-        					if (pieceOnSquare.canMove(board, square, end)) return false;
-        				}
-        			}
-        		}
-        	}
+        	if (this.canBeCheck(board, end)) return false;
+        	
         	return true;
         }
         else {

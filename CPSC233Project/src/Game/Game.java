@@ -56,18 +56,46 @@ public class Game {
 	
 	public boolean playMove(Move move, Player p1, Player p2) {
 		
+		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
+		Piece endPiece = move.getEnd().getPiece();
 		
+		//Check if the piece is valid (belongs to the player and is not null)
+		if (pieceMoved.isWhite() != currentPlayer.isWhite() || pieceMoved == null) {
+			System.out.println("Invalid piece!");
+			return false;
+		}
+		
+		//Check if the piece can move to that square
 		if (!pieceMoved.canMove(board, move.getStart(), move.getEnd())) {
 			System.out.println("That piece cannot move there!");
 			return false;
 		}
 		
-		//Check if a piece is killed
+		//Check if the player is in check at the end of their move (not allowed)
+		boolean check = false;
+		
+		move.getStart().setPiece(null);   
+		move.getEnd().setPiece(pieceMoved);    //temporarily make the move
+		
+		Square kingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king on it
+		
+		if (kingSquare.getPiece().canBeCheck(board, kingSquare)) {
+			check = true;
+		}
+		
+		move.getStart().setPiece(pieceMoved);
+		move.getEnd().setPiece(endPiece);    //return piece to original position
+		
+		if (check == true) return false;
+		
+		//Check if this move puts the enemy king in check
 		
 		//Check if this move castles if the piece moved is a king
 		
 		//Move the piece
+		
+		//Print the board
 		
 		//Switch players once the move is made
 		if (this.currentPlayer == p1) {
@@ -76,6 +104,9 @@ public class Game {
 		else {
 			this.currentPlayer = p1;
 		}
+		
+		//Check for check mate
+		
 		return true;
 	}
 	
@@ -152,7 +183,7 @@ public class Game {
 		//Initialize the board
 		chessGame.initializeGame(p1, p2);
 		
-		//Move loop (WIP)
+		//Move loop
 		while (!chessGame.gameOver) {
 			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
 			
