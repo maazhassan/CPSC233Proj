@@ -10,16 +10,16 @@ public class Bishop extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Board board, Square start, Square end) {
+	public boolean canMove(Board board, Move move) {
 		// Make sure the end square is not the same color as the piece.
-		if (end.getPiece().isWhite() == this.isWhite()) {
+		if (move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;
 		}
 		// Coordinates
-		int startX = start.getX();
-		int endX = end.getX();
-		int startY = start.getY();
-		int endY = end.getY();
+		int startX = move.getStart().getX();
+		int endX = move.getEnd().getX();
+		int startY = move.getStart().getY();
+		int endY = move.getEnd().getY();
 		
 		// Make sure squares leading up to the end square is not occupied.
 		// Diagonal going like "/"

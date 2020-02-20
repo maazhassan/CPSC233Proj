@@ -67,33 +67,52 @@ public class Game {
 		}
 		
 		//Check if the piece can move to that square
-		if (!pieceMoved.canMove(board, move.getStart(), move.getEnd())) {
+		if (!pieceMoved.canMove(board, move)) {
 			System.out.println("That piece cannot move there!");
 			return false;
 		}
 		
-		//Check if the player is in check at the end of their move (not allowed)
-		boolean check = false;
-		
-		move.getStart().setPiece(null);   
-		move.getEnd().setPiece(pieceMoved);    //temporarily make the move
-		
-		Square kingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king on it
-		
-		if (kingSquare.getPiece().canBeCheck(board, kingSquare)) {
-			check = true;
+		//Check if this move castles
+		if (move.isCastlingMove()) {
+			if (move.getEnd().getX() == 6) {    //right side castling
+				move.getEnd().setPiece(pieceMoved);
+				move.getStart().setPiece(null);
+				Piece rCastlingRook = board.getSquare(7, move.getEnd().getY()).getPiece();    //Get the rook that will move
+				board.getSquare(5, move.getEnd().getY()).setPiece(rCastlingRook);
+				board.getSquare(7, move.getEnd().getY()).setPiece(null);    //Move the rook
+			}
+			else if (move.getEnd().getX() == 2) {    //left side castling
+				move.getEnd().setPiece(pieceMoved);
+				move.getStart().setPiece(null);
+				Piece lCastlingRook = board.getSquare(0, move.getEnd().getY()).getPiece();    //Get the rook that will move
+				board.getSquare(3, move.getEnd().getY()).setPiece(lCastlingRook);
+				board.getSquare(0, move.getEnd().getY()).setPiece(null);    //Move the rook
+			}
 		}
-		
-		move.getStart().setPiece(pieceMoved);
-		move.getEnd().setPiece(endPiece);    //return piece to original position
-		
-		if (check == true) return false;
-		
-		//Check if this move puts the enemy king in check
-		
-		//Check if this move castles if the piece moved is a king
-		
-		//Move the piece
+		else {    //The following do not need to be checked for a castling move, since they have already been checked by canMove() if the king is being moved.
+			//Check if the player is in check at the end of their move (not allowed)
+			boolean check = false;
+			
+			move.getStart().setPiece(null);   
+			move.getEnd().setPiece(pieceMoved);    //temporarily make the move
+			
+			Square kingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king on it
+			
+			if (kingSquare.getPiece().canBeCheck(board, kingSquare)) {
+				check = true;
+			}
+			
+			move.getStart().setPiece(pieceMoved);
+			move.getEnd().setPiece(endPiece);    //return piece to original position
+			
+			if (check == true) return false;
+			
+			//Check if this move puts the enemy king in check
+			
+			//Move the piece
+			move.getStart().setPiece(null);
+			move.getEnd().setPiece(pieceMoved);
+		}
 		
 		//Print the board
 		

@@ -9,6 +9,7 @@ public class Move {
 	
 	private Square start;
 	private Square end;
+	private boolean castlingMove;
 	
 	/**
 	 * Creates a chess move.
@@ -27,5 +28,13 @@ public class Move {
 	
 	public Square getEnd() {
 		return this.end;
+	}
+	
+	public boolean isCastlingMove() {
+		return this.castlingMove;
+	}
+	
+	public void setCastlingMove(boolean castlingMove) {
+		this.castlingMove = castlingMove;
 	}
 }

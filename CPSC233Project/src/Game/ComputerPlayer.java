@@ -46,8 +46,9 @@ public class ComputerPlayer extends Player {
 			//If it can, then adds a Move object to the moves ArrayList
 			for (int x = 0; x < 8; x++) {
 				for (int y = 0; y < 8; y++) {
-					if (randPiece.canMove(board, randSquare, board.getSquare(x, y))) {
-						moves.add(new Move(randSquare, board.getSquare(x, y)));
+					Move moveForRandomPiece = new Move(randSquare, board.getSquare(x, y));
+					if (randPiece.canMove(board, moveForRandomPiece)) {
+						moves.add(moveForRandomPiece);
 					}
 				}
 			}

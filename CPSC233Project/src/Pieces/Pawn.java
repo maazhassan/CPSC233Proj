@@ -10,19 +10,19 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Board board, Square start, Square end) {
+	public boolean canMove(Board board, Move move) {
 		
 		// Get the end piece and its color and see if it is the same color as the piece
 		// If the same color, then the piece can't move to that spot.
-		if (end.getPiece().isWhite() == this.isWhite()) {
+		if (move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;			
 		}
 		
 		// Coordinates
-		int startX = start.getX();
-		int endX = end.getX();
-		int startY = start.getY();
-		int endY = end.getY();
+		int startX = move.getStart().getX();
+		int endX = move.getEnd().getX();
+		int startY = move.getStart().getY();
+		int endY = move.getEnd().getY();
 		
 		// First pawn move (Two spaces forward)
 		if (Math.abs(startY - endY) == 2 && Math.abs(startX - endX)== 0 && startY == 1 || startY == 6) {
@@ -34,7 +34,7 @@ public class Pawn extends Piece {
 			return true;
 		}
 		// If there is an opponent's piece diagonal to the pawn.
-		if (end.getPiece() != null && end.getPiece().isWhite() != this.isWhite()) {
+		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() != this.isWhite()) {
 			if (Math.abs(startY - endY) == 1 && (startX-endX == 1 || startX-endX == -1)) {
 				return true;
 			}

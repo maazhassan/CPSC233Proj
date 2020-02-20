@@ -23,7 +23,8 @@ public abstract class Piece {
     			Piece pieceOnSquare = square.getPiece();
     			if (pieceOnSquare != null) {
     				if (pieceOnSquare.isWhite() != this.isWhite()) {
-    					if (pieceOnSquare.canMove(board, square, kingSquare)) return true;
+    					Move checkTestMove = new Move(square, kingSquare);
+    					if (pieceOnSquare.canMove(board, checkTestMove)) return true;
     				}
     			}
     		}
@@ -32,5 +33,5 @@ public abstract class Piece {
     }
 
 	//override this class in each subclass
-	public abstract boolean canMove(Board board, Square start, Square end);
+	public abstract boolean canMove(Board board, Move move);
 }
