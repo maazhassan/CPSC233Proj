@@ -61,13 +61,16 @@ public class Game {
 			printedBoard = printedBoard + "\n";
 			for (int x = 0; x < 8; x++) {
 				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
+				
 				if (pieceOnSquare == null) {
 					printedBoard = printedBoard + '|';
 					printedBoard = printedBoard + "   ";
 				}
 				else {
+					char pieceChar = pieceOnSquare.getPieceChar();
+					if (pieceOnSquare.isWhite()) pieceChar = Character.toUpperCase(pieceChar);
 					printedBoard = printedBoard + '|';
-					printedBoard = printedBoard + ' ' + pieceOnSquare.getPieceChar() + ' ';
+					printedBoard = printedBoard + ' ' + pieceChar + ' ';
 				}
 			}
 			printedBoard = printedBoard + '|';
@@ -128,6 +131,7 @@ public class Game {
 			move.getStart().setPiece(pieceMoved);
 			move.getEnd().setPiece(endPiece);    //return piece to original position
 			
+			System.out.println("Move puts king in check");
 			if (check == true) return false;
 			
 			//Check if this move puts the enemy king in check
@@ -228,6 +232,7 @@ public class Game {
 		//Move loop
 		while (!chessGame.gameOver) {
 			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
+			chessGame.printBoard(chessGame.board);
 			
 		}
 	}
