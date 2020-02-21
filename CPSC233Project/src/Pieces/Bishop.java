@@ -25,59 +25,20 @@ public class Bishop extends Piece {
 		int endX = move.getEnd().getX();
 		int startY = move.getStart().getY();
 		int endY = move.getEnd().getY();
+
+        int directionX = (endX - startX) / (int) Math.abs(endX - startX);
+        int directionY = (endY - startY) / (int) Math.abs(endY - startY);
 		
-		// Make sure squares leading up to the end square is not occupied.
-		// Diagonal going like "/"
-		for (int x = 0 ; x < 7 - endX ;x++) {
-			for (int y = 0; y < 7 - endY ; y++) {
-				int currentX = startX + x;
-				int currentY = startY + y;
-				if (board.getSquare(currentX, currentY).getPiece() != null) {
-					return false;
-				}
-			}
-		
-		}
-		
-		// Diagonal going like "\"
-		for (int x = 0 ; x < 7 - endX ;x++) {
-			for (int y = 0; y < 7 - endY ; y++) {
-				int currentX = startX - x;
-				int currentY = startY + y;
-				if (board.getSquare(currentX, currentY).getPiece() != null) {
-					return false;
-				}
-			}
-		
-		}
-		
-		// Backwards
-		// "/"
-		for (int x = 0 ; x < 7 - endX ;x++) {
-			for (int y = 0; y < 7 - endY ; y++) {
-				int currentX = startX - x;
-				int currentY = startY - y;
-				if (board.getSquare(currentX, currentY).getPiece() != null) {
-					return false;
-				}
-			}
-		
-		}
-		
-		// "\"
-		for (int x = 0 ; x < 7 - endX ;x++) {
-			for (int y = 0; y < 7 - endY ; y++) {
-				int currentX = startX + x;
-				int currentY = startY - y;
-				if (board.getSquare(currentX, currentY).getPiece() != null) {
-					return false;
-				}
-			}
-		
-		}
+        for (int x = directionX; (x + startX <= endX) ^ (x + startX >= endX); x += directionX){
+            for (int y = directionY; (y + startY <= endY) ^ (y + startY >= endY); y += directionY) {
+                if (board.getSquare(startX + x, startY + y).getPiece() != null) {
+                   return false;
+                } 
+            }
+        }
 		
 		// Check if it can move
-		if (Math.abs(startX - endX) < 8 - startX && Math.abs(startY - endY) < 8 - startY) {
+		if (Math.abs(startX - endX) / Math.abs(startY - endY) == 1) {
 			return true;
 		}
 		

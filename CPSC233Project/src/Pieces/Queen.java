@@ -11,7 +11,7 @@ public class Queen extends Piece {
 
     @Override
     public char getPieceChar() {
-        return 'p';
+        return 'q';
     }
 
 	@Override
@@ -19,11 +19,13 @@ public class Queen extends Piece {
 		Bishop queenDiag = new Bishop(isWhite());
 		Rook queenStraight = new Rook(isWhite());
 		
-		if (move.getStart().getX() == move.getEnd().getX() || move.getStart().getY() == move.getEnd().getY()) {
+		if (move.getStart().getX() == move.getEnd().getX() ^ move.getStart().getY() == move.getEnd().getY()) {
+            System.out.println("rook");
 		// Straight logic (same as rook)
 		return queenStraight.canMove(board, move);
 		}
 		else {
+            System.out.println("Diag");
 		// Diagonal logic (same as bishop)
 		return queenDiag.canMove(board, move);
 		}
