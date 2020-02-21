@@ -39,7 +39,7 @@ public class ComputerPlayer extends Player {
 			int randSquareIndex = rand.nextInt(squares.size());
 			
 			//Returns the Square object at that index in the squares ArrayList
-			Square randSquare = squares.get(randSquareIndex);
+			Square randSquare = squares.remove(randSquareIndex);
 			Piece randPiece = randSquare.getPiece();	//Then gets the piece that sits on that square
 
 			//Loops through every square and checks if the piece can move to it

@@ -25,7 +25,10 @@ public class Bishop extends Piece {
 		int endX = move.getEnd().getX();
 		int startY = move.getStart().getY();
 		int endY = move.getEnd().getY();
-
+		
+		if (startX == endX) return false;
+		if (startY == endY) return false;
+		
         int directionX = (endX - startX) / (int) Math.abs(endX - startX);
         int directionY = (endY - startY) / (int) Math.abs(endY - startY);
 		
