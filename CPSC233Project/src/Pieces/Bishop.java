@@ -32,11 +32,12 @@ public class Bishop extends Piece {
         int directionX = (endX - startX) / (int) Math.abs(endX - startX);
         int directionY = (endY - startY) / (int) Math.abs(endY - startY);
 		
-        for (int x = directionX; (x + startX <= endX) ^ (x + startX >= endX); x += directionX){
-            for (int y = directionY; (y + startY <= endY) ^ (y + startY >= endY); y += directionY) {
-                if (board.getSquare(startX + x, startY + y).getPiece() != null) {
-                   return false;
-                } 
+        for (int x = directionX, y = directionY;
+        		((x + startX <= endX) ^ (x + startX >= endX)) && 
+        		((y + startY <= endY) ^ (y + startY >= endY));
+        		x += directionX, y += directionY ){
+          	if (board.getSquare(startX + x, startY + y).getPiece() != null) {
+            	return false;
             }
         }
 		
