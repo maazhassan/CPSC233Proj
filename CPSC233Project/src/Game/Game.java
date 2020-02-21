@@ -77,9 +77,9 @@ public class Game {
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
 		Piece endPiece = move.getEnd().getPiece();
-		
+
 		//Check if the piece is valid (belongs to the player and is not null)
-		if (pieceMoved.isWhite() != currentPlayer.isWhite() || pieceMoved == null) {
+		if (pieceMoved == null || pieceMoved.isWhite() != currentPlayer.isWhite()) {
 			System.out.println("Invalid piece!");
 			return false;
 		}

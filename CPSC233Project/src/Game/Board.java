@@ -28,6 +28,7 @@ public class Board {
 
 	//return a square on the board
 	public Square getSquare(int x, int y) {
+        if (!(x >= 0 && x < SIZE && y >= 0 && y < SIZE)) return null;
 		return data[x][y];
 	}
 

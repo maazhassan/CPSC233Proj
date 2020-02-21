@@ -12,7 +12,7 @@ public class Bishop extends Piece {
 	@Override
 	public boolean canMove(Board board, Move move) {
 		// Make sure the end square is not the same color as the piece.
-		if (move.getEnd().getPiece().isWhite() == this.isWhite()) {
+		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;
 		}
 		// Coordinates

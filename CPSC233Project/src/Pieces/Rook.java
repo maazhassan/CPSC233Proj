@@ -11,7 +11,7 @@ public class Rook extends Piece {
 	@Override
 	public boolean canMove(Board board, Move move) {
 		// checking end square
-		if (move.getEnd().getPiece().isWhite() == this.isWhite()) {
+		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;
 		}
 		

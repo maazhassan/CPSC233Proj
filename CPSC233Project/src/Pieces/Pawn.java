@@ -11,10 +11,9 @@ public class Pawn extends Piece {
 
 	@Override
 	public boolean canMove(Board board, Move move) {
-		
 		// Get the end piece and its color and see if it is the same color as the piece
 		// If the same color, then the piece can't move to that spot.
-		if (move.getEnd().getPiece().isWhite() == this.isWhite()) {
+		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;			
 		}
 		

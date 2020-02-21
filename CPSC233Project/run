@@ -1,0 +1,1 @@
+javac -d out/ src/Game/*.java src/Pieces/*.java && pushd out && java Game.Game && popd

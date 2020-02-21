@@ -9,7 +9,7 @@ public class Knight extends Piece {
     @Override
     public boolean canMove(Board board, Move move) {
         // 1. Verify that the end square isn't occupied
-        if (move.getEnd().getPiece().isWhite() == this.isWhite()) return false;
+        if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) return false;
         
         // 2. Verify that it can move
         
