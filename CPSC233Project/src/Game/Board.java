@@ -52,34 +52,42 @@ public class Board {
                     continue;
                 } else if (distance == 3) {
                     data[x][y].setPiece(new Pawn(isWhite));
+                    data[x][y].getPiece().setPieceChar('p', isWhite);
                     continue;
                 }
 
                 Piece p;
+                char pieceChar;
                 switch(x) {
                     case 0:
                     case 7:
                         p = new Rook(isWhite);
+                        pieceChar = 'r';
                         break;
                     case 1:
                     case 6:
                         p = new Knight(isWhite);
+                        pieceChar = 'n';
                         break;
                     case 2:
                     case 5:
                         p = new Bishop(isWhite);
+                        pieceChar = 'b';
                         break;
                    case 3:
                         p = new Queen(isWhite);
+                        pieceChar = 'q';
                         break;
                    case 4:
                         p = new King(isWhite);
+                        pieceChar = 'k';
                         break;
                    default:
                         throw new RuntimeException("x should never be " + x + "!");
                }
 
                 data[x][y].setPiece(p);
+                data[x][y].getPiece().setPieceChar(pieceChar, isWhite);
             }
         }
 	}

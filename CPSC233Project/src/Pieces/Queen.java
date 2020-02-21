@@ -10,15 +10,17 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Board board, Square start, Square end) {
-		// Diagonal logic (same as bishop)
+	public boolean canMove(Board board, Move move) {
 		Bishop queenDiag = new Bishop(isWhite());
-		queenDiag.canMove(board,start,end);
-		
-		// Straight logic (same as rook)
 		Rook queenStraight = new Rook(isWhite());
-		queenStraight.canMove(board,start,end);
 		
+		if (move.getStart().getX() == move.getEnd().getX() || move.getStart().getY() == move.getEnd().getY()) {
+		// Straight logic (same as rook)
+		return queenStraight.canMove(board, move);
+		}
+		else {
+		// Diagonal logic (same as bishop)
+		return queenDiag.canMove(board, move);
+		}
 	}
-
 }

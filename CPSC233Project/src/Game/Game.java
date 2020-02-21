@@ -52,6 +52,24 @@ public class Game {
 		else {
 			this.currentPlayer = p2;
 		}
+		this.printBoard(board);
+	}
+	
+	public void printBoard(Board board) {
+		String printedBoard = "";
+		for (int y = 0; y < 8; y++) {
+			for (int x = 0; x < 8; x++) {
+				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
+				if (pieceOnSquare == null) {
+					printedBoard = printedBoard + ' ';
+				}
+				else {
+					printedBoard = printedBoard + pieceOnSquare.getPieceChar();
+				}
+			}
+			printedBoard = printedBoard + "\n";
+		}
+		System.out.println(printedBoard);
 	}
 	
 	public boolean playMove(Move move, Player p1, Player p2) {
@@ -115,6 +133,7 @@ public class Game {
 		}
 		
 		//Print the board
+		this.printBoard(board);
 		
 		//Switch players once the move is made
 		if (this.currentPlayer == p1) {
@@ -201,7 +220,6 @@ public class Game {
 		
 		//Initialize the board
 		chessGame.initializeGame(p1, p2);
-		
 		//Move loop
 		while (!chessGame.gameOver) {
 			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
