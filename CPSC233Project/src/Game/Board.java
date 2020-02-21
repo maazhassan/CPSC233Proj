@@ -45,7 +45,14 @@ public class Board {
 
                 // Determine if the bottom-half of the board is a white piece
                 // or a black piece
-                boolean isWhite = y >= 4 & isBottomWhite;
+                //boolean isWhite = y >= 4 & isBottomWhite;
+            	boolean isWhite;
+            	if (y >=4) {
+            		isWhite = isBottomWhite;
+            	}
+            	else {
+            		isWhite = !isBottomWhite;
+            	}
 
                 Piece p = null;
 
