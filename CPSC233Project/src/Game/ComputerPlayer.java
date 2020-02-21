@@ -56,6 +56,7 @@ public class ComputerPlayer extends Player {
 			//If there are no moves for the chosen random piece, choose another and try again
 			if (moves.size() == 0) continue;
 			
+			
 			//Generates a random index number, and returns the move at that index in the moves ArrayList
 			int randMoveIndex = rand.nextInt(moves.size());
 			randMove = moves.get(randMoveIndex);   //update condition

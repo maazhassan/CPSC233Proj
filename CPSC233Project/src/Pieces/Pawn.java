@@ -28,18 +28,24 @@ public class Pawn extends Piece {
 		int startY = move.getStart().getY();
 		int endY = move.getEnd().getY();
 		
+		System.out.printf("%d %d - %d %d\n", startX, startY, endX, endY);
+		
 		// First pawn move (Two spaces forward)
-		if (Math.abs(startY - endY) == 2 && Math.abs(startX - endX)== 0 && startY == 1 || startY == 6) {
+		if (Math.abs(startY - endY) == 2 && Math.abs(startX - endX)== 0 && (startY == 1 || startY == 6)) {
+			System.out.println(1);
 			return true;
 		}
 		
 		// Rest of pawn moves (One space forward)
 		if (Math.abs(startY - endY) == 1 && Math.abs(startX - endX) == 0) {
+			System.out.println(2);
 			return true;
 		}
 		// If there is an opponent's piece diagonal to the pawn.
 		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() != this.isWhite()) {
+			System.out.println(3);
 			if (Math.abs(startY - endY) == 1 && (startX-endX == 1 || startX-endX == -1)) {
+				System.out.println(31);
 				return true;
 			}
 		// If the pawn is at the end (can't move forward)
