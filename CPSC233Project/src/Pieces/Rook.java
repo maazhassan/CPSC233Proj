@@ -63,7 +63,9 @@ public class Rook extends Piece {
 					}
 				}
 			}
-		}
+		} else {
+            return false;
+        }
 
         // check if it can move
 		if (Math.abs(startX - endX) < 8 - startX && Math.abs(startY - endY) < 8 - startY) {

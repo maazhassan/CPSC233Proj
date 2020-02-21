@@ -24,6 +24,6 @@ public class Knight extends Piece {
         // A knight moves only by a ratio of 2:1 or 1:2. We'll divide the max
         // delta by the min delta to see if the ratio is 2:1 (which is 2).
 
-        return (Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY)) == 2;
+        return deltaX * deltaY == 2;
     }
 }
