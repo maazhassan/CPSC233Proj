@@ -9,6 +9,11 @@ public class Bishop extends Piece {
 		super(isWhite);
 	}
 
+    @Override
+    public char getPieceChar() {
+        return 'b';
+    }
+
 	@Override
 	public boolean canMove(Board board, Move move) {
 		// Make sure the end square is not the same color as the piece.

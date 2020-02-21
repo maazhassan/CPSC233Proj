@@ -47,48 +47,37 @@ public class Board {
                 // or a black piece
                 boolean isWhite = y >= 4 & isBottomWhite;
 
-                int distance = Math.abs(SIZE/2 - y); // Distance from center to y-coordinate
-                if (distance <= 2) {
-                    data[x][y].setPiece(null);
-                    continue;
-                } else if (distance == 3) {
-                    data[x][y].setPiece(new Pawn(isWhite));
-                    data[x][y].getPiece().setPieceChar('p', isWhite);
-                    continue;
+                Piece p = null;
+
+                if (y == 0 || y == SIZE-1) {
+                    switch(x) {
+                        case 0:
+                        case 7:
+                            p = new Rook(isWhite);
+                            break;
+                        case 1:
+                        case 6:
+                            p = new Knight(isWhite);
+                            break;
+                        case 2:
+                        case 5:
+                            p = new Bishop(isWhite);
+                            break;
+                       case 3:
+                            p = new Queen(isWhite);
+                            break;
+                       case 4:
+                            p = new King(isWhite);
+                            break;
+                       default:
+                            throw new RuntimeException("x should never be " + x + "!");
+                    }
+
+                } else if (y == 1 || y == (SIZE-1) - 1) {
+                    p = new Pawn(isWhite);
                 }
-
-                Piece p;
-                char pieceChar;
-                switch(x) {
-                    case 0:
-                    case 7:
-                        p = new Rook(isWhite);
-                        pieceChar = 'r';
-                        break;
-                    case 1:
-                    case 6:
-                        p = new Knight(isWhite);
-                        pieceChar = 'n';
-                        break;
-                    case 2:
-                    case 5:
-                        p = new Bishop(isWhite);
-                        pieceChar = 'b';
-                        break;
-                   case 3:
-                        p = new Queen(isWhite);
-                        pieceChar = 'q';
-                        break;
-                   case 4:
-                        p = new King(isWhite);
-                        pieceChar = 'k';
-                        break;
-                   default:
-                        throw new RuntimeException("x should never be " + x + "!");
-               }
-
+                
                 data[x][y].setPiece(p);
-                data[x][y].getPiece().setPieceChar(pieceChar, isWhite);
             }
         }
 	}

@@ -9,6 +9,11 @@ public class Queen extends Piece {
 		super(isWhite);
 	}
 
+    @Override
+    public char getPieceChar() {
+        return 'p';
+    }
+
 	@Override
 	public boolean canMove(Board board, Move move) {
 		Bishop queenDiag = new Bishop(isWhite());

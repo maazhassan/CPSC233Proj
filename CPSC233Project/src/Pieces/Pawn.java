@@ -9,6 +9,11 @@ public class Pawn extends Piece {
 		super(isWhite);
 	}
 
+    @Override
+    public char getPieceChar() {
+        return 'p';
+    }
+
 	@Override
 	public boolean canMove(Board board, Move move) {
 		// Get the end piece and its color and see if it is the same color as the piece

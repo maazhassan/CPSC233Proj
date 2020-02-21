@@ -11,6 +11,11 @@ public class King extends Piece {
     }
     
     @Override
+    public char getPieceChar() {
+        return 'k';
+    }
+
+    @Override
     public boolean canMove(Board board, Move move) {
         // 1. Verify that the end square isn't occupied by a piece of the same color
         if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) return false;

@@ -5,6 +5,11 @@ public class Knight extends Piece {
     public Knight(boolean isWhite) {
         super(isWhite);
     }
+  
+    @Override
+    public char getPieceChar() {
+        return 'n';
+    }
     
     @Override
     public boolean canMove(Board board, Move move) {

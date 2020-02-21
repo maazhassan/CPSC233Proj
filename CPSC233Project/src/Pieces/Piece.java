@@ -3,7 +3,6 @@ import Game.*;
 
 public abstract class Piece {
 	private boolean white;
-	private char pieceChar = ' ';
 
     public Piece(boolean isWhite) {
         this.setWhite(isWhite);
@@ -17,17 +16,8 @@ public abstract class Piece {
     	this.white = isWhite;
     }
     
-    public char getPieceChar() {
-    	return this.pieceChar;
-    }
+    public abstract char getPieceChar();
     
-    public void setPieceChar(char pieceChar, boolean white) {
-    	this.pieceChar = pieceChar;
-    	if (white) {
-    		this.pieceChar = Character.toUpperCase(this.pieceChar);
-    	}
-    }
-
     public boolean canBeCheck(Board board, Square kingSquare) {
     	for (int x = 0; x < 8; x++) {
     		for (int y = 0; y < 8; y++) {

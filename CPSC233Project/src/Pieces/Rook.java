@@ -7,6 +7,11 @@ public class Rook extends Piece {
 	public Rook(boolean isWhite) {
 		super(isWhite);
 	}
+
+    @Override
+    public char getPieceChar() {
+        return 'r';
+    }
 	
 	@Override
 	public boolean canMove(Board board, Move move) {
