@@ -56,26 +56,31 @@ public class Game {
 	}
 	
 	public void printBoard(Board board) {
-		String printedBoard = "---------------------------------";
+		String printedBoard = "     0   1   2   3   4   5   6   7" + "\n";
+		printedBoard = printedBoard + "   ---------------------------------";
 		for (int y = 0; y < 8; y++) {
+			
 			printedBoard = printedBoard + "\n";
+			printedBoard = printedBoard + y + "  |";
 			for (int x = 0; x < 8; x++) {
 				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
 				
+				
+				
 				if (pieceOnSquare == null) {
-					printedBoard = printedBoard + '|';
 					printedBoard = printedBoard + "   ";
+					printedBoard = printedBoard + '|';
 				}
 				else {
 					char pieceChar = pieceOnSquare.getPieceChar();
 					if (pieceOnSquare.isWhite()) pieceChar = Character.toUpperCase(pieceChar);
-					printedBoard = printedBoard + '|';
 					printedBoard = printedBoard + ' ' + pieceChar + ' ';
+					printedBoard = printedBoard + '|';
 				}
 			}
-			printedBoard = printedBoard + '|';
+			
 			printedBoard = printedBoard + "\n";
-			printedBoard = printedBoard + "---------------------------------";
+			printedBoard = printedBoard + "   ---------------------------------";
 		}
 		System.out.println(printedBoard);
 	}
@@ -88,12 +93,14 @@ public class Game {
 
 		//Check if the piece is valid (belongs to the player and is not null)
 		if (pieceMoved == null || pieceMoved.isWhite() != currentPlayer.isWhite()) {
+			this.printBoard(board);
 			System.out.println("Invalid piece!");
 			return false;
 		}
 		
 		//Check if the piece can move to that square
 		if (!pieceMoved.canMove(board, move)) {
+			this.printBoard(board);
 			System.out.println("That piece cannot move there!");
 			return false;
 		}
@@ -232,7 +239,6 @@ public class Game {
 		//Move loop
 		while (!chessGame.gameOver) {
 			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
-			chessGame.printBoard(chessGame.board);
 			
 		}
 	}
