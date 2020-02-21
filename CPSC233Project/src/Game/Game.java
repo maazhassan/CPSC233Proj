@@ -56,18 +56,23 @@ public class Game {
 	}
 	
 	public void printBoard(Board board) {
-		String printedBoard = "";
+		String printedBoard = "---------------------------------";
 		for (int y = 0; y < 8; y++) {
+			printedBoard = printedBoard + "\n";
 			for (int x = 0; x < 8; x++) {
 				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
 				if (pieceOnSquare == null) {
-					printedBoard = printedBoard + ' ';
+					printedBoard = printedBoard + '|';
+					printedBoard = printedBoard + "   ";
 				}
 				else {
-					printedBoard = printedBoard + pieceOnSquare.getPieceChar();
+					printedBoard = printedBoard + '|';
+					printedBoard = printedBoard + ' ' + pieceOnSquare.getPieceChar() + ' ';
 				}
 			}
+			printedBoard = printedBoard + '|';
 			printedBoard = printedBoard + "\n";
+			printedBoard = printedBoard + "---------------------------------";
 		}
 		System.out.println(printedBoard);
 	}
