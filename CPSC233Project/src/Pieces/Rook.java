@@ -15,7 +15,7 @@ public class Rook extends Piece {
 	
 	@Override
 	public boolean canMove(Board board, Move move) {
-		// checking end square
+		// Make sure end square is not the same color as the piece.
 		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() == this.isWhite()) {
 			return false;
 		}
@@ -25,54 +25,44 @@ public class Rook extends Piece {
 		int endX = move.getEnd().getX();
 		int startY = move.getStart().getY();
 		int endY = move.getEnd().getY();
-
 		
-		
-		if (startY == endY) {
-			// horizontally
-			if (startX < endX) {
-				// move right
-				for (int i = startX + 1; i <= endX; i++) {
-					if (board.getSquare(startX, i).getPiece() != null) {
-						return false;
+		if (startX == endX ^ startY == endY) {    //same square OR not along file
+			if (startY == endY) {    // horizontally
+				if (startX < endX) {    // move right
+					for (int i = startX + 1; i < endX; i++) {
+						if (board.getSquare(i, startY).getPiece() != null) {
+							return false;
+						}
 					}
 				}
-			} else {
-				// move left
-				for (int i = startX - 1; i >= endX; i--) {
-					if (board.getSquare(startX, i).getPiece() != null) {
-						return false;
+				else {    //move left
+					for (int i = startX - 1; i > endX; i--) {
+						if (board.getSquare(i, startY).getPiece() != null) {
+							return false;
+						}
 					}
 				}
 			}
-			
-		} else if (startX == endX) {
-			//vertical
-			if (startY < endY) {
-				// move down
-				for (int i = startY + 1; i <= endY; i++) {
-					if (board.getSquare(i, startY).getPiece() != null) {
-						return false;
+			else if (startX == endX) {    //vertically
+				if (startY > endY) {    //move up
+					for (int i = startY - 1; i > endY; i--) {
+						if (board.getSquare(startX, i).getPiece() != null) {
+							return false;
+						}
 					}
 				}
-			} else {
-				// move forward
-				for (int i = startY - 1; i >= endY; i--) {
-					if (board.getSquare(i, startY).getPiece() != null) {
-						return false;
+				else {    //move down
+					for (int i = startY + 1; i < endY; i++) {
+						if (board.getSquare(startX, i).getPiece() != null) {
+							return false;
+						}
 					}
 				}
 			}
-		} else {
-            return false;
-        }
-
-        // check if it can move
-		if (Math.abs(startX - endX) < 8 - startX && Math.abs(startY - endY) < 8 - startY) {
 			return true;
 		}
-				
-		return false;
+		else {
+			return false;
+		}
 	}
-	
 }

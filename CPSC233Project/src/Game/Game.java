@@ -138,8 +138,11 @@ public class Game {
 			move.getStart().setPiece(pieceMoved);
 			move.getEnd().setPiece(endPiece);    //return piece to original position
 			
-			System.out.println("Move puts king in check");
-			if (check == true) return false;
+			if (check == true) {
+				this.printBoard(board);
+				System.out.println("Cannot put/leave your king in danger!");
+				return false;
+			}
 			
 			//Check if this move puts the enemy king in check
 			
@@ -164,37 +167,12 @@ public class Game {
 		return true;
 	}
 	
-	//main method, contains pseudocode right now, everyone contribute to this
+	//main method, runs the game
 	public static void main(String[] args) {
 		
 		/*
-		 * - Initialize player sides/colors
-		 * 
-		 * - Initialize board
-		 * 
-		 * - Ask white player to make a move
-		 * 
-		 * - Determine multiple things:
-		 * 		- Validity of move:
-		 * 			- can this type of piece actually move to that spot?
-		 * 			- is there a piece in the way?
-		 * 			- does this move put your own king in check?
-		 * 			- is your king currently in check? if so, the next move must remove the check
-		 * 		- Does this move capture a piece?
-		 * 		- Does this move put the enemy king in check?
-		 * 		- Is it a pawn moving to the back rank?
-		 * 		- Does the move result in a checkmate/stalemate?
-		 * 		- Is it a castling move?
-		 * 
-		 * - Once all of the above is dealt with, actually make the move
-		 * 
-		 * - Switch to the black player
-		 * 
-		 * - Ask the black player to make a move
-		 * 
-		 * - Recheck everything for that move.
-		 * 
-		 * - Repeat until checkmate/stalemate, then end the game.
+		 * TODO: implement check and checkmate
+		 * FIX: pawn can move back and can also move through pieces on it's first move.
 		 */
 
 		Game chessGame = new Game();
@@ -238,8 +216,15 @@ public class Game {
 		chessGame.initializeGame(p1, p2);
 		//Move loop
 		while (!chessGame.gameOver) {
-			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);
+			//Print whose turn it is
+			if (chessGame.currentPlayer.isWhite()) {
+				System.out.println("Turn white.");
+			}
+			else {
+				System.out.println("Turn black.");
+			}
 			
+			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);    //ask for and play move
 		}
 	}
 }

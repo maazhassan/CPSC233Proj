@@ -43,10 +43,14 @@ public class Pawn extends Piece {
 			if (Math.abs(startY - endY) == 1 && (startX-endX == 1 || startX-endX == -1)) {
 				return true;
 			}
+		}
+		
+		//If there is a piece in front of the pawn.
+		
+			
 		// If the pawn is at the end (can't move forward)
 		if (startY == 0 || startY == 7) {
 			return false;
-			}
 		}
 		
 		return false;
