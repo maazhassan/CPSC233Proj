@@ -25,9 +25,9 @@ public abstract class Piece {
     			Piece pieceOnSquare = square.getPiece();
     			if (pieceOnSquare != null) {
     				if (pieceOnSquare.isWhite() != this.isWhite()) {
-                        System.out.println(x + "," + y);
+                        //System.out.println(x + "," + y);
     					Move checkTestMove = new Move(square, kingSquare);
-                        System.out.printf("Move: %d %d -> %d %d\n", square.getX(), square.getY(), kingSquare.getX(), kingSquare.getY());
+                        //System.out.printf("Move: %d %d -> %d %d\n", square.getX(), square.getY(), kingSquare.getX(), kingSquare.getY());
     					if (pieceOnSquare.canMove(board, checkTestMove)) return true;
     				}
     			}

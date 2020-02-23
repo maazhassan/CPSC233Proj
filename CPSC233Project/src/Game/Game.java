@@ -93,7 +93,7 @@ public class Game {
 			for (int y = 0; y < 8; y++) {
 				Square square = board.getSquare(x, y);
 				Piece pieceOnSquare = square.getPiece();
-				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite()) {
+				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite() && !(pieceOnSquare instanceof King)) {
 					for (int x2 = 0; x2 < 8; x2++) {
 						for (int y2 = 0; y2 < 8; y2++) {
 							Move testMove = new Move(square, board.getSquare(x2, y2));

@@ -61,7 +61,7 @@ public class ComputerPlayer extends Player {
 			int randMoveIndex = rand.nextInt(moves.size());
 			randMove = moves.get(randMoveIndex);   //update condition
 		}
-		
+		System.out.printf("Chosen move: %d %d -> %d %d\n", randMove.getStart().getX(), randMove.getStart().getY(), randMove.getEnd().getX(), randMove.getEnd().getY());
 		return randMove;
 	}
 }
