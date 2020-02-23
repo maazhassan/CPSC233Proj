@@ -11,6 +11,10 @@ public class Board {
     private final Square[][] data = new Square[SIZE][SIZE]; // data[x][y]
 
     private boolean isBottomWhite;
+    
+    public boolean getIsBottomWhite() {
+    	return this.isBottomWhite;
+    }
 
     public Board(boolean isBottomWhite) {
         this.isBottomWhite = isBottomWhite;

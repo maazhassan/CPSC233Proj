@@ -42,14 +42,16 @@ public class King extends Piece {
     	//Right side castling
     	if (move.getEnd().getX() == 6) {
     		//Bottom player
-    		if (move.getEnd().getY() == 7 && board.getSquare(5, 7).getPiece() == null && board.getSquare(7, 7).getPiece() instanceof Rook) {
+    		if (move.getEnd().getY() == 7 && move.getStart().getY() == 7 && board.getSquare(5, 7).getPiece() == null && 
+    			board.getSquare(7, 7).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
         		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}
     		//Top player
-    		else if (move.getEnd().getY() == 0 && board.getSquare(5, 0).getPiece() == null && board.getSquare(7, 0).getPiece() instanceof Rook) {
+    		else if (move.getEnd().getY() == 0 && move.getStart().getY() == 0 && board.getSquare(5, 0).getPiece() == null && 
+    			board.getSquare(7, 0).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
         		this.hasMoved = true;
         		move.setCastlingMove(true);
@@ -59,14 +61,16 @@ public class King extends Piece {
     	//Left side castling
     	else if (move.getEnd().getX() == 2) {
     		//Bottom player
-    		if (move.getEnd().getY() == 7 && board.getSquare(3, 7) == null && board.getSquare(1, 7) == null && board.getSquare(0, 7).getPiece() instanceof Rook) {
+    		if (move.getEnd().getY() == 7 && move.getStart().getY() == 7 && board.getSquare(3, 7) == null && board.getSquare(1, 7) == null && 
+    			board.getSquare(0, 7).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
         		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}
     		//Top player
-    		else if (move.getEnd().getY() == 0 && board.getSquare(3, 0) == null && board.getSquare(1, 0) == null && board.getSquare(0, 0).getPiece() instanceof Rook) {
+    		else if (move.getEnd().getY() == 0 && move.getStart().getY() == 0 && board.getSquare(3, 0) == null && board.getSquare(1, 0) == null && 
+    			board.getSquare(0, 0).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
         		this.hasMoved = true;
         		move.setCastlingMove(true);

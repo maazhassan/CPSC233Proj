@@ -27,32 +27,56 @@ public class Pawn extends Piece {
 		int endX = move.getEnd().getX();
 		int startY = move.getStart().getY();
 		int endY = move.getEnd().getY();
-
 		
-		// First pawn move (Two spaces forward)
-		if (Math.abs(startY - endY) == 2 && Math.abs(startX - endX)== 0 && (startY == 1 || startY == 6)) {
-			return true;
-		}
+		// Used to determine which direction the pawn is allowed to move
+		boolean isWhite = move.getStart().getPiece().isWhite();
+		boolean isBottomWhite = board.getIsBottomWhite();
+		boolean movingUp;
 		
-		// Rest of pawn moves (One space forward)
-		if (Math.abs(startY - endY) == 1 && Math.abs(startX - endX) == 0) {
-			return true;
+		// Check direction
+		if (startY - endY > 0) {    // moving upwards
+			movingUp = true;
+			if (isWhite != isBottomWhite) return false;
 		}
-		// If there is an opponent's piece diagonal to the pawn.
-		if (move.getEnd().getPiece() != null && move.getEnd().getPiece().isWhite() != this.isWhite()) {
-			if (Math.abs(startY - endY) == 1 && (startX-endX == 1 || startX-endX == -1)) {
-				return true;
+		else if (startY - endY < 0) {    // moving downwards
+			movingUp = false;
+			if (isWhite == isBottomWhite) return false;
+		}
+		else {
+			return false;
+		}
+					
+		// Moving straight
+		if (startX - endX == 0) {
+			
+			// Check end piece
+			if (move.getEnd().getPiece() != null) return false;
+			
+			// Check move
+			if (Math.abs(startY - endY) == 2) {    // moving 2 squares (first move)
+				if (movingUp) {
+					if (startY != 6 || board.getSquare(startX, 5).getPiece() != null) return false;
+				}
+				else {
+					if (startY != 1 || board.getSquare(startX, 2).getPiece() != null) return false;
+				}
+			}
+			else if (Math.abs(startY - endY) != 1) {
+				return false;
 			}
 		}
 		
-		//If there is a piece in front of the pawn.
-		
-			
-		// If the pawn is at the end (can't move forward)
-		if (startY == 0 || startY == 7) {
+		// Moving diagonal
+		else if (Math.abs(startX - endX) == 1 && Math.abs(startY - endY) == 1) {
+
+			// Must be a killing move
+			if (move.getEnd().getPiece() == null) return false;
+		}
+		else {
 			return false;
 		}
 		
-		return false;
+		return true;
 	}
-}	
+}
+

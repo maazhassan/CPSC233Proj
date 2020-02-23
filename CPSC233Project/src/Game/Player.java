@@ -30,6 +30,11 @@ public abstract class Player {
 		this.inCheck = check;
 	}
 	
+	public String printColor() {
+		if (this.isWhite()) return "white";
+		else return "black";
+	}
+	
 	public Square findKingSquare(Board board) {
 		Square kingSquare = null;
 		

@@ -1,5 +1,7 @@
 package Game;
 import Pieces.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -52,7 +54,6 @@ public class Game {
 		else {
 			this.currentPlayer = p2;
 		}
-		this.printBoard(board);
 	}
 	
 	public void printBoard(Board board) {
@@ -85,28 +86,71 @@ public class Game {
 		System.out.println(printedBoard);
 	}
 	
-	public boolean playMove(Move move, Player p1, Player p2) {
+	public boolean checkMate(Player otherPlayer) {
+		ArrayList<Move> availableMoves = new ArrayList<Move>();
+		
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				Square square = board.getSquare(x, y);
+				Piece pieceOnSquare = square.getPiece();
+				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite()) {
+					for (int x2 = 0; x2 < 8; x2++) {
+						for (int y2 = 0; y2 < 8; y2++) {
+							Move testMove = new Move(square, board.getSquare(x2, y2));
+							if (pieceOnSquare.canMove(board, testMove)) {
+								Piece endPiece = testMove.getEnd().getPiece();
+								if(playMove(testMove)) {
+									availableMoves.add(testMove);
+									undoMove(testMove, endPiece);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return (availableMoves.size() == 0);
+	}
+	
+	public void makeMove(Move move) {
+		Piece pieceMoved = move.getStart().getPiece();
+		move.getStart().setPiece(null);
+		move.getEnd().setPiece(pieceMoved);
+	}
+	
+	public void undoMove(Move move, Piece endPiece) {
+		Piece pieceMoved = move.getEnd().getPiece();
+		move.getStart().setPiece(pieceMoved);
+		move.getEnd().setPiece(endPiece);
+	}
+	
+	public boolean playMove(Move move) {
 		
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
 		Piece endPiece = move.getEnd().getPiece();
+		
+		boolean check = false;
 
 		//Check if the piece is valid (belongs to the player and is not null)
 		if (pieceMoved == null || pieceMoved.isWhite() != currentPlayer.isWhite()) {
 			this.printBoard(board);
-			System.out.println("Invalid piece!");
+			System.out.println("Invalid piece.");
+			System.out.println("Turn " + currentPlayer.printColor() + ".");
 			return false;
 		}
 		
 		//Check if the piece can move to that square
 		if (!pieceMoved.canMove(board, move)) {
 			this.printBoard(board);
-			System.out.println("That piece cannot move there!");
+			System.out.println("That piece cannot move there.");
+			System.out.println("Turn " + currentPlayer.printColor() + ".");
 			return false;
 		}
 		
 		//Check if this move castles
-		if (move.isCastlingMove()) {
+		if (move.isCastlingMove() && !currentPlayer.isInCheck()) {
 			if (move.getEnd().getX() == 6) {    //right side castling
 				move.getEnd().setPiece(pieceMoved);
 				move.getStart().setPiece(null);
@@ -121,110 +165,132 @@ public class Game {
 				board.getSquare(3, move.getEnd().getY()).setPiece(lCastlingRook);
 				board.getSquare(0, move.getEnd().getY()).setPiece(null);    //Move the rook
 			}
+			return true;
 		}
-		else {    //The following do not need to be checked for a castling move, since they have already been checked by canMove() if the king is being moved.
-			//Check if the player is in check at the end of their move (not allowed)
-			boolean check = false;
+		else if (!move.isCastlingMove()) {    //The following do not need to be checked for a castling move, since they have already been checked by canMove() if the king is being moved.
+			// Make sure the player is not in check at the end of their move
+			this.makeMove(move);   //temporarily make the move
 			
-			move.getStart().setPiece(null);   
-			move.getEnd().setPiece(pieceMoved);    //temporarily make the move
+			Square ownKingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king belonging to the player on it
 			
-			Square kingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king on it
-			
-			if (kingSquare.getPiece().canBeCheck(board, kingSquare)) {
+			if (ownKingSquare.getPiece().canBeCheck(board, ownKingSquare)) {
 				check = true;
 			}
 			
-			move.getStart().setPiece(pieceMoved);
-			move.getEnd().setPiece(endPiece);    //return piece to original position
+			this.undoMove(move, endPiece);    //return piece to original position
 			
 			if (check == true) {
-				this.printBoard(board);
-				System.out.println("Cannot put/leave your king in danger!");
+				currentPlayer.setCheck(true);
 				return false;
 			}
 			
-			//Check if this move puts the enemy king in check
-			
 			//Move the piece
-			move.getStart().setPiece(null);
-			move.getEnd().setPiece(pieceMoved);
+			this.makeMove(move);
+			return true;
 		}
-		
-		//Print the board
-		this.printBoard(board);
-		
-		//Switch players once the move is made
-		if (this.currentPlayer == p1) {
-			this.currentPlayer = p2;
-		}
-		else {
-			this.currentPlayer = p1;
-		}
-		
-		//Check for check mate
-		
-		return true;
+		else return false;
 	}
 	
 	//main method, runs the game
 	public static void main(String[] args) {
 		
-		/*
-		 * TODO: implement check and checkmate
-		 * FIX: pawn can move back and can also move through pieces on it's first move.
-		 */
-
-		Game chessGame = new Game();
-		Scanner input = new Scanner(System.in);
-		HumanPlayer p1 = null;
-		Player p2 = null;
-		char p1Color = 'a';
-		char p2Type = 'a';
+		boolean playAgain = true;
 		
-		//User input for opponent type/color
-		while (p2Type != 'c' && p2Type != 'h') {
-			System.out.println("Play against computer or another human? (enter 'c' or 'h'):");
-			p2Type = input.nextLine().charAt(0);
-		}
-		while (p1Color != 'w' && p1Color != 'b') {
-			System.out.println("Do you want to play as white or black? (enter 'w' or 'b'):");
-			p1Color = input.nextLine().charAt(0);
-		}
-		
-		//Creating the player objects depending on the input
-		p1 = chessGame.initializeP1(p1Color);
-		
-		if (p1.isWhite()) {
-			if (p2Type == 'c') {
-				p2 = chessGame.initializeP2Computer('b');
+		while (playAgain) {
+			Game chessGame = new Game();
+			Scanner input = new Scanner(System.in);
+			HumanPlayer p1 = null;
+			Player p2 = null;
+			char p1Color = 'a';
+			char p2Type = 'a';
+			char playAgainChar = 'a';
+			
+			
+			//User input for opponent type/color
+			while (p2Type != 'c' && p2Type != 'h') {
+				System.out.println("Play against computer or another human? (enter 'c' or 'h'):");
+				p2Type = input.nextLine().charAt(0);
 			}
-			else {
-				p2 = chessGame.initializeP2Human('b');
-			}
-		}
-		else {
-			if (p2Type == 'c') {
-				p2 = chessGame.initializeP2Computer('w');
-			}
-			else {
-				p2 = chessGame.initializeP2Human('w');
-			}
-		}
-		
-		//Initialize the board
-		chessGame.initializeGame(p1, p2);
-		//Move loop
-		while (!chessGame.gameOver) {
-			//Print whose turn it is
-			if (chessGame.currentPlayer.isWhite()) {
-				System.out.println("Turn white.");
-			}
-			else {
-				System.out.println("Turn black.");
+			while (p1Color != 'w' && p1Color != 'b') {
+				System.out.println("Do you want to play as white or black? (enter 'w' or 'b'):");
+				p1Color = input.nextLine().charAt(0);
 			}
 			
-			chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board), p1, p2);    //ask for and play move
+			//Creating the player objects depending on the input
+			p1 = chessGame.initializeP1(p1Color);
+			
+			if (p1.isWhite()) {
+				if (p2Type == 'c') {
+					p2 = chessGame.initializeP2Computer('b');
+				}
+				else {
+					p2 = chessGame.initializeP2Human('b');
+				}
+			}
+			else {
+				if (p2Type == 'c') {
+					p2 = chessGame.initializeP2Computer('w');
+				}
+				else {
+					p2 = chessGame.initializeP2Human('w');
+				}
+			}
+			
+			//Initialize the board
+			chessGame.initializeGame(p1, p2);
+			
+			//Move loop
+			while (!chessGame.gameOver) {
+				
+				//Print the board
+				chessGame.printBoard(chessGame.board);
+				
+				//Print other info
+				if (chessGame.currentPlayer.isInCheck()) System.out.println("Check.");
+				System.out.println("Turn " + chessGame.currentPlayer.printColor() + ".");
+				
+				//Ask for/play move
+				boolean validMove = false;
+				while (validMove == false) {
+					chessGame.currentPlayer.setCheck(false);
+					validMove = chessGame.playMove(chessGame.currentPlayer.generateMove(chessGame.board));
+					if (chessGame.currentPlayer.isInCheck()) {
+						chessGame.printBoard(chessGame.board);
+						System.out.println("Cannot leave/put your king in check.");
+						System.out.println("Turn " + chessGame.currentPlayer.printColor() + ".");
+					}
+				}
+				
+				//Switch player
+				if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
+				else chessGame.currentPlayer = p1;
+				
+				//Check if this move puts the enemy king in check
+				Square enemyKingSquare = chessGame.currentPlayer.findKingSquare(chessGame.board);
+				if (enemyKingSquare.getPiece().canBeCheck(chessGame.board, enemyKingSquare)) {
+					chessGame.currentPlayer.setCheck(true);
+				}
+				
+				//Check for check mate
+				if (chessGame.checkMate(chessGame.currentPlayer)) {
+					//Update game status to stop loop
+					chessGame.gameOver = true;
+					// Switch player
+					if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
+					else chessGame.currentPlayer = p1;
+					chessGame.printBoard(chessGame.board);
+					//Print winning message
+					System.out.println("Checkmate. " + chessGame.currentPlayer.printColor().replace(chessGame.currentPlayer.printColor().charAt(0), 
+										Character.toUpperCase(chessGame.currentPlayer.printColor().charAt(0))) + " wins.");
+					//Ask to play again
+					System.out.println("\nDo you want to play again? (enter 'y' or 'n'):");
+					while (playAgainChar != 'y' && playAgainChar != 'n') {
+						playAgainChar = input.nextLine().charAt(0);
+					}
+					if (playAgainChar == 'n') playAgain = false;
+					System.out.println("\n");
+				}
+			}
 		}
 	}
 }

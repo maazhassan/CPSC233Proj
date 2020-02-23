@@ -42,7 +42,7 @@ public class Bishop extends Piece {
         }
 		
 		// Check if it can move
-		if (Math.abs(startX - endX) / Math.abs(startY - endY) == 1) {
+		if (Math.abs(startX - endX) == Math.abs(startY - endY)) {
 			return true;
 		}
 		
