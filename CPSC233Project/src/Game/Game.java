@@ -93,15 +93,16 @@ public class Game {
 			for (int y = 0; y < 8; y++) {
 				Square square = board.getSquare(x, y);
 				Piece pieceOnSquare = square.getPiece();
-				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite() && !(pieceOnSquare instanceof King)) {
+				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite()) {
 					for (int x2 = 0; x2 < 8; x2++) {
 						for (int y2 = 0; y2 < 8; y2++) {
 							Move testMove = new Move(square, board.getSquare(x2, y2));
-							if (pieceOnSquare.canMove(board, testMove)) {
+							if (pieceOnSquare.canMove(board, testMove) && !testMove.isCastlingMove()) {
+								Piece pieceMoved = testMove.getStart().getPiece();
 								Piece endPiece = testMove.getEnd().getPiece();
 								if(playMove(testMove)) {
 									availableMoves.add(testMove);
-									undoMove(testMove, endPiece);
+									undoMove(testMove, pieceMoved, endPiece);
 								}
 							}
 						}
@@ -119,8 +120,7 @@ public class Game {
 		move.getEnd().setPiece(pieceMoved);
 	}
 	
-	public void undoMove(Move move, Piece endPiece) {
-		Piece pieceMoved = move.getEnd().getPiece();
+	public void undoMove(Move move, Piece pieceMoved, Piece endPiece) {
 		move.getStart().setPiece(pieceMoved);
 		move.getEnd().setPiece(endPiece);
 	}
@@ -177,7 +177,7 @@ public class Game {
 				check = true;
 			}
 			
-			this.undoMove(move, endPiece);    //return piece to original position
+			this.undoMove(move, pieceMoved, endPiece);    //return piece to original position
 			
 			if (check == true) {
 				currentPlayer.setCheck(true);
@@ -272,6 +272,7 @@ public class Game {
 				}
 				
 				//Check for check mate
+				boolean originalCheckState = chessGame.currentPlayer.isInCheck();
 				if (chessGame.checkMate(chessGame.currentPlayer)) {
 					//Update game status to stop loop
 					chessGame.gameOver = true;
@@ -290,6 +291,7 @@ public class Game {
 					if (playAgainChar == 'n') playAgain = false;
 					System.out.println("\n");
 				}
+				chessGame.currentPlayer.setCheck(originalCheckState);
 			}
 		}
 	}
