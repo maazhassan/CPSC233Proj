@@ -76,6 +76,9 @@ public class Pawn extends Piece {
 			return false;
 		}
 		
+		// Check for pawn promotion
+		if (move.getEnd().getY() == 0 || move.getEnd().getY() == 7) move.setPromotionMove(true);
+		
 		return true;
 	}
 }

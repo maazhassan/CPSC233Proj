@@ -5,6 +5,7 @@ public abstract class Player {
 	private boolean white;
 	private boolean human;
 	private boolean inCheck = false;
+	private int difficulty = 0;
 	
 	public boolean isWhite() {
 		return this.white;
@@ -28,6 +29,14 @@ public abstract class Player {
 	
 	public void setCheck(boolean check) {
 		this.inCheck = check;
+	}
+
+	public int getDifficulty() {
+		return this.difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 	
 	public String printColor() {

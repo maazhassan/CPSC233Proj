@@ -1,67 +1,162 @@
 package Game;
 import java.util.ArrayList;
-import java.util.Random;
 
 import Pieces.*;
 
 public class ComputerPlayer extends Player {
 	
-	public ComputerPlayer(boolean white) {
+	public ComputerPlayer(boolean white, int difficulty) {
 		this.setWhite(white);
 		this.setHuman(false);
+		this.setDifficulty(difficulty);
 	}
-	
-	@Override
-	public Move generateMove(Board board) {
 
-		ArrayList<Square> squares = new ArrayList<Square>();
-		ArrayList<Move> moves = new ArrayList<Move>();
-		Random rand = new Random();
+	//---------- METHODS FOR AI ----------
+
+	//Generates an ArrayList containing every available/legal move
+	public ArrayList<Move> generateMovesList(Board board) {
+		ArrayList<Move> availableMoves = new ArrayList<Move>();
 		
-		//Loops through every square on the board
+		//Loops through every square on the board and adds all available moves to the ArrayList
 		for (int x = 0; x < 8; x++) {
     		for (int y = 0; y < 8; y++) {
-    			//Finds the squares that have available pieces on them (not null, same color as player)
-    			Piece pieceOnSquare = board.getSquare(x, y).getPiece();
+				//Get square, then piece on square
+				Square square = board.getSquare(x, y);
+				Piece pieceOnSquare = square.getPiece();
+				//Make sure piece is not null and matches player color
     			if (pieceOnSquare != null) {
     				if (pieceOnSquare.isWhite() == this.isWhite()) {
-    					//Adds the square to the squares ArrayList
-    					squares.add(board.getSquare(x, y));
+						//Loop through board again
+    					for (int x2 = 0; x2 < 8; x2++) {
+							for (int y2 = 0; y2 < 8; y2++) {
+								//Create move objects for every square
+								Move testMove = new Move(square, board.getSquare(x2, y2));
+								//Test if the move is valid and legal
+								if (pieceOnSquare.canMove(board, testMove)) {									
+									//Add castling moves if player is not in check, because they have been tested already
+									if (testMove.isCastlingMove() && !this.isInCheck()) {
+										availableMoves.add(testMove);
+									}
+									//Otherwise, test if move leaves player in check
+									else {
+										Piece endPiece = board.getSquare(x2, y2).getPiece();
+										Move.makeMove(testMove);    //temporarily make the move
+										Square kingSquare = this.findKingSquare(board);
+										if (!kingSquare.getPiece().canBeCheck(board, kingSquare)) {
+											availableMoves.add(testMove);
+										}
+										Move.undoMove(testMove, pieceOnSquare, endPiece);    //undo the move
+									}									
+								}
+							}
+						}
     				}
     			}
     		}
 		}
-		
-		Move randMove = null;
-		
-		while (randMove == null) {
-			//Generates a random index number
-			int randSquareIndex = rand.nextInt(squares.size());
-			
-			//Returns the Square object at that index in the squares ArrayList
-			Square randSquare = squares.remove(randSquareIndex);
-			Piece randPiece = randSquare.getPiece();	//Then gets the piece that sits on that square
+		return availableMoves;
+	}
 
-			//Loops through every square and checks if the piece can move to it
-			//If it can, then adds a Move object to the moves ArrayList
-			for (int x = 0; x < 8; x++) {
-				for (int y = 0; y < 8; y++) {
-					Move moveForRandomPiece = new Move(randSquare, board.getSquare(x, y));
-					if (randPiece.canMove(board, moveForRandomPiece)) {
-						moves.add(moveForRandomPiece);
-					}
-				}
+	//Initial minimax call
+	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
+		ArrayList<Move> availableMoves = generateMovesList(board);		
+		Move bestMove = null;
+		int bestMoveScore = -9999;
+
+		for (Move move : availableMoves) {
+			Piece pieceMoved = move.getStart().getPiece();
+			Piece endPiece = move.getEnd().getPiece();
+
+			Move.makeMove(move);
+			int moveScore = minimax(depth-1, board, !isMaximizingPlayer);
+			Move.undoMove(move, pieceMoved, endPiece);
+
+			if (moveScore >= bestMoveScore) {
+				bestMoveScore = moveScore;
+				bestMove = move;
 			}
-			
-			//If there are no moves for the chosen random piece, choose another and try again
-			if (moves.size() == 0) continue;
-			
-			
-			//Generates a random index number, and returns the move at that index in the moves ArrayList
-			int randMoveIndex = rand.nextInt(moves.size());
-			randMove = moves.get(randMoveIndex);   //update condition
 		}
-		System.out.printf("Chosen move: %d %d -> %d %d\n", randMove.getStart().getX(), randMove.getStart().getY(), randMove.getEnd().getX(), randMove.getEnd().getY());
-		return randMove;
+		return bestMove;
+	}
+
+	//Recursive minimax method
+	public int minimax(int depth, Board board, boolean isMaximizingPlayer) {
+		if (depth == 0) {
+			return -evaluateBoard(board);
+		}
+
+		ArrayList<Move> availableMoves = generateMovesList(board);
+
+		if (isMaximizingPlayer) {
+			int bestMoveScore = -9999;
+			for (Move move : availableMoves) {
+				Piece pieceMoved = move.getStart().getPiece();
+				Piece endPiece = move.getEnd().getPiece();
+
+				Move.makeMove(move);
+				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, !isMaximizingPlayer));
+				Move.undoMove(move, pieceMoved, endPiece);
+			}
+			return bestMoveScore;
+		}
+		else {
+			int bestMoveScore = 9999;
+			for (Move move : availableMoves) {
+				Piece pieceMoved = move.getStart().getPiece();
+				Piece endPiece = move.getEnd().getPiece();
+
+				Move.makeMove(move);
+				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, !isMaximizingPlayer));
+				Move.undoMove(move, pieceMoved, endPiece);
+			}
+			return bestMoveScore;
+		}
+	}
+
+	//Returns the score of the board
+	public int evaluateBoard(Board board) {
+		int boardScore = 0;
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				boardScore += getPieceValue(board.getSquare(x, y).getPiece());
+			}
+		}
+		return boardScore;
+	}
+
+	//Returns the calculated value of a piece (white is positive, black is negative)
+	public int getPieceValue(Piece piece) {
+		if (piece == null) return 0;
+		int absolutePieceValue = getAbsolutePieceValue(piece);
+
+		if (piece.isWhite()) return absolutePieceValue;
+		else return -absolutePieceValue;
+	}
+
+	//Returns the absolute value of a piece (does not take colour into account)
+	public int getAbsolutePieceValue(Piece piece) {
+		if (piece instanceof Pawn) {
+			return 10;
+		}
+		else if (piece instanceof Knight) {
+			return 30;
+		}
+		else if (piece instanceof Bishop) {
+			return 30;
+		}
+		else if (piece instanceof Rook) {
+			return 50;
+		}
+		else if (piece instanceof Queen) {
+			return 90;
+		}
+		else return 900;
+	}
+	
+	@Override
+	public Move generateMove(Board board) {
+		Move bestMove = minimaxInit(this.getDifficulty()+1, board, this.isWhite());
+		System.out.printf("Chosen move: %d %d -> %d %d\n", bestMove.getStart().getX(), bestMove.getStart().getY(), bestMove.getEnd().getX(), bestMove.getEnd().getY());
+		return bestMove;
 	}
 }
