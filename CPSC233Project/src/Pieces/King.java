@@ -35,7 +35,14 @@ public class King extends Piece {
         	return this.isValidCastling(board, move);
         }
     }
-    
+	
+	/**
+	 * Determines whether a move is a valid castling move.
+	 * @param board The current board state.
+	 * @param move The move to check.
+	 * @return True if the move is a castling move, false otherwise.
+	 */
+
     public boolean isValidCastling(Board board, Move move) {
     	if (this.hasMoved) return false;
     	

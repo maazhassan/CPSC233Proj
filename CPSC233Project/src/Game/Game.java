@@ -7,7 +7,6 @@ import java.util.Scanner;
 /**
  * Main game class that puts all the other classes together.
  * Used to actually run the game.
- * 
  */
 
 public class Game {

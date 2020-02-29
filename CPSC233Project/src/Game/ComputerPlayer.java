@@ -3,17 +3,32 @@ import java.util.ArrayList;
 
 import Pieces.*;
 
+/**
+ * A computer player.
+ */
+
 public class ComputerPlayer extends Player {
 	
+	/**
+	 * Creates a computer player.
+	 * @param white True if white, false otherwise.
+	 * @param difficulty The difficulty of the AI - either 1,2, or 3.
+	 */
+
 	public ComputerPlayer(boolean white, int difficulty) {
 		this.setWhite(white);
 		this.setHuman(false);
 		this.setDifficulty(difficulty);
 	}
 
-	//---------- METHODS FOR AI ----------
+	//------------------------------ METHODS FOR AI ------------------------------//
 
-	//Generates an ArrayList containing every available/legal move
+	/**
+	 * Generates an ArrayList of all possible moves for the current board state.
+	 * @param board The current board state.
+	 * @return An ArrayList of Move objects.
+	 */
+
 	public ArrayList<Move> generateMovesList(Board board) {
 		ArrayList<Move> availableMoves = new ArrayList<Move>();
 		
@@ -57,7 +72,14 @@ public class ComputerPlayer extends Player {
 		return availableMoves;
 	}
 
-	//Initial minimax call
+	/**
+	 * The initial minimax method used to start the algorithm and find the best move.
+	 * @param depth The depth to search.
+	 * @param board The current board state.
+	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
+	 * @return The best move able to be calculated.
+	 */
+
 	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
 		ArrayList<Move> availableMoves = generateMovesList(board);		
 		Move bestMove = null;
@@ -79,7 +101,14 @@ public class ComputerPlayer extends Player {
 		return bestMove;
 	}
 
-	//Recursive minimax method
+	/**
+	 * Recursive minimax method used to find the scores for nodes.
+	 * @param depth The depth to search.
+	 * @param board The current board state.
+	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
+	 * @return The score of the node as an integer.
+	 */
+
 	public int minimax(int depth, Board board, boolean isMaximizingPlayer) {
 		if (depth == 0) {
 			return -evaluateBoard(board);
@@ -113,7 +142,12 @@ public class ComputerPlayer extends Player {
 		}
 	}
 
-	//Returns the score of the board
+	/**
+	 * Evaluates the score for the given board state.
+	 * @param board The current board state.
+	 * @return The score of the board state as an integer.
+	 */
+
 	public int evaluateBoard(Board board) {
 		int boardScore = 0;
 		for (int x = 0; x < 8; x++) {
@@ -124,7 +158,12 @@ public class ComputerPlayer extends Player {
 		return boardScore;
 	}
 
-	//Returns the calculated value of a piece (white is positive, black is negative)
+	/**
+	 * Calculates the value of a piece.
+	 * @param piece The piece to calculate the value for.
+	 * @return The calculated value of the piece (positive if white, negative if black).
+	 */
+
 	public int getPieceValue(Piece piece) {
 		if (piece == null) return 0;
 		int absolutePieceValue = getAbsolutePieceValue(piece);
@@ -133,7 +172,12 @@ public class ComputerPlayer extends Player {
 		else return -absolutePieceValue;
 	}
 
-	//Returns the absolute value of a piece (does not take colour into account)
+	/**
+	 * Returns the absolute value of a piece (does not take color into account, always positive).
+	 * @param piece The piece to calculate the value for.
+	 * @return The absolute value of the piece.
+	 */
+
 	public int getAbsolutePieceValue(Piece piece) {
 		if (piece instanceof Pawn) {
 			return 10;

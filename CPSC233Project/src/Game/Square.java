@@ -3,7 +3,6 @@ import Pieces.*;
 
 /**
  * Represents a square on the chess board.
- *
  */
 
 public class Square {

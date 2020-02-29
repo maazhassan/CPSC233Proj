@@ -2,7 +2,7 @@ package Game;
 import Pieces.*;
 
 /**
- * Represents a move.
+ * Represents a chess move.
  *
  */
 
@@ -24,29 +24,64 @@ public class Move {
 		this.end = end;
 	}
 	
+	/**
+	 * 
+	 * @return The starting Square of the move.
+	 */
+
 	public Square getStart() {
 		return this.start;
 	}
 	
+	/**
+	 * 
+	 * @return The ending Square of the move.
+	 */
+
 	public Square getEnd() {
 		return this.end;
 	}
 	
+	/**
+	 * 
+	 * @return True if the move is a castling move, false otherwise.
+	 */
+
 	public boolean isCastlingMove() {
 		return this.castlingMove;
 	}
 	
+	/**
+	 * Sets the move as a castling move.
+	 * @param castlingMove True or false.
+	 */
+
 	public void setCastlingMove(boolean castlingMove) {
 		this.castlingMove = castlingMove;
 	}
+
+	/**
+	 * 
+	 * @return True if the move is a pawn promoting.
+	 */
 
 	public boolean isPromotionMove() {
 		return this.promotionMove;
 	}
 
+	/**
+	 * Sets the move as a promotion move.
+	 * @param promotionMove True of false.
+	 */
+
 	public void setPromotionMove(boolean promotionMove) {
 		this.promotionMove = promotionMove;
 	}
+
+	/**
+	 * Moves the pieces involved in the move.
+	 * @param move The move to be made.
+	 */
 
 	public static void makeMove(Move move) {
 		Piece pieceMoved = move.getStart().getPiece();
@@ -54,10 +89,23 @@ public class Move {
 		move.getEnd().setPiece(pieceMoved);
 	}
 
+	/**
+	 * Undos a move.
+	 * @param move The move to be undone.
+	 * @param pieceMoved The piece that was moved.
+	 * @param endPiece The piece that was on the ending square of the move.
+	 */
+
 	public static void undoMove(Move move, Piece pieceMoved, Piece endPiece) {
 		move.getStart().setPiece(pieceMoved);
 		move.getEnd().setPiece(endPiece);
 	}
+
+	/**
+	 * Performs a castling move, moving both the king and rook appropriately.
+	 * @param board The current board state.
+	 * @param move The move (should only be a castling move).
+	 */
 
 	public static void makeCastlingMove(Board board, Move move) {
 		Piece pieceMoved = move.getStart().getPiece();

@@ -2,8 +2,17 @@ package Game;
 
 import java.util.Scanner;
 
+/**
+ * Represents a human player.
+ */
+
 public class HumanPlayer extends Player {
 	
+	/**
+	 * Creates a human player.
+	 * @param white True if white, false otherwise.
+	 */
+
 	public HumanPlayer(boolean white) {
 		this.setWhite(white);
 		this.setHuman(true);
