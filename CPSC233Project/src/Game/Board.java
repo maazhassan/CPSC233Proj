@@ -1,10 +1,11 @@
 package Game;
 import Pieces.*;
 
-/*
+/**
  * Represents the chess board containing data of the pieces.
  * (0, 0) represents the top-left of the board. (7, 7) represents bottom-right.
  */
+
 public class Board {
 
     final int SIZE = 8;
@@ -12,9 +13,19 @@ public class Board {
 
     private boolean isBottomWhite;
     
+    /**
+     * 
+     * @return True if the bottom player (player 1) is white. False otherwise.
+     */
+
     public boolean getIsBottomWhite() {
     	return this.isBottomWhite;
     }
+
+    /**
+     * Creates the board with empty Squares.
+     * @param isBottomWhite True if the bottom player is white. False otherwise.
+     */
 
     public Board(boolean isBottomWhite) {
         this.isBottomWhite = isBottomWhite;
@@ -29,24 +40,25 @@ public class Board {
         resetBoard();
     }
 
-
-	//return a square on the board
+    /**
+     * Returns a square on the board.
+     * @param x The x-value of the square, as an integer.
+     * @param y The y-value of the square, as an integer.
+     * @return The Square object at (x,y) on the board.
+     */
+	
 	public Square getSquare(int x, int y) {
         if (!(x >= 0 && x < SIZE && y >= 0 && y < SIZE)) return null;
 		return data[x][y];
 	}
 
-	//reset the board
+    /**
+     * Resets the board, returning all pieces to their starting location.
+     */
+    
 	public void resetBoard() {
 		for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
-                // I know there's a better way of doing this but not quite sure.
-                //  Making new instances every reset isn't the most optimal way
-                //  to start a new game, but it reduces the complexity of code
-                //  and plus, it's not an animation game so we don't need
-                //  to squeeze out the possible memory of the computer
-
-
                 // Determine if the bottom-half of the board is a white piece
                 // or a black piece
             	boolean isWhite;

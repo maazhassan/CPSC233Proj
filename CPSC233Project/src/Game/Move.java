@@ -71,7 +71,7 @@ public class Move {
 
 	/**
 	 * Sets the move as a promotion move.
-	 * @param promotionMove True of false.
+	 * @param promotionMove True or false.
 	 */
 
 	public void setPromotionMove(boolean promotionMove) {
@@ -87,6 +87,7 @@ public class Move {
 		Piece pieceMoved = move.getStart().getPiece();
 		move.getStart().setPiece(null);
 		move.getEnd().setPiece(pieceMoved);
+		pieceMoved.setMoved(true);
 	}
 
 	/**
@@ -99,6 +100,7 @@ public class Move {
 	public static void undoMove(Move move, Piece pieceMoved, Piece endPiece) {
 		move.getStart().setPiece(pieceMoved);
 		move.getEnd().setPiece(endPiece);
+		pieceMoved.setMoved(false);
 	}
 
 	/**
@@ -109,6 +111,7 @@ public class Move {
 
 	public static void makeCastlingMove(Board board, Move move) {
 		Piece pieceMoved = move.getStart().getPiece();
+		pieceMoved.setMoved(true);
 		if (move.getEnd().getX() == 6) {    //right side castling
 			move.getEnd().setPiece(pieceMoved);
 			move.getStart().setPiece(null);

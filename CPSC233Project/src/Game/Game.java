@@ -108,7 +108,7 @@ public class Game {
 		System.out.println(printedBoard);
 	}
 	
-	public boolean checkMate(Player otherPlayer) {
+	public boolean noMoves(Player otherPlayer) {
 		ArrayList<Move> availableMoves = new ArrayList<Move>();
 		
 		for (int x = 0; x < 8; x++) {
@@ -161,7 +161,7 @@ public class Game {
 				return false;
 			}
 
-			if (!move.isCastlingMove()) {
+			if (!move.isCastlingMove() && !(move.getStart().getPiece() instanceof King)) {
 				// Make sure the player is not in check at the end of their move
 				Move.makeMove(move);   //temporarily make the move
 					
@@ -252,22 +252,30 @@ public class Game {
 					chessGame.currentPlayer.setCheck(true);
 				}
 				
-				//Check for check mate
+				//Check if game is over
 				boolean originalCheckState = chessGame.currentPlayer.isInCheck();
-				if (chessGame.checkMate(chessGame.currentPlayer)) {
+				boolean checkMate = false;
+				if (chessGame.noMoves(chessGame.currentPlayer)) {
 					//Update game status to stop loop
 					chessGame.gameOver = true;
+
+					//Determine if it is checkmate or stalemate
+					if (chessGame.currentPlayer.isInCheck()) checkMate = true;
+
 					// Switch player
 					if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
 					else chessGame.currentPlayer = p1;
 					chessGame.printBoard(chessGame.board);
+
 					//Print winning message
+					if (checkMate)
 					System.out.println("Checkmate. " + chessGame.currentPlayer.printColor().replace(chessGame.currentPlayer.printColor().charAt(0), 
 										Character.toUpperCase(chessGame.currentPlayer.printColor().charAt(0))) + " wins.");
+					else System.out.println("Stalemate.");
 					//Ask to play again
 					System.out.println("\nDo you want to play again? (enter 'y' or 'n'):");
 					while (playAgainChar != 'y' && playAgainChar != 'n') {
-						playAgainChar = chessGame.input.nextLine().charAt(0);
+						playAgainChar = chessGame.input.next().charAt(0);
 					}
 					if (playAgainChar == 'n') playAgain = false;
 					System.out.println("\n");

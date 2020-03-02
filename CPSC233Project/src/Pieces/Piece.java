@@ -8,6 +8,7 @@ import Game.*;
 
 public abstract class Piece {
 	private boolean white;
+	private boolean hasMoved = false;
 
 	/**
 	 * Creates a piece.
@@ -34,7 +35,24 @@ public abstract class Piece {
 
     public void setWhite(boolean isWhite) {
     	this.white = isWhite;
-    }
+	}
+	
+	/**
+	 * 
+	 * @return True if the piece has moved, false otherwise.
+	 */
+
+	public boolean hasMoved() {
+		return this.hasMoved;
+	}
+
+	/**
+	 * @param moved True if the piece has moved, false otherwise.
+	 */
+
+	public void setMoved(boolean moved) {
+		this.hasMoved = moved;
+	}
 	
 	/**
 	 * 
@@ -57,7 +75,7 @@ public abstract class Piece {
     			Square square = board.getSquare(x, y);
     			Piece pieceOnSquare = square.getPiece();
     			if (pieceOnSquare != null) {
-    				if (pieceOnSquare.isWhite() != this.isWhite()) {
+    				if (pieceOnSquare.isWhite() != this.isWhite() && !(pieceOnSquare instanceof King)) {
                         //System.out.println(x + "," + y);
     					Move checkTestMove = new Move(square, kingSquare);
                         //System.out.printf("Move: %d %d -> %d %d\n", square.getX(), square.getY(), kingSquare.getX(), kingSquare.getY());

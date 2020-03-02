@@ -4,8 +4,6 @@ import Game.*;
 
 public class King extends Piece {
 	
-	private boolean hasMoved = false;
-	
     public King(boolean isWhite) {
         super(isWhite);
     }
@@ -28,7 +26,6 @@ public class King extends Piece {
         	// if the king were to move to this square i.e. put the king in check
         	if (this.canBeCheck(board, move.getEnd())) return false;
         	
-        	hasMoved = true;
         	return true;
         }
         else {
@@ -44,7 +41,7 @@ public class King extends Piece {
 	 */
 
     public boolean isValidCastling(Board board, Move move) {
-    	if (this.hasMoved) return false;
+    	if (this.hasMoved()) return false;
     	
     	//Right side castling
     	if (move.getEnd().getX() == 6) {
@@ -52,7 +49,6 @@ public class King extends Piece {
     		if (move.getEnd().getY() == 7 && move.getStart().getY() == 7 && board.getSquare(5, 7).getPiece() == null && 
     			board.getSquare(7, 7).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
-        		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}
@@ -60,7 +56,6 @@ public class King extends Piece {
     		else if (move.getEnd().getY() == 0 && move.getStart().getY() == 0 && board.getSquare(5, 0).getPiece() == null && 
     			board.getSquare(7, 0).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
-        		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}
@@ -71,7 +66,6 @@ public class King extends Piece {
     		if (move.getEnd().getY() == 7 && move.getStart().getY() == 7 && board.getSquare(3, 7) == null && board.getSquare(1, 7) == null && 
     			board.getSquare(0, 7).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
-        		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}
@@ -79,7 +73,6 @@ public class King extends Piece {
     		else if (move.getEnd().getY() == 0 && move.getStart().getY() == 0 && board.getSquare(3, 0) == null && board.getSquare(1, 0) == null && 
     			board.getSquare(0, 0).getPiece() instanceof Rook) {
     			if (this.canBeCheck(board, move.getEnd())) return false;
-        		this.hasMoved = true;
         		move.setCastlingMove(true);
         		return true;
     		}

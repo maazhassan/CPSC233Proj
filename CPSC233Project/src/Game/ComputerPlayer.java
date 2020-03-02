@@ -83,14 +83,14 @@ public class ComputerPlayer extends Player {
 	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
 		ArrayList<Move> availableMoves = generateMovesList(board);		
 		Move bestMove = null;
-		int bestMoveScore = -9999;
+		int bestMoveScore = -99999;
 
 		for (Move move : availableMoves) {
 			Piece pieceMoved = move.getStart().getPiece();
 			Piece endPiece = move.getEnd().getPiece();
 
 			Move.makeMove(move);
-			int moveScore = minimax(depth-1, board, !isMaximizingPlayer);
+			int moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer);
 			Move.undoMove(move, pieceMoved, endPiece);
 
 			if (moveScore >= bestMoveScore) {
@@ -102,14 +102,16 @@ public class ComputerPlayer extends Player {
 	}
 
 	/**
-	 * Recursive minimax method used to find the scores for nodes.
+	 * Recursive minimax method used to find the scores for nodes. Uses alpha-beta pruning.
 	 * @param depth The depth to search.
 	 * @param board The current board state.
+	 * @param alpha The minimum score that the maximizing player is guaranteed.
+	 * @param beta The maximum score that the minimizing player is guaranteed.
 	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
 	 * @return The score of the node as an integer.
 	 */
 
-	public int minimax(int depth, Board board, boolean isMaximizingPlayer) {
+	public int minimax(int depth, Board board, int alpha, int beta, boolean isMaximizingPlayer) {
 		if (depth == 0) {
 			return -evaluateBoard(board);
 		}
@@ -123,8 +125,11 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, !isMaximizingPlayer));
+				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer));
 				Move.undoMove(move, pieceMoved, endPiece);
+
+				alpha = Math.max(alpha, bestMoveScore);     //update alpha
+				if (alpha >= beta) return bestMoveScore;    //prune
 			}
 			return bestMoveScore;
 		}
@@ -135,8 +140,11 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, !isMaximizingPlayer));
+				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer));
 				Move.undoMove(move, pieceMoved, endPiece);
+
+				beta = Math.min(beta, bestMoveScore);       //update beta
+				if (alpha >= beta) return bestMoveScore;    //prune
 			}
 			return bestMoveScore;
 		}
