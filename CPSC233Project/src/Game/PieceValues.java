@@ -82,11 +82,12 @@ public class PieceValues {
     static final double[][] kingBlackEval = reverseArray(kingWhiteEval);
 
     public static double[][] reverseArray(double[][] array) {
+        double[][] newArray = new double[8][8];
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                array[x][y] = array[7-x][7-y];
+                newArray[x][y] = array[7-x][7-y];
             }
         }
-        return array;
+        return newArray;
     }
 }

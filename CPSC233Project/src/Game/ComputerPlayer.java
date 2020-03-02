@@ -1,5 +1,6 @@
 package Game;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Pieces.*;
 
@@ -175,6 +176,7 @@ public class ComputerPlayer extends Player {
 		Move bestMove = minimaxInit(this.getDifficulty()+1, board, this.isWhite());
 		System.out.printf("Chosen move: %d %d -> %d %d\n", bestMove.getStart().getX(), bestMove.getStart().getY(), bestMove.getEnd().getX(), bestMove.getEnd().getY());
 		System.out.println("Number of positions evaluated: " + this.counter);
+		System.out.println(Arrays.deepToString(PieceValues.pawnBlackEval));
 		return bestMove;
 	}
 }
