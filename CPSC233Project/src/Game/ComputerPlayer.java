@@ -36,14 +36,14 @@ public class ComputerPlayer extends Player {
 	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
 		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);		
 		Move bestMove = null;
-		int bestMoveScore = -99999;
+		double bestMoveScore = -99999;
 
 		for (Move move : availableMoves) {
 			Piece pieceMoved = move.getStart().getPiece();
 			Piece endPiece = move.getEnd().getPiece();
 
 			Move.makeMove(move);
-			int moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer);
+			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer);
 			System.out.println(moveScore);
 			Move.undoMove(move, pieceMoved, endPiece);
 
@@ -62,10 +62,10 @@ public class ComputerPlayer extends Player {
 	 * @param alpha The minimum score that the maximizing player is guaranteed.
 	 * @param beta The maximum score that the minimizing player is guaranteed.
 	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
-	 * @return The score of the node as an integer.
+	 * @return The score of the node as a double.
 	 */
 
-	public int minimax(int depth, Board board, int alpha, int beta, boolean isMaximizingPlayer) {
+	public double minimax(int depth, Board board, double alpha, double beta, boolean isMaximizingPlayer) {
 		if (depth == 0) {
 			this.counter = this.counter + 1;
 			return -evaluateBoard(board);
@@ -74,7 +74,7 @@ public class ComputerPlayer extends Player {
 		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);
 
 		if (isMaximizingPlayer) {
-			int bestMoveScore = -9999;
+			double bestMoveScore = -9999;
 			for (Move move : availableMoves) {
 				Piece pieceMoved = move.getStart().getPiece();
 				Piece endPiece = move.getEnd().getPiece();
@@ -89,7 +89,7 @@ public class ComputerPlayer extends Player {
 			return bestMoveScore;
 		}
 		else {
-			int bestMoveScore = 9999;
+			double bestMoveScore = 9999;
 			for (Move move : availableMoves) {
 				Piece pieceMoved = move.getStart().getPiece();
 				Piece endPiece = move.getEnd().getPiece();
@@ -108,11 +108,11 @@ public class ComputerPlayer extends Player {
 	/**
 	 * Evaluates the score for the given board state.
 	 * @param board The current board state.
-	 * @return The score of the board state as an integer.
+	 * @return The score of the board state as a double.
 	 */
 
-	public int evaluateBoard(Board board) {
-		int boardScore = 0;
+	public double evaluateBoard(Board board) {
+		double boardScore = 0;
 		for (int x = 0; x < 8; x++) {
 			for (int y = 0; y < 8; y++) {
 				boardScore += getPieceValue(board.getSquare(x, y));
@@ -127,10 +127,10 @@ public class ComputerPlayer extends Player {
 	 * @return The calculated value of the piece (positive if white, negative if black).
 	 */
 
-	public int getPieceValue(Square square) {
+	public double getPieceValue(Square square) {
 		Piece pieceOnSquare = square.getPiece();
 		if (pieceOnSquare == null) return 0;
-		int absolutePieceValue = getAbsolutePieceValue(pieceOnSquare);
+		double absolutePieceValue = getAbsolutePieceValue(square, pieceOnSquare);
 
 		if (pieceOnSquare.isWhite()) return absolutePieceValue;
 		else return -absolutePieceValue;
@@ -142,23 +142,32 @@ public class ComputerPlayer extends Player {
 	 * @return The absolute value of the piece.
 	 */
 
-	public int getAbsolutePieceValue(Piece piece) {
+	public double getAbsolutePieceValue(Square square, Piece piece) {
+		int x = square.getX();
+		int y = square.getY();
+
 		if (piece instanceof Pawn) {
-			return 10;
+			if (piece.isWhite()) return 10 + PieceValues.pawnWhiteEval[y][x];
+			else return 10 + PieceValues.pawnBlackEval[y][x];
 		}
 		else if (piece instanceof Knight) {
-			return 30;
+			return 30 + PieceValues.knightEval[y][x];
 		}
 		else if (piece instanceof Bishop) {
-			return 30;
+			if (piece.isWhite()) return 30 + PieceValues.bishopWhiteEval[y][x];
+			else return 30 + PieceValues.bishopBlackEval[y][x];
 		}
 		else if (piece instanceof Rook) {
-			return 50;
+			if (piece.isWhite()) return 50 + PieceValues.rookWhiteEval[y][x];
+			else return 50 + PieceValues.rookBlackEval[y][x];
 		}
 		else if (piece instanceof Queen) {
-			return 90;
+			return 90 + PieceValues.queenEval[y][x];
 		}
-		else return 900;
+		else {
+			if (piece.isWhite()) return 900 + PieceValues.kingWhiteEval[y][x];
+			else return 900 + PieceValues.kingBlackEval[y][x];
+		}
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package Game;
 
 public class PieceValues {
-    private final double[][] pawnWhiteEval = 
+    static final double[][] pawnWhiteEval = 
     {
         {0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0},
         {5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0},
@@ -13,9 +13,9 @@ public class PieceValues {
         {0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0}
     };
 
-    private final double[][] pawnBlackEval = reverseArray(pawnWhiteEval);
+    static final double[][] pawnBlackEval = reverseArray(pawnWhiteEval);
 
-    private final double[][] knightEval =
+    static final double[][] knightEval =
     {
         {-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0},
         {-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0},
@@ -27,7 +27,7 @@ public class PieceValues {
         {-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0}
     };
     
-    private final double[][] bishopWhiteEval = 
+    static final double[][] bishopWhiteEval = 
     {
         {-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0},
         {-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0},
@@ -39,9 +39,9 @@ public class PieceValues {
         {-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0}
     };
 
-    private final double[][] bishopBlackEval = reverseArray(bishopWhiteEval);
+    static final double[][] bishopBlackEval = reverseArray(bishopWhiteEval);
 
-    private final double[][] rookWhiteEval = 
+    static final double[][] rookWhiteEval = 
     {
         { 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0},
         { 0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5},
@@ -53,9 +53,9 @@ public class PieceValues {
         { 0.0,   0.0, 0.0,  0.5,  0.5,  0.0,  0.0,  0.0}
     };
 
-    private final double[][] rookBlackEval = reverseArray(rookWhiteEval);
+    static final double[][] rookBlackEval = reverseArray(rookWhiteEval);
 
-    private final double[][] queenEval =
+    static final double[][] queenEval =
     {
         {-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0},
         {-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0},
@@ -67,7 +67,7 @@ public class PieceValues {
         {-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0}
     };
 
-    private final double[][] kingWhiteEval =
+    static final double[][] kingWhiteEval =
     {
         {-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0},
         {-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0},
@@ -79,18 +79,14 @@ public class PieceValues {
         { 2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0}
     };
 
-    private final double[][] kingBlackEval = reverseArray(kingWhiteEval);
+    static final double[][] kingBlackEval = reverseArray(kingWhiteEval);
 
-    public double[][] reverseArray(double[][] array) {
+    public static double[][] reverseArray(double[][] array) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 array[x][y] = array[7-x][7-y];
             }
         }
         return array;
-    }
-
-    public static double additionalPieceValue(char piece, int x, int y) {
-        return 0.0;
     }
 }
