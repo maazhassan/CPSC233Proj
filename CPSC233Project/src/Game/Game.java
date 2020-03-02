@@ -1,7 +1,6 @@
 package Game;
 import Pieces.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -106,34 +105,6 @@ public class Game {
 			printedBoard = printedBoard + "   ---------------------------------";
 		}
 		System.out.println(printedBoard);
-	}
-	
-	public boolean noMoves(Player otherPlayer) {
-		ArrayList<Move> availableMoves = new ArrayList<Move>();
-		
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
-				Square square = board.getSquare(x, y);
-				Piece pieceOnSquare = square.getPiece();
-				if (pieceOnSquare != null && pieceOnSquare.isWhite() == otherPlayer.isWhite()) {
-					for (int x2 = 0; x2 < 8; x2++) {
-						for (int y2 = 0; y2 < 8; y2++) {
-							Move testMove = new Move(square, board.getSquare(x2, y2));
-							if (pieceOnSquare.canMove(board, testMove) && !testMove.isCastlingMove()) {
-								Piece pieceMoved = testMove.getStart().getPiece();
-								Piece endPiece = testMove.getEnd().getPiece();
-								if(playMove(testMove)) {
-									availableMoves.add(testMove);
-									Move.undoMove(testMove, pieceMoved, endPiece);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return (availableMoves.size() == 0);
 	}
 
 	public boolean playMove(Move move) {
@@ -255,16 +226,18 @@ public class Game {
 				//Check if game is over
 				boolean originalCheckState = chessGame.currentPlayer.isInCheck();
 				boolean checkMate = false;
-				if (chessGame.noMoves(chessGame.currentPlayer)) {
+				if (chessGame.currentPlayer.generateMovesList(chessGame.board, chessGame.currentPlayer.isWhite()).size() == 0) {
 					//Update game status to stop loop
 					chessGame.gameOver = true;
 
 					//Determine if it is checkmate or stalemate
 					if (chessGame.currentPlayer.isInCheck()) checkMate = true;
 
-					// Switch player
+					//Switch player
 					if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
 					else chessGame.currentPlayer = p1;
+
+					//Print board
 					chessGame.printBoard(chessGame.board);
 
 					//Print winning message

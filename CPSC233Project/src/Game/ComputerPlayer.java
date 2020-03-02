@@ -24,55 +24,6 @@ public class ComputerPlayer extends Player {
 	//------------------------------ METHODS FOR AI ------------------------------//
 
 	/**
-	 * Generates an ArrayList of all possible moves for the current board state.
-	 * @param board The current board state.
-	 * @return An ArrayList of Move objects.
-	 */
-
-	public ArrayList<Move> generateMovesList(Board board) {
-		ArrayList<Move> availableMoves = new ArrayList<Move>();
-		
-		//Loops through every square on the board and adds all available moves to the ArrayList
-		for (int x = 0; x < 8; x++) {
-    		for (int y = 0; y < 8; y++) {
-				//Get square, then piece on square
-				Square square = board.getSquare(x, y);
-				Piece pieceOnSquare = square.getPiece();
-				//Make sure piece is not null and matches player color
-    			if (pieceOnSquare != null) {
-    				if (pieceOnSquare.isWhite() == this.isWhite()) {
-						//Loop through board again
-    					for (int x2 = 0; x2 < 8; x2++) {
-							for (int y2 = 0; y2 < 8; y2++) {
-								//Create move objects for every square
-								Move testMove = new Move(square, board.getSquare(x2, y2));
-								//Test if the move is valid and legal
-								if (pieceOnSquare.canMove(board, testMove)) {									
-									//Add castling moves if player is not in check, because they have been tested already
-									if (testMove.isCastlingMove() && !this.isInCheck()) {
-										availableMoves.add(testMove);
-									}
-									//Otherwise, test if move leaves player in check
-									else {
-										Piece endPiece = board.getSquare(x2, y2).getPiece();
-										Move.makeMove(testMove);    //temporarily make the move
-										Square kingSquare = this.findKingSquare(board);
-										if (!kingSquare.getPiece().canBeCheck(board, kingSquare)) {
-											availableMoves.add(testMove);
-										}
-										Move.undoMove(testMove, pieceOnSquare, endPiece);    //undo the move
-									}									
-								}
-							}
-						}
-    				}
-    			}
-    		}
-		}
-		return availableMoves;
-	}
-
-	/**
 	 * The initial minimax method used to start the algorithm and find the best move.
 	 * @param depth The depth to search.
 	 * @param board The current board state.
@@ -81,7 +32,7 @@ public class ComputerPlayer extends Player {
 	 */
 
 	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
-		ArrayList<Move> availableMoves = generateMovesList(board);		
+		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);		
 		Move bestMove = null;
 		int bestMoveScore = -99999;
 
@@ -91,6 +42,7 @@ public class ComputerPlayer extends Player {
 
 			Move.makeMove(move);
 			int moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer);
+			System.out.println(moveScore);
 			Move.undoMove(move, pieceMoved, endPiece);
 
 			if (moveScore >= bestMoveScore) {
@@ -116,7 +68,7 @@ public class ComputerPlayer extends Player {
 			return -evaluateBoard(board);
 		}
 
-		ArrayList<Move> availableMoves = generateMovesList(board);
+		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);
 
 		if (isMaximizingPlayer) {
 			int bestMoveScore = -9999;

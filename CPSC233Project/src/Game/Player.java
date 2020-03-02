@@ -1,5 +1,6 @@
 package Game;
 import Pieces.*;
+import java.util.ArrayList;
 
 /**
  * Represents a player in the game.
@@ -115,6 +116,56 @@ public abstract class Player {
 		}
 		
 		return kingSquare;
+	}
+
+	/**
+	 * Generates an ArrayList of all possible moves for the current board state.
+	 * @param board The current board state.
+	 * @return An ArrayList of Move objects.
+	 */
+
+	public ArrayList<Move> generateMovesList(Board board, boolean whitePieces) {
+		ArrayList<Move> availableMoves = new ArrayList<Move>();
+		
+		//Loops through every square on the board and adds all available moves to the ArrayList
+		for (int x = 0; x < 8; x++) {
+    		for (int y = 0; y < 8; y++) {
+				//Get square, then piece on square
+				Square square = board.getSquare(x, y);
+				Piece pieceOnSquare = square.getPiece();
+				//Make sure piece is not null and matches player color
+    			if (pieceOnSquare != null) {
+    				if (pieceOnSquare.isWhite() == whitePieces) {
+						//Loop through board again
+    					for (int x2 = 0; x2 < 8; x2++) {
+							for (int y2 = 0; y2 < 8; y2++) {
+								//Create move objects for every square
+								Move testMove = new Move(square, board.getSquare(x2, y2));
+								//Test if the move is valid and legal
+								if (pieceOnSquare.canMove(board, testMove)) {									
+									//Add castling moves if player is not in check, because they have been tested already
+									if (testMove.isCastlingMove() && !this.isInCheck()) {
+										availableMoves.add(testMove);
+									}
+									//Otherwise, test if move leaves player in check
+									else {
+										Piece endPiece = board.getSquare(x2, y2).getPiece();
+										Move.makeMove(testMove);    //temporarily make the move
+										Square kingSquare = this.findKingSquare(board);
+										//make sure player is not in check
+										if (!kingSquare.getPiece().canBeCheck(board, kingSquare)) {
+											availableMoves.add(testMove);
+										}
+										Move.undoMove(testMove, pieceOnSquare, endPiece);    //undo the move
+									}									
+								}
+							}
+						}
+    				}
+    			}
+    		}
+		}
+		return availableMoves;
 	}
 	
 	/**

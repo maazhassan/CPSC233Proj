@@ -7,6 +7,8 @@ import java.util.Scanner;
  */
 
 public class HumanPlayer extends Player {
+
+	private Scanner input = new Scanner(System.in);
 	
 	/**
 	 * Creates a human player.
@@ -20,7 +22,7 @@ public class HumanPlayer extends Player {
 	
 	@Override
 	public Move generateMove(Board board) {
-		Scanner input = new Scanner(System.in);
+		
 		int startX;
 		int startY;
 		int endX;
