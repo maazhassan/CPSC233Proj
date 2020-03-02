@@ -8,6 +8,8 @@ import Pieces.*;
  */
 
 public class ComputerPlayer extends Player {
+
+	private int counter = 0;
 	
 	/**
 	 * Creates a computer player.
@@ -65,6 +67,7 @@ public class ComputerPlayer extends Player {
 
 	public int minimax(int depth, Board board, int alpha, int beta, boolean isMaximizingPlayer) {
 		if (depth == 0) {
+			this.counter = this.counter + 1;
 			return -evaluateBoard(board);
 		}
 
@@ -112,7 +115,7 @@ public class ComputerPlayer extends Player {
 		int boardScore = 0;
 		for (int x = 0; x < 8; x++) {
 			for (int y = 0; y < 8; y++) {
-				boardScore += getPieceValue(board.getSquare(x, y).getPiece());
+				boardScore += getPieceValue(board.getSquare(x, y));
 			}
 		}
 		return boardScore;
@@ -124,11 +127,12 @@ public class ComputerPlayer extends Player {
 	 * @return The calculated value of the piece (positive if white, negative if black).
 	 */
 
-	public int getPieceValue(Piece piece) {
-		if (piece == null) return 0;
-		int absolutePieceValue = getAbsolutePieceValue(piece);
+	public int getPieceValue(Square square) {
+		Piece pieceOnSquare = square.getPiece();
+		if (pieceOnSquare == null) return 0;
+		int absolutePieceValue = getAbsolutePieceValue(pieceOnSquare);
 
-		if (piece.isWhite()) return absolutePieceValue;
+		if (pieceOnSquare.isWhite()) return absolutePieceValue;
 		else return -absolutePieceValue;
 	}
 
@@ -161,6 +165,7 @@ public class ComputerPlayer extends Player {
 	public Move generateMove(Board board) {
 		Move bestMove = minimaxInit(this.getDifficulty()+1, board, this.isWhite());
 		System.out.printf("Chosen move: %d %d -> %d %d\n", bestMove.getStart().getX(), bestMove.getStart().getY(), bestMove.getEnd().getX(), bestMove.getEnd().getY());
+		System.out.println("Number of positions evaluated: " + this.counter);
 		return bestMove;
 	}
 }
