@@ -9,8 +9,6 @@ import Pieces.*;
  */
 
 public class ComputerPlayer extends Player {
-
-	private int counter = 0;
 	
 	/**
 	 * Creates a computer player.
@@ -34,8 +32,8 @@ public class ComputerPlayer extends Player {
 	 * @return The best move able to be calculated.
 	 */
 
-	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer) {
-		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);		
+	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer, boolean isWhite) {
+		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);		
 		Move bestMove = null;
 		double bestMoveScore = -99999;
 
@@ -44,8 +42,7 @@ public class ComputerPlayer extends Player {
 			Piece endPiece = move.getEnd().getPiece();
 
 			Move.makeMove(move);
-			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer);
-			System.out.println(moveScore);
+			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer, !isWhite);
 			Move.undoMove(move, pieceMoved, endPiece);
 
 			if (moveScore >= bestMoveScore) {
@@ -66,13 +63,12 @@ public class ComputerPlayer extends Player {
 	 * @return The score of the node as a double.
 	 */
 
-	public double minimax(int depth, Board board, double alpha, double beta, boolean isMaximizingPlayer) {
+	public double minimax(int depth, Board board, double alpha, double beta, boolean isMaximizingPlayer, boolean isWhite) {
 		if (depth == 0) {
-			this.counter = this.counter + 1;
 			return -evaluateBoard(board);
 		}
 
-		ArrayList<Move> availableMoves = generateMovesList(board, isMaximizingPlayer);
+		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);
 
 		if (isMaximizingPlayer) {
 			double bestMoveScore = -9999;
@@ -81,7 +77,7 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer));
+				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite));
 				Move.undoMove(move, pieceMoved, endPiece);
 
 				alpha = Math.max(alpha, bestMoveScore);     //update alpha
@@ -96,7 +92,7 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer));
+				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite));
 				Move.undoMove(move, pieceMoved, endPiece);
 
 				beta = Math.min(beta, bestMoveScore);       //update beta
@@ -173,10 +169,8 @@ public class ComputerPlayer extends Player {
 	
 	@Override
 	public Move generateMove(Board board) {
-		Move bestMove = minimaxInit(this.getDifficulty()+1, board, this.isWhite());
+		Move bestMove = minimaxInit(this.getDifficulty()+1, board, true, this.isWhite());
 		System.out.printf("Chosen move: %d %d -> %d %d\n", bestMove.getStart().getX(), bestMove.getStart().getY(), bestMove.getEnd().getX(), bestMove.getEnd().getY());
-		System.out.println("Number of positions evaluated: " + this.counter);
-		System.out.println(Arrays.deepToString(PieceValues.pawnBlackEval));
 		return bestMove;
 	}
 }

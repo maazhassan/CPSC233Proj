@@ -87,8 +87,6 @@ public class Game {
 			for (int x = 0; x < 8; x++) {
 				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
 				
-				
-				
 				if (pieceOnSquare == null) {
 					printedBoard = printedBoard + "   ";
 					printedBoard = printedBoard + '|';
