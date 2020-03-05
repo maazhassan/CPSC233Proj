@@ -1,4 +1,6 @@
-import Game.Game;
+import Game.GameEventHandler;
+import Game.MainGame;
+import Game.Move;
 
 import java.util.Scanner;
 
@@ -10,7 +12,43 @@ public class CommandLineApp {
         int aiDifficulty = askAIDifficulty(p2Type == 'c');
         char p1Color = askP1Color();
 
-        new Game(p1Color, p2Type, aiDifficulty).start();
+        GameEventHandler handler = new GameEventHandler() {
+            private int[] move = new int[4];
+
+            @Override
+            public boolean requestShouldPlayAgain() {
+                log("\nDo you want to play again? (enter 'y' or 'n'):");
+                log("\n");
+
+                char playAgainChar = 'a';
+                while (playAgainChar != 'y' && playAgainChar != 'n') {
+                    playAgainChar = input.next().charAt(0);
+                }
+                return playAgainChar == 'y';
+            }
+
+            @Override
+            public int[] createMove() {
+                // Doesn't work quite yet
+                // System.out.println("Type '8' to undo, '9' to redo.\n");
+                System.out.println("Starting square x:");
+                move[0] = input.nextInt();
+                System.out.println("Starting square y:");
+                move[1] = input.nextInt();
+                System.out.println("Ending square x:");
+                move[2] = input.nextInt();
+                System.out.println("Ending square y:");
+                move[3] = input.nextInt();
+                return move;
+            }
+
+            @Override
+            public void log(String out) {
+                System.out.println(out);
+            }
+        };
+
+        new MainGame(handler, p1Color, p2Type, aiDifficulty).start();
     }
 
     private static char askP2Type() {
