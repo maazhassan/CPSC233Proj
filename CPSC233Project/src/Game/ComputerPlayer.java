@@ -1,6 +1,5 @@
 package Game;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import Pieces.*;
 
@@ -29,6 +28,7 @@ public class ComputerPlayer extends Player {
 	 * @param depth The depth to search.
 	 * @param board The current board state.
 	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
+	 * @param isWhite True if the player is white, false otherwise.
 	 * @return The best move able to be calculated.
 	 */
 
@@ -42,7 +42,7 @@ public class ComputerPlayer extends Player {
 			Piece endPiece = move.getEnd().getPiece();
 
 			Move.makeMove(move);
-			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer, !isWhite);
+			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer, !isWhite, isWhite);
 			Move.undoMove(move, pieceMoved, endPiece);
 
 			if (moveScore >= bestMoveScore) {
@@ -60,12 +60,15 @@ public class ComputerPlayer extends Player {
 	 * @param alpha The minimum score that the maximizing player is guaranteed.
 	 * @param beta The maximum score that the minimizing player is guaranteed.
 	 * @param isMaximizingPlayer True if the player is maximizing, false otherwise.
+	 * @param isWhite True if the player is white, false otherwise. Switches everytime the algorithm searches deeper.
+	 * @param originalWhite The original color of the player - does not change when the algorithm searches deeper.
 	 * @return The score of the node as a double.
 	 */
 
-	public double minimax(int depth, Board board, double alpha, double beta, boolean isMaximizingPlayer, boolean isWhite) {
+	public double minimax(int depth, Board board, double alpha, double beta, boolean isMaximizingPlayer, boolean isWhite, boolean originalWhite) {
 		if (depth == 0) {
-			return -evaluateBoard(board);
+			if (!originalWhite) return -evaluateBoard(board);
+			else return evaluateBoard(board);
 		}
 
 		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);
@@ -77,7 +80,7 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite));
+				bestMoveScore = Math.max(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite, originalWhite));
 				Move.undoMove(move, pieceMoved, endPiece);
 
 				alpha = Math.max(alpha, bestMoveScore);     //update alpha
@@ -92,7 +95,7 @@ public class ComputerPlayer extends Player {
 				Piece endPiece = move.getEnd().getPiece();
 
 				Move.makeMove(move);
-				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite));
+				bestMoveScore = Math.min(bestMoveScore, minimax(depth-1, board, alpha, beta, !isMaximizingPlayer, !isWhite, originalWhite));
 				Move.undoMove(move, pieceMoved, endPiece);
 
 				beta = Math.min(beta, bestMoveScore);       //update beta
@@ -120,7 +123,7 @@ public class ComputerPlayer extends Player {
 
 	/**
 	 * Calculates the value of a piece.
-	 * @param piece The piece to calculate the value for.
+	 * @param square The square that the piece is on.
 	 * @return The calculated value of the piece (positive if white, negative if black).
 	 */
 
@@ -135,6 +138,7 @@ public class ComputerPlayer extends Player {
 
 	/**
 	 * Returns the absolute value of a piece (does not take color into account, always positive).
+	 * @param square The square that the piece is on.
 	 * @param piece The piece to calculate the value for.
 	 * @return The absolute value of the piece.
 	 */

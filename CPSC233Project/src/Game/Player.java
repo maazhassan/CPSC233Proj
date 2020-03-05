@@ -169,7 +169,7 @@ public abstract class Player {
 	}
 	
 	/**
-	 * Generates a move, different behaviour depending on type of player.
+	 * Generates a move. Different behaviour depending on type of player.
 	 * @param board The current board state.
 	 * @return The generated move.
 	 */
