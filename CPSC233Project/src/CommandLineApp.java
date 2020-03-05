@@ -29,10 +29,15 @@ public class CommandLineApp {
 
             @Override
             public int[] createMove() {
-                // Doesn't work quite yet
-                // System.out.println("Type '8' to undo, '9' to redo.\n");
+                System.out.println("Type '8' to undo, '9' to redo.\n");
                 System.out.println("Starting square x:");
                 move[0] = input.nextInt();
+
+                // Verify undo/redo
+                if (move[0] == 8 || move[0] == 9) {
+                    return move;
+                }
+
                 System.out.println("Starting square y:");
                 move[1] = input.nextInt();
                 System.out.println("Ending square x:");

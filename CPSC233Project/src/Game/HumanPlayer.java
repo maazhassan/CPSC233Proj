@@ -27,6 +27,18 @@ public class HumanPlayer extends Player {
 		main: while (true) {
 			moves = handler.createMove();
 
+			// Code for undo/redo
+			if (moves[0] == 8) {
+				Move undoMove = new Move(board.getSquare(0, 0), board.getSquare(0, 0));
+				undoMove.setUndo(true);
+				return undoMove;
+			}
+			else if (moves[0] == 9) {
+				Move redoMove = new Move(board.getSquare(0, 0), board.getSquare(0, 0));
+				redoMove.setRedo(true);
+				return redoMove;
+			}
+
 			for (int n : moves) {
 				if (n < 0 || n > 7) {
 					handler.log("Invalid move");
