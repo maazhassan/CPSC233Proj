@@ -29,11 +29,21 @@ public class HumanPlayer extends Player {
 		int endY;
 		
 		while (true) {
+			System.out.println("Type '8' to undo, '9' to redo.\n");
 			System.out.println("Starting square x:");
 			startX = input.nextInt();
-			if (startX < 0 || startX > 7) {
+			if (startX == 8) { 
+				Move undoMove = new Move(board.getSquare(0, 0), board.getSquare(0, 0));
+				undoMove.setUndo(true);
+				return undoMove;
+			}
+			else if (startX == 9) { 
+				Move redoMove = new Move(board.getSquare(0, 0), board.getSquare(0, 0));
+				redoMove.setRedo(true);
+				return redoMove;
+			}
+			else if (startX < 0 || startX > 7) {
 				System.out.println("Invalid index.");
-				
 				continue;
 			}
 			

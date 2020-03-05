@@ -40,6 +40,16 @@ public class Board {
         resetBoard();
     }
 
+    public Board(Board toCopy) {
+        this.isBottomWhite = toCopy.isBottomWhite;
+
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                this.data[x][y] = new Square(toCopy.data[x][y].getX(), toCopy.data[x][y].getY(), toCopy.data[x][y].getPiece());
+            }
+        }
+    }
+
     /**
      * Returns a square on the board.
      * @param x The x-value of the square, as an integer.

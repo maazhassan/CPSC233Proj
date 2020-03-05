@@ -12,6 +12,8 @@ public class Move {
 	private Square end;
 	private boolean castlingMove = false;
 	private boolean promotionMove = false;
+	private boolean undo = false;
+	private boolean redo = false;
 	
 	/**
 	 * Creates a chess move.
@@ -76,6 +78,22 @@ public class Move {
 
 	public void setPromotionMove(boolean promotionMove) {
 		this.promotionMove = promotionMove;
+	}
+
+	public boolean isUndo() {
+		return this.undo;
+	}
+
+	public void setUndo(boolean undo) {
+		this.undo = undo;
+	}
+
+	public boolean isRedo() {
+		return this.redo;
+	}
+
+	public void setRedo(boolean redo) {
+		this.redo = redo;
 	}
 
 	/**

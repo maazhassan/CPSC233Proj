@@ -2,6 +2,7 @@ package Game;
 import Pieces.*;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Main game class that puts all the other classes together.
@@ -13,7 +14,11 @@ public class Game {
 	private Board board;
 	private boolean gameOver = false;
 	private Player currentPlayer;
+	private Player p1 = null;
+	private Player p2 = null;
 	private Scanner input = new Scanner(System.in);
+	private ArrayList<Board> boardStates = new ArrayList<Board>();
+	private ArrayList<Board> undoneBoardStates = new ArrayList<Board>();
 	
 	public char askP2Type() {
 		char p2Type = 'a';
@@ -65,15 +70,41 @@ public class Game {
 		}
 	}
 	
-	public void initializeGame(Player p1, Player p2) {
+	public void initializeGame() {
 		
 		this.board = new Board(p1.isWhite());
+		boardStates.add(new Board(this.board));
 		
 		if (p1.isWhite()) {
 			this.currentPlayer = p1;
 		}
 		else {
 			this.currentPlayer = p2;
+		}
+	}
+
+	public void switchPlayers() {
+		if (this.currentPlayer == p1) this.currentPlayer = p2;
+		else this.currentPlayer = p1;
+	}
+
+	public void alterBoardState(Move move) {
+		if (move.isUndo()) {
+			if (p2.isHuman()) {
+				this.board = new Board(boardStates.get(boardStates.size()-2));
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));
+			}
+			else {
+				this.board = new Board(boardStates.get(boardStates.size()-3));
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));
+				boardStates.remove(boardStates.size()-2);
+				switchPlayers();
+			}
+		}
+		else {
+			this.board = new Board(undoneBoardStates.get(undoneBoardStates.size()-1));
+			boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));
+			if (!p2.isHuman()) switchPlayers();
 		}
 	}
 	
@@ -106,6 +137,15 @@ public class Game {
 	}
 
 	public boolean playMove(Move move) {
+
+		if((move.isUndo() && boardStates.size() > 1) || (move.isRedo()) && undoneBoardStates.size() > 0) {
+			alterBoardState(move);
+			return true;
+		}
+		else if (move.isUndo() || move.isRedo()) {
+			System.out.println("Turn " + currentPlayer.printColor() + ".");
+			return false;
+		} 
 		
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
@@ -152,6 +192,7 @@ public class Game {
 		//Check if this move castles
 		if (move.isCastlingMove() && !currentPlayer.isInCheck()) {
 			Move.makeCastlingMove(board, move);
+			boardStates.add(new Board(board));
 			return true;
 		}
 		else if (!move.isCastlingMove()) {
@@ -161,6 +202,7 @@ public class Game {
 			//Pawn promotion
 			if (move.isPromotionMove()) move.getEnd().setPiece(new Queen(currentPlayer.isWhite()));
 
+			boardStates.add(new Board(board));
 			return true;
 		}
 		else return false;
@@ -173,8 +215,6 @@ public class Game {
 		
 		while (playAgain) {
 			Game chessGame = new Game();
-			Player p1 = null;
-			Player p2 = null;
 			char playAgainChar = 'a';
 			char p2Type = chessGame.askP2Type();
 			int AIdifficulty = chessGame.askAIDifficulty(p2Type == 'c');
@@ -182,11 +222,11 @@ public class Game {
 			
 			//Creating the player objects
 			
-			p1 = chessGame.initializePlayers(true, p2Type, p1Color, AIdifficulty);
-			p2 = chessGame.initializePlayers(false, p2Type, p1Color, AIdifficulty);
+			chessGame.p1 = chessGame.initializePlayers(true, p2Type, p1Color, AIdifficulty);
+			chessGame.p2 = chessGame.initializePlayers(false, p2Type, p1Color, AIdifficulty);
 			
 			//Initialize the board
-			chessGame.initializeGame(p1, p2);
+			chessGame.initializeGame();
 			
 			//Move loop
 			while (!chessGame.gameOver) {
@@ -212,8 +252,7 @@ public class Game {
 				}
 				
 				//Switch player
-				if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
-				else chessGame.currentPlayer = p1;
+				chessGame.switchPlayers();
 				
 				//Check if this move puts the enemy king in check
 				Square enemyKingSquare = chessGame.currentPlayer.findKingSquare(chessGame.board);
@@ -232,8 +271,7 @@ public class Game {
 					if (chessGame.currentPlayer.isInCheck()) checkMate = true;
 
 					//Switch player
-					if (chessGame.currentPlayer == p1) chessGame.currentPlayer = p2;
-					else chessGame.currentPlayer = p1;
+					chessGame.switchPlayers();
 
 					//Print board
 					chessGame.printBoard(chessGame.board);
