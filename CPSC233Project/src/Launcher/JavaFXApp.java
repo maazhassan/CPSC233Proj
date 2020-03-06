@@ -22,15 +22,28 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+/**
+ * The JavaFX implementation follows the MVC pattern.
+ * <br />
+ * The MainGame class represents the model of the MVC. It manages the internal game state and logic.
+ * <br />
+ * This class represents the View of the MVC. It handles view changes, button presses, and anything related to the
+ * change of the view.
+ * <br />
+ * The JavaFXController acts as a liaison between the View and the Model together to let the game running. The
+ * Game (Model) changes will invoke the Controller, which will then pass over the changes to the View. Any changes
+ * to the View will pass to the Controller, which will then update the game state.
+ */
+
 public class JavaFXApp extends Application {
     public static final int SIZE = 512;
 
-    private Controller controller;
-    private Screen activeScreen;
+    private JavaFXController controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        controller = new Controller(this);
+        controller = new JavaFXController(this);
 
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it
@@ -46,7 +59,7 @@ public class JavaFXApp extends Application {
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                activeScreen.onMouseEvent(mouseEvent);
+                controller.getActiveScreen().onMouseEvent(mouseEvent);
             }
         });
         log.setEditable(false);
@@ -64,9 +77,7 @@ public class JavaFXApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        //
-        setActiveScreen(new GameScreen());
-
+        controller.setActiveScreen(new GameScreen(controller));
         startGameLoop(canvas.getGraphicsContext2D());
     }
 
@@ -103,40 +114,9 @@ public class JavaFXApp extends Application {
             public void handle(long l) {
                 float delta = Math.max((float) ((System.nanoTime() - prev) / 1E9), 1.0f / 30.0f);
 
-                activeScreen.render(delta, c);
+                controller.getActiveScreen().render(delta, c);
             }
         }.start();
     }
-
-    public void setActiveScreen(Screen s) {
-        if (activeScreen != null) activeScreen.dispose();
-        activeScreen = s;
-        s.create();
-    }
 }
 
-class Controller implements GameEventHandler {
-
-    private MainGame game;
-    private JavaFXApp window;
-
-    public Controller(JavaFXApp window) {
-        //game = new MainGame(this)
-        this.window = window;
-    }
-
-    @Override
-    public boolean requestShouldPlayAgain() {
-        return false;
-    }
-
-    @Override
-    public int[] createMove() {
-        return new int[0];
-    }
-
-    @Override
-    public void log(String out) {
-
-    }
-}

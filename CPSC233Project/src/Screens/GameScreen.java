@@ -1,12 +1,20 @@
 package Screens;
 
 import Launcher.JavaFXApp;
+import Launcher.JavaFXController;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public class GameScreen extends BaseScreen {
+
+    private JavaFXController controller;
+
+    public GameScreen(JavaFXController controller) {
+        this.controller = controller;
+    }
+
     @Override
     public void create() {
 
@@ -34,6 +42,10 @@ public class GameScreen extends BaseScreen {
                 g.setFill(temp);
             }
         }
+    }
+
+    public void drawPieces() {
+
     }
 
     @Override
