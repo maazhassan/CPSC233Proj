@@ -1,11 +1,11 @@
+package Launcher;
+
 import Game.GameEventHandler;
 import Game.MainGame;
 import Screens.GameScreen;
 import Screens.Screen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class JavaFXApp extends Application {
+    public static final int SIZE = 512;
+
     private Controller controller;
     private Screen activeScreen;
 
@@ -36,11 +38,11 @@ public class JavaFXApp extends Application {
         // The main container that splits the left canvas panel with the right log panel
         HBox body = new HBox();
 
-        Canvas canvas = new Canvas(512, 512); // The main canvas object that we'll be using to draw images
+        Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
         TextArea log = new TextArea();
 
         log.setEditable(false);
-        log.setMinSize(400, 500);
+        log.setMinSize(SIZE * 0.9, SIZE * 0.5);
 
         body.getChildren().add(canvas);
         body.getChildren().add(log);

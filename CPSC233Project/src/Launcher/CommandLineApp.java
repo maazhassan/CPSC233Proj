@@ -1,3 +1,5 @@
+package Launcher;
+
 import Game.GameEventHandler;
 import Game.MainGame;
 import Game.Move;
