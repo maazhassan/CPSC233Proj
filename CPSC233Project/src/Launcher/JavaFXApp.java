@@ -6,6 +6,7 @@ import Screens.GameScreen;
 import Screens.Screen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -41,6 +43,12 @@ public class JavaFXApp extends Application {
         Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
         TextArea log = new TextArea();
 
+        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                activeScreen.onMouseEvent(mouseEvent);
+            }
+        });
         log.setEditable(false);
         log.setMinSize(SIZE * 0.9, SIZE * 0.5);
 

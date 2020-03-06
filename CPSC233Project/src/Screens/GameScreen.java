@@ -2,6 +2,7 @@ package Screens;
 
 import Launcher.JavaFXApp;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -36,7 +37,20 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
+    public void onMouseEvent(MouseEvent event) {
+        System.out.println(getChessCoordinateX(event.getX()) + " " + getChessCoordinateY(event.getY()));
+    }
+
+    @Override
     public void dispose() {
 
+    }
+
+    private int getChessCoordinateX(double mouseX) {
+        return (int)(mouseX / (JavaFXApp.SIZE / 8.0));
+    }
+
+    private int getChessCoordinateY(double mouseY) {
+        return (int)(mouseY / (JavaFXApp.SIZE / 8.0));
     }
 }
