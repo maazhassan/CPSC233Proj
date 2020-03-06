@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -23,12 +24,21 @@ public class JavaFXApp extends Application {
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it
 
+        // Body
+
         // The main container that splits the left canvas panel with the right log panel
         HBox body = new HBox();
 
-        // The main canvas object that we'll be using to draw images
-        Canvas canvas = new Canvas(512, 512);
+        Canvas canvas = new Canvas(512, 512); // The main canvas object that we'll be using to draw images
+        TextArea log = new TextArea();
+
+        log.setEditable(false);
+        log.setMinSize(400, 500);
+
         body.getChildren().add(canvas);
+        body.getChildren().add(log);
+
+        // Weeeeeeee
 
         root.getChildren().add(createToolbar());
         root.getChildren().add(body);

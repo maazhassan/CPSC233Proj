@@ -13,7 +13,6 @@ public class GameScreen extends BaseScreen {
     public void render(float delta, GraphicsContext g) {
         // Clear the background
         clear(g);
-        g.fillRect(0, 0, 512, 512);
 
         g.fillText("Lol", 256, 256);
     }
