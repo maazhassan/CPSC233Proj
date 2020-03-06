@@ -1,13 +1,20 @@
 import Game.GameEventHandler;
+import Game.MainGame;
 import Screens.GameScreen;
 import Screens.Screen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -18,7 +25,7 @@ public class JavaFXApp extends Application {
     private Screen activeScreen;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         controller = new Controller(this);
 
         VBox root = new VBox();
@@ -54,16 +61,26 @@ public class JavaFXApp extends Application {
     }
 
     public Pane createToolbar() {
-        HBox toolbar = new HBox();
+        GridPane toolbar = new GridPane();
+        toolbar.setPadding(new Insets(4, 4, 4, 4));
+        toolbar.setHgap(10);
 
         Button undo = new Button();
         Button redo = new Button();
+        ComboBox<Integer> difficulty = new ComboBox<>();
 
         undo.setText("Undo");
         redo.setText("Redo");
+        difficulty.getItems().addAll(1, 2, 3);
+        difficulty.valueProperty().addListener((o, old, newValue) -> {
+            System.out.println("Item: " + newValue);
+        });
+        difficulty.getSelectionModel().selectFirst();
 
-        toolbar.getChildren().add(undo);
-        toolbar.getChildren().add(redo);
+        toolbar.add(undo, 1, 0);
+        toolbar.add(redo, 2, 0);
+        toolbar.add(new Label("Difficulty:"), 8, 0);
+        toolbar.add(difficulty, 9, 0);
 
         return toolbar;
     }
@@ -74,7 +91,7 @@ public class JavaFXApp extends Application {
 
             @Override
             public void handle(long l) {
-                float delta = Math.max((float) ((System.nanoTime() - prev) / 1E9), 1.0f/30.0f);
+                float delta = Math.max((float) ((System.nanoTime() - prev) / 1E9), 1.0f / 30.0f);
 
                 activeScreen.render(delta, c);
             }
@@ -90,9 +107,11 @@ public class JavaFXApp extends Application {
 
 class Controller implements GameEventHandler {
 
+    private MainGame game;
     private JavaFXApp window;
 
     public Controller(JavaFXApp window) {
+        //game = new MainGame(this)
         this.window = window;
     }
 
