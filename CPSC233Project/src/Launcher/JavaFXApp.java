@@ -6,6 +6,7 @@ import Screens.GameScreen;
 import Screens.Screen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -21,6 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 
 
 /**
@@ -86,22 +89,23 @@ public class JavaFXApp extends Application {
         toolbar.setPadding(new Insets(4, 4, 4, 4));
         toolbar.setHgap(10);
 
+        Button restart = new Button();
         Button undo = new Button();
         Button redo = new Button();
         ComboBox<Integer> difficulty = new ComboBox<>();
 
+        restart.setText("Restart Game");
+        restart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+            }
+        });
         undo.setText("Undo");
         redo.setText("Redo");
-        difficulty.getItems().addAll(1, 2, 3);
-        difficulty.valueProperty().addListener((o, old, newValue) -> {
-            System.out.println("Item: " + newValue);
-        });
-        difficulty.getSelectionModel().selectFirst();
 
-        toolbar.add(undo, 1, 0);
-        toolbar.add(redo, 2, 0);
-        toolbar.add(new Label("Difficulty:"), 8, 0);
-        toolbar.add(difficulty, 9, 0);
+        toolbar.add(restart, 0, 0);
+        toolbar.add(undo, 5, 0);
+        toolbar.add(redo, 6, 0);
 
         return toolbar;
     }
