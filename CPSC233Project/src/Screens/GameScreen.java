@@ -10,6 +10,8 @@ import javafx.scene.paint.Paint;
 public class GameScreen extends BaseScreen {
 
     private JavaFXController controller;
+    private Color light = Color.rgb(241, 217, 182);
+    private Color dark = Color.rgb(181, 137, 99);
 
     public GameScreen(JavaFXController controller) {
         this.controller = controller;
@@ -23,7 +25,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta, GraphicsContext g) {
         // Clear the background
-        clear(g, Color.WHITE);
+        clear(g, light);
         drawBoard(g);
     }
 
@@ -37,7 +39,7 @@ public class GameScreen extends BaseScreen {
                 float squareSize = JavaFXApp.SIZE / 8.0f;
 
                 Paint temp = g.getFill();
-                g.setFill(Color.BLACK);
+                g.setFill(dark);
                 g.fillRect(r * squareSize, c * squareSize, squareSize, squareSize);
                 g.setFill(temp);
             }

@@ -23,9 +23,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-
-
 /**
  * The JavaFX implementation follows the MVC pattern.
  * <br />
@@ -122,5 +119,9 @@ public class JavaFXApp extends Application {
             }
         }.start();
     }
+    
+    public static void main(String[] args) {
+		launch(args);
+	}
 }
 
