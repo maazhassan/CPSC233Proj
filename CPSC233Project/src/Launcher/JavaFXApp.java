@@ -44,7 +44,6 @@ public class JavaFXApp {
     public static final int SIZE = 512;
 
     private JavaFXController controller;
-    private JavaFXMainMenu mainMenu;
     private char p1Color;
     private char p2Type;
     private int aiDifficulty;
@@ -57,11 +56,6 @@ public class JavaFXApp {
 
     public void run() {
         Stage primaryStage = new Stage();
-
-        mainMenu = new JavaFXMainMenu();
-        p1Color = mainMenu.getP1Color();
-        p2Type = mainMenu.getP2Type();
-        aiDifficulty = mainMenu.getAIDifficulty();
 
         controller = new JavaFXController(this, p1Color, p2Type, aiDifficulty);
 
