@@ -1,7 +1,5 @@
 package Launcher;
 
-import Game.GameEventHandler;
-import Game.MainGame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,12 +21,15 @@ import javafx.stage.Stage;
 // Separate Class for Main Menu: can be put together with rest of code later.
 
 
-public class JavaFxMainMenu extends Application {
+public class JavaFXMainMenu extends Application {
 	
-	private char c1color;
+	private char p1Color;
 	private char p2Type;
 	private int aiDifficulty;
-	private GameEventHandler handler;
+
+	public JavaFXMainMenu() {
+		this.start(new Stage());
+	}
 
 	@Override
 	public void start(Stage menuStage) {
@@ -112,14 +113,14 @@ public class JavaFxMainMenu extends Application {
 				//Black event handling
 				black.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
-						c1color = 'b';
+						p1Color = 'b';
 					}
 				});
 
 				//White event handling
 				white.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
-						c1color = 'w';
+						p1Color = 'w';
 					}
 				});
 				
@@ -211,23 +212,12 @@ public class JavaFxMainMenu extends Application {
 					public void handle(ActionEvent event) {
 						settingStage.close();
 						menuStage.close();
-							
-						JavaFXApp run = new JavaFXApp();
-						try {
-							run.start(new Stage());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						MainGame mg = new MainGame(handler, c1color, p2Type, aiDifficulty);
-						mg.start();
-						
 					}
 					
 				});
 				
 				settingStage.setScene(scene2);
-				settingStage.show();
+				settingStage.showAndWait();
 				
 			}
 			
@@ -242,10 +232,18 @@ public class JavaFxMainMenu extends Application {
 		});
 		
 		menuStage.setScene(scene);		
-		menuStage.show();
+		menuStage.showAndWait();
 	}
-	
-	 public static void main(String[] args) {
-			launch(args);
-	 }
+
+	public char getP1Color() {
+		return this.p1Color;
+	}
+
+	public char getP2Type() {
+		return this.p2Type;
+	}
+
+	public int getAIDifficulty() {
+		return this.aiDifficulty;
+	}
 }

@@ -44,10 +44,19 @@ public class JavaFXApp extends Application {
     public static final int SIZE = 512;
 
     private JavaFXController controller;
+    private JavaFXMainMenu mainMenu;
+    private char p1Color;
+    private char p2Type;
+    private int aiDifficulty;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        controller = new JavaFXController(this);
+        mainMenu = new JavaFXMainMenu();
+        p1Color = mainMenu.getP1Color();
+        p2Type = mainMenu.getP2Type();
+        aiDifficulty = mainMenu.getAIDifficulty();
+
+        controller = new JavaFXController(this, p1Color, p2Type, aiDifficulty);
 
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it

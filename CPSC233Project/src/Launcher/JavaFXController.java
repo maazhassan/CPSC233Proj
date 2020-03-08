@@ -10,8 +10,8 @@ public class JavaFXController implements GameEventHandler {
     private JavaFXApp window;
     private Screen activeScreen;
 
-    public JavaFXController(JavaFXApp window) {
-        //game = new MainGame(this)
+    public JavaFXController(JavaFXApp window, char p1Color, char p2Type, int aiDifficulty) {
+        game = new MainGame(this, p1Color, p2Type, aiDifficulty);
         this.window = window;
     }
 
