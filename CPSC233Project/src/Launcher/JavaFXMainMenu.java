@@ -265,4 +265,8 @@ public class JavaFXMainMenu extends Application {
 	public int getAIDifficulty() {
 		return this.aiDifficulty;
 	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

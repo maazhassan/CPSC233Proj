@@ -107,7 +107,7 @@ public class GameScreen extends BaseScreen {
      * @return A new image type.
      */
     private Image loadImage(String name, String extension) {
-        File img = new File("assets/" + name + extension);
+        File img = new File("CPSC233Project/assets/" + name + extension);
         try {
             return new Image(new FileInputStream(img));
         } catch (FileNotFoundException e) {
