@@ -48,6 +48,8 @@ public class JavaFXApp {
     private char p2Type;
     private int aiDifficulty;
 
+    private TextArea log;
+
     public JavaFXApp(char p1Color, char p2Type, int aiDifficulty) {
         this.p1Color = p1Color;
         this.p2Type = p2Type;
@@ -56,8 +58,6 @@ public class JavaFXApp {
 
     public void run() {
         Stage primaryStage = new Stage();
-
-        controller = new JavaFXController(this, p1Color, p2Type, aiDifficulty);
 
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it
@@ -68,7 +68,7 @@ public class JavaFXApp {
         HBox body = new HBox();
 
         Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
-        TextArea log = new TextArea();
+        log = new TextArea();
 
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -91,6 +91,7 @@ public class JavaFXApp {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        controller = new JavaFXController(this, p1Color, p2Type, aiDifficulty);
         controller.setActiveScreen(new GameScreen(controller));
         startGameLoop(canvas.getGraphicsContext2D());
     }
@@ -139,6 +140,10 @@ public class JavaFXApp {
                 controller.getActiveScreen().render(delta, c);
             }
         }.start();
+    }
+
+    public void writeToLog(String text) {
+        log.appendText(text + '\n');
     }
 }
 
