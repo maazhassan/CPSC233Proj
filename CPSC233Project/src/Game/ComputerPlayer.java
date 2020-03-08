@@ -11,14 +11,14 @@ public class ComputerPlayer extends Player {
 	
 	/**
 	 * Creates a computer player.
-	 * @param white True if white, false otherwise.
-	 * @param difficulty The difficulty of the AI - either 1,2, or 3.
+	 * @param invalid True if white, false otherwise.
+	 * @param b The difficulty of the AI - either 1,2, or 3.
 	 */
 
-	public ComputerPlayer(boolean white, int difficulty) {
-		this.setWhite(white);
+	public ComputerPlayer(boolean invalid, int b) {
+		this.setWhite(invalid);
 		this.setHuman(false);
-		this.setDifficulty(difficulty);
+		this.setDifficulty(b);
 	}
 
 	//------------------------------ METHODS FOR AI ------------------------------//

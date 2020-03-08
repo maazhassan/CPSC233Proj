@@ -62,7 +62,7 @@ public class JavaFxMainMenu extends Application {
 				settingBox.setAlignment(Pos.BASELINE_CENTER);
 				settingBox.setVgap(10);
 				settingBox.setHgap(10);
-				Scene scene2 = new Scene(settingBox,500,400);
+				Scene scene2 = new Scene(settingBox,600,500);
 				scene2.setFill(Color.BURLYWOOD);
 				
 				
@@ -71,35 +71,8 @@ public class JavaFxMainMenu extends Application {
 				settingBox.add(settingTitle,0,0);
 				
 				// Buttons
-				// Player: vs Ai or vs Human
-				Label player = new Label("Choose player: ");
-				settingBox.add(player, 0, 5);
-				
-				Button humanPlayer = new Button("Human Player");
-				humanPlayer.setMinWidth(150);
-				settingBox.add(humanPlayer, 1, 5);
-				
-				Button computerPlayer = new Button("Computer Player");
-				computerPlayer.setMinWidth(150);
-				settingBox.add(computerPlayer, 1, 6);
-				
-				// Difficulty: 1,2, or 3
-				Label difficulty = new Label("Choose difficulty level: ");
-				settingBox.add(difficulty, 0, 7);
-				
-				Button easy = new Button("Easy: 1");
-				easy.setMinWidth(150);
-				settingBox.add(easy, 1, 7);
-				
-				Button medium = new Button("Medium: 2");
-				medium.setMinWidth(150);
-				settingBox.add(medium, 1, 8);
-				
-				Button hard = new Button("Hard: 3");
-				hard.setMinWidth(150);
-				settingBox.add(hard, 1, 9);
-				
 				// Colour: Black or White
+				
 				Label colour = new Label("Choose colour to play as: ");
 				settingBox.add(colour, 0, 3);
 
@@ -107,10 +80,87 @@ public class JavaFxMainMenu extends Application {
 				blackPiece.setMinWidth(150);
 				settingBox.add(blackPiece, 1, 3);
 				
+				blackPiece.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						char c1color = 'b';
+					}
+					
+				});
+				
 				Button whitePiece = new Button("White");
 				whitePiece.setMinWidth(150);
 				settingBox.add(whitePiece, 1, 4);
 				
+				whitePiece.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						char c1color = 'w';
+					}
+					
+				});
+				
+				// Player: computer or human
+				Label player = new Label("Choose player: ");
+				settingBox.add(player, 0, 5);
+				
+				Button humanPlayer = new Button("Human Player");
+				humanPlayer.setMinWidth(150);
+				settingBox.add(humanPlayer, 1, 5);
+				
+				humanPlayer.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						char p2Type = 'h';
+					}
+					
+				});
+				
+				Button computerPlayer = new Button("Computer Player");
+				computerPlayer.setMinWidth(150);
+				settingBox.add(computerPlayer, 1, 6);
+				
+				computerPlayer.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						char p2Type = 'c';
+					}
+					
+				});
+						
+				// Difficulty: 1,2, or 3				
+				Label difficulty = new Label("Choose difficulty level: ");
+				settingBox.add(difficulty, 0, 7);
+								
+				Button easy = new Button("Easy: 1");
+				easy.setMinWidth(150);
+				settingBox.add(easy, 1, 7);
+				
+				easy.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						int aiDifficulty = 1;
+					}
+					
+				});
+														
+				Button medium = new Button("Medium: 2");
+				medium.setMinWidth(150);
+				settingBox.add(medium, 1, 8);
+				
+				medium.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						int aiDifficulty = 2;
+					}
+					
+				});
+								
+				Button hard = new Button("Hard: 3");
+				hard.setMinWidth(150);
+				settingBox.add(hard, 1, 9);
+				
+				hard.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						int aiDifficulty = 3;
+					}
+					
+				});
+									
 				// Play (starts the game and opens the main screen)
 				Label startGame = new Label("Ready...");
 				settingBox.add(startGame, 0, 10);
