@@ -75,12 +75,12 @@ public class JavaFXMainMenu extends Application {
 				settingBox.setHgap(10);
 				Scene scene2 = new Scene(settingBox,600,500);
 				scene2.setFill(Color.BURLYWOOD);
-				
-				
+
+
 				Text settingTitle = new Text("Settings");
 				settingTitle.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 20));
 				settingBox.add(settingTitle,0,0);
-				
+
 				// Buttons and labels
 
 				//Creating toggle groups and buttons
@@ -123,11 +123,11 @@ public class JavaFXMainMenu extends Application {
 						p1Color = 'w';
 					}
 				});
-				
+
 				//Opponent: computer or human
 				Label player = new Label("Choose opponent type: ");
 				settingBox.add(player, 0, 5);
-				
+
 				//Button settings
 				human.setToggleGroup(opponentGroup);
 				computer.setToggleGroup(opponentGroup);
@@ -146,7 +146,7 @@ public class JavaFXMainMenu extends Application {
 						hard.setDisable(true);
 						aiDifficulty = 0;
 					}
-					
+
 				});
 
 				//Computer event handling
@@ -158,13 +158,13 @@ public class JavaFXMainMenu extends Application {
 						medium.setDisable(false);
 						hard.setDisable(false);
 					}
-					
+
 				});
-						
-				// Difficulty: 1,2, or 3				
+
+				// Difficulty: 1,2, or 3
 				Label difficulty = new Label("Choose difficulty level: ");
 				settingBox.add(difficulty, 0, 7);
-				
+
 				//Button settings
 				easy.setToggleGroup(difficultyGroup);
 				medium.setToggleGroup(difficultyGroup);
@@ -181,7 +181,7 @@ public class JavaFXMainMenu extends Application {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 1;
 					}
-					
+
 				});
 
 				//Medium event handling
@@ -189,7 +189,7 @@ public class JavaFXMainMenu extends Application {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 2;
 					}
-					
+
 				});
 
 				//Hard event handling
@@ -197,30 +197,31 @@ public class JavaFXMainMenu extends Application {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 3;
 					}
-					
+
 				});
-									
+
 				// Play (starts the game and opens the main screen)
 				Label startGame = new Label("Ready...");
 				settingBox.add(startGame, 0, 10);
-				
+
 				Button play = new Button("PLAY");
 				play.setMinWidth(150);
 				settingBox.add(play,1,10);
-				
+
 				play.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						settingStage.close();
 						menuStage.close();
+						displayGame();
 					}
-					
+
 				});
-				
+
 				settingStage.setScene(scene2);
 				settingStage.show();
-				
+
 			}
-			
+
 		});
 		
 		// Exit
@@ -233,6 +234,10 @@ public class JavaFXMainMenu extends Application {
 		
 		menuStage.setScene(scene);		
 		menuStage.show();
+	}
+
+	public void displayGame() {
+		new JavaFXApp(p1Color, p2Type, aiDifficulty).run();
 	}
 
 	public char getP1Color() {

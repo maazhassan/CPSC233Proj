@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  * to the View will pass to the Controller, which will then update the game state.
  */
 
-public class JavaFXApp extends Application {
+public class JavaFXApp {
     public static final int SIZE = 512;
 
     private JavaFXController controller;
@@ -49,8 +49,15 @@ public class JavaFXApp extends Application {
     private char p2Type;
     private int aiDifficulty;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public JavaFXApp(char p1Color, char p2Type, int aiDifficulty) {
+        this.p1Color = p1Color;
+        this.p2Type = p2Type;
+        this.aiDifficulty = aiDifficulty;
+    }
+
+    public void run() {
+        Stage primaryStage = new Stage();
+
         mainMenu = new JavaFXMainMenu();
         p1Color = mainMenu.getP1Color();
         p2Type = mainMenu.getP2Type();
@@ -139,9 +146,5 @@ public class JavaFXApp extends Application {
             }
         }.start();
     }
-    
-    public static void main(String[] args) {
-		launch(args);
-	}
 }
 
