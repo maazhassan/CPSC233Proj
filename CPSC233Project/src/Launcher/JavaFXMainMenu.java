@@ -1,6 +1,8 @@
 package Launcher;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -135,6 +137,15 @@ public class JavaFXMainMenu extends Application {
 				computer.setMinWidth(150);
 				settingBox.add(human, 1, 5);
 				settingBox.add(computer, 1, 6);
+				
+				// Play Button 
+				Label startGame = new Label("Ready...");
+				settingBox.add(startGame, 0, 10);
+				
+				Button play = new Button("PLAY");
+				play.setMinWidth(150);
+				play.setDisable(true);
+				settingBox.add(play,1,10);
 
 				//Human event handling
 				human.setOnAction(new EventHandler<ActionEvent>() {
@@ -145,6 +156,8 @@ public class JavaFXMainMenu extends Application {
 						medium.setDisable(true);
 						hard.setDisable(true);
 						aiDifficulty = 0;
+						// Enable Play button
+						play.setDisable(false);
 					}
 					
 				});
@@ -157,6 +170,8 @@ public class JavaFXMainMenu extends Application {
 						easy.setDisable(false);
 						medium.setDisable(false);
 						hard.setDisable(false);
+						// Disable Play button
+						play.setDisable(true);
 					}
 					
 				});
@@ -180,6 +195,8 @@ public class JavaFXMainMenu extends Application {
 				easy.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 1;
+						// Enable Play button
+						play.setDisable(false);
 					}
 					
 				});
@@ -188,6 +205,8 @@ public class JavaFXMainMenu extends Application {
 				medium.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 2;
+						// Enable Play button
+						play.setDisable(false);
 					}
 					
 				});
@@ -196,18 +215,13 @@ public class JavaFXMainMenu extends Application {
 				hard.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 3;
+						// Enable Play button
+						play.setDisable(false);
 					}
 					
 				});
 									
-				// Play (starts the game and opens the main screen)
-				Label startGame = new Label("Ready...");
-				settingBox.add(startGame, 0, 10);
-				
-				Button play = new Button("PLAY");
-				play.setMinWidth(150);
-				settingBox.add(play,1,10);
-				
+				// Play event handling (starts the game and opens the main screen)
 				play.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						settingStage.close();
