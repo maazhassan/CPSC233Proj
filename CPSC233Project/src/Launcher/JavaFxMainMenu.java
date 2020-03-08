@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -78,56 +80,82 @@ public class JavaFxMainMenu extends Application {
 				settingTitle.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 20));
 				settingBox.add(settingTitle,0,0);
 				
-				// Buttons
-				// Colour: Black or White
-				
+				// Buttons and labels
+
+				//Creating toggle groups and buttons
+				//Colors
+				ToggleGroup colorGroup = new ToggleGroup();
+				ToggleButton black = new ToggleButton("Black");
+				ToggleButton white = new ToggleButton("White");
+				//Opponent
+				ToggleGroup opponentGroup = new ToggleGroup();
+				ToggleButton human = new ToggleButton("Human");
+				ToggleButton computer = new ToggleButton("Computer");
+				//Difficulty
+				ToggleGroup difficultyGroup = new ToggleGroup();
+				ToggleButton easy = new ToggleButton("Easy");
+				ToggleButton medium = new ToggleButton("Medium");
+				ToggleButton hard = new ToggleButton("Hard");
+
+				//Color selection
 				Label colour = new Label("Choose colour to play as: ");
 				settingBox.add(colour, 0, 3);
 
-				Button blackPiece = new Button("Black");
-				blackPiece.setMinWidth(150);
-				settingBox.add(blackPiece, 1, 3);
-				
-				blackPiece.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+				//Button settings
+				black.setToggleGroup(colorGroup);
+				white.setToggleGroup(colorGroup);
+				black.setMinWidth(150);
+				white.setMinWidth(150);
+				settingBox.add(black, 1, 3);
+				settingBox.add(white, 1, 4);
+
+				//Black event handling
+				black.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent e) {
 						c1color = 'b';
 					}
-					
 				});
-				
-				Button whitePiece = new Button("White");
-				whitePiece.setMinWidth(150);
-				settingBox.add(whitePiece, 1, 4);
-				
-				whitePiece.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+
+				//White event handling
+				white.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent e) {
 						c1color = 'w';
 					}
-					
 				});
 				
-				// Player: computer or human
-				Label player = new Label("Choose player: ");
+				//Opponent: computer or human
+				Label player = new Label("Choose opponent type: ");
 				settingBox.add(player, 0, 5);
 				
-				Button humanPlayer = new Button("Human Player");
-				humanPlayer.setMinWidth(150);
-				settingBox.add(humanPlayer, 1, 5);
-				
-				humanPlayer.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+				//Button settings
+				human.setToggleGroup(opponentGroup);
+				computer.setToggleGroup(opponentGroup);
+				human.setMinWidth(150);
+				computer.setMinWidth(150);
+				settingBox.add(human, 1, 5);
+				settingBox.add(computer, 1, 6);
+
+				//Human event handling
+				human.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent e) {
 						p2Type = 'h';
+						//Disable difficulty buttons if player has selected human opponent
+						easy.setDisable(true);
+						medium.setDisable(true);
+						hard.setDisable(true);
+						aiDifficulty = 0;
 					}
 					
 				});
-				
-				Button computerPlayer = new Button("Computer Player");
-				computerPlayer.setMinWidth(150);
-				settingBox.add(computerPlayer, 1, 6);
-				
-				computerPlayer.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+
+				//Computer event handling
+				computer.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent e) {
 						p2Type = 'c';
+						//Enable difficulty buttons if player has selected computer opponent
+						easy.setDisable(false);
+						medium.setDisable(false);
+						hard.setDisable(false);
 					}
 					
 				});
@@ -135,35 +163,37 @@ public class JavaFxMainMenu extends Application {
 				// Difficulty: 1,2, or 3				
 				Label difficulty = new Label("Choose difficulty level: ");
 				settingBox.add(difficulty, 0, 7);
-								
-				Button easy = new Button("Easy: 1");
-				easy.setMinWidth(150);
-				settingBox.add(easy, 1, 7);
 				
+				//Button settings
+				easy.setToggleGroup(difficultyGroup);
+				medium.setToggleGroup(difficultyGroup);
+				hard.setToggleGroup(difficultyGroup);
+				easy.setMinWidth(150);
+				medium.setMinWidth(150);
+				hard.setMinWidth(150);
+				settingBox.add(easy, 1, 7);
+				settingBox.add(medium, 1, 8);
+				settingBox.add(hard, 1, 9);
+
+				//Easy event handling
 				easy.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+					public void handle(ActionEvent e) {
 						aiDifficulty = 1;
 					}
 					
 				});
-														
-				Button medium = new Button("Medium: 2");
-				medium.setMinWidth(150);
-				settingBox.add(medium, 1, 8);
-				
+
+				//Medium event handling
 				medium.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+					public void handle(ActionEvent e) {
 						aiDifficulty = 2;
 					}
 					
 				});
-								
-				Button hard = new Button("Hard: 3");
-				hard.setMinWidth(150);
-				settingBox.add(hard, 1, 9);
-				
+
+				//Hard event handling
 				hard.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
+					public void handle(ActionEvent e) {
 						aiDifficulty = 3;
 					}
 					
