@@ -27,9 +27,9 @@ public class JavaFXMainMenu extends Application {
 	private char p2Type;
 	private int aiDifficulty;
 
-	public JavaFXMainMenu() {
-		this.start(new Stage());
-	}
+	//public JavaFXMainMenu() {
+	//	this.start(new Stage());
+	//}
 
 	@Override
 	public void start(Stage menuStage) {
@@ -217,7 +217,7 @@ public class JavaFXMainMenu extends Application {
 				});
 				
 				settingStage.setScene(scene2);
-				settingStage.showAndWait();
+				settingStage.show();
 				
 			}
 			
@@ -232,7 +232,7 @@ public class JavaFXMainMenu extends Application {
 		});
 		
 		menuStage.setScene(scene);		
-		menuStage.showAndWait();
+		menuStage.show();
 	}
 
 	public char getP1Color() {
