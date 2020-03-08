@@ -60,6 +60,14 @@ public class JavaFXController implements GameEventHandler {
         }
     }
 
+    public void undo() {
+        setNextMove(8, 0, 0, 0);
+    }
+
+    public void redo() {
+        setNextMove(9, 0, 0, 0);
+    }
+
     public String[][] getBoardState() {
         for (int x = 0;  x < Board.SIZE; x++) {
             for (int y = 0; y < Board.SIZE; y++) {

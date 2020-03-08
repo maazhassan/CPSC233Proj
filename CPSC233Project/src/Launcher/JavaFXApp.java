@@ -104,7 +104,9 @@ public class JavaFXApp {
         Button restart = new Button();
         Button undo = new Button();
         Button redo = new Button();
-        ComboBox<Integer> difficulty = new ComboBox<>();
+
+        undo.setOnAction(actionEvent -> controller.undo());
+        redo.setOnAction(actionEvent -> controller.redo());
 
         restart.setText("Restart Game");
         restart.setOnAction(new EventHandler<ActionEvent>() {
