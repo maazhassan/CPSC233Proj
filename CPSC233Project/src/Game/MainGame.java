@@ -197,6 +197,10 @@ public class MainGame {
 		else return false;
 	}
 
+	public Piece getPiece(int x, int y) {
+		return board.getSquare(x,  y).getPiece();
+	}
+
 	//main method, runs the game
 	public void start() {
 

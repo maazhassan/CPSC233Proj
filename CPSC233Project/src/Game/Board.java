@@ -8,7 +8,7 @@ import Pieces.*;
 
 public class Board {
 
-    final int SIZE = 8;
+    public static final int SIZE = 8;
     private final Square[][] data = new Square[SIZE][SIZE]; // data[x][y]
 
     private boolean isBottomWhite;

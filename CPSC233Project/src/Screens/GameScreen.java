@@ -1,5 +1,6 @@
 package Screens;
 
+import Game.Board;
 import Launcher.JavaFXApp;
 import Launcher.JavaFXController;
 import javafx.scene.canvas.GraphicsContext;
@@ -42,6 +43,7 @@ public class GameScreen extends BaseScreen {
         // Clear the background
         clear(g, light);
         drawBoard(g);
+        drawPieces(g);
     }
 
     public void drawBoard(GraphicsContext g) {
@@ -61,8 +63,17 @@ public class GameScreen extends BaseScreen {
         }
     }
 
-    public void drawPieces() {
+    public void drawPieces(GraphicsContext g) {
+        String[][] state = controller.getBoardState();
+        int cellSize = JavaFXApp.SIZE / Board.SIZE;
 
+        for (int x = 0; x < Board.SIZE; x++) {
+            for (int y = 0; y < Board.SIZE; y++) {
+                String imageKey = state[x][y];
+
+                g.drawImage(images.get(imageKey), x * cellSize, y * cellSize);
+            }
+        }
     }
 
     @Override
