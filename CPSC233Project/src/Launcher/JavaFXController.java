@@ -13,12 +13,18 @@ public class JavaFXController implements GameEventHandler {
     private JavaFXApp window;
     private Screen activeScreen;
 
+    private final int[] nextMove = new int[4];
+
     // Reuse the object so we don't eat up the memory
     private String[][] boardState = new String[Board.SIZE][Board.SIZE];
 
     public JavaFXController(JavaFXApp window, char p1Color, char p2Type, int aiDifficulty) {
         game = new MainGame(this, p1Color, p2Type, aiDifficulty);
         this.window = window;
+
+        new Thread(() -> {
+            game.start();
+        }).start();
     }
 
     @Override
@@ -28,12 +34,31 @@ public class JavaFXController implements GameEventHandler {
 
     @Override
     public int[] createMove() {
-        return new int[0];
+        synchronized (nextMove) {
+            try {
+                nextMove.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return nextMove;
     }
 
     @Override
     public void log(String out) {
 
+    }
+
+    public void setNextMove(int x1, int y1, int x2, int y2) {
+        synchronized(nextMove) {
+            nextMove[0] = x1;
+            nextMove[1] = y1;
+            nextMove[2] = x2;
+            nextMove[3] = y2;
+
+            nextMove.notify();
+        }
     }
 
     public String[][] getBoardState() {
