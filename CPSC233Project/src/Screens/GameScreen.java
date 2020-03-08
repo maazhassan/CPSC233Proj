@@ -22,6 +22,10 @@ public class GameScreen extends BaseScreen {
 
     private HashMap<String, Image> images = new HashMap<>();
 
+    // If a piece is currently being selected to move to another location
+    private boolean selected = false;
+    private int startX = 0, startY = 0;
+
     public GameScreen(JavaFXController controller) {
         this.controller = controller;
     }
@@ -78,12 +82,23 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void onMouseEvent(MouseEvent event) {
-        System.out.println(getChessCoordinateX(event.getX()) + " " + getChessCoordinateY(event.getY()));
+        int x = getChessCoordinateX(event.getX());
+        int y = getChessCoordinateY(event.getY());
+
+        if (!selected) {
+            startX = x;
+            startY = y;
+            selected = true;
+            return;
+        }
+
+        // At this part of the code, the user has clicked on a square for the second time
+        controller.setNextMove(startX, startY, x, y);
+        selected = false;
     }
 
     @Override
     public void dispose() {
-
     }
 
     private int getChessCoordinateX(double mouseX) {

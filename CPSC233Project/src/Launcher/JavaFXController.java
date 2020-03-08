@@ -51,6 +51,7 @@ public class JavaFXController implements GameEventHandler {
     }
 
     public void setNextMove(int x1, int y1, int x2, int y2) {
+        System.out.println("In");
         synchronized(nextMove) {
             nextMove[0] = x1;
             nextMove[1] = y1;
