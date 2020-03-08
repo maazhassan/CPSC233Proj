@@ -1,6 +1,8 @@
 package Launcher;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -22,11 +24,10 @@ import javafx.stage.Stage;
 
 
 public class JavaFXMainMenu extends Application {
-
-	// TODO: Check if the buttons have been selected before starting the game
-	private char p1Color = '\0';
-	private char p2Type = '\0';
-	private int aiDifficulty = -1;
+	
+	private char p1Color;
+	private char p2Type;
+	private int aiDifficulty;
 
 	//public JavaFXMainMenu() {
 	//	this.start(new Stage());
@@ -35,33 +36,33 @@ public class JavaFXMainMenu extends Application {
 	@Override
 	public void start(Stage menuStage) {
 		menuStage.setTitle("Main Menu");
-				
+
 		VBox vbox = new VBox();
 		vbox.setBackground(Background.EMPTY);
-		Scene scene = new Scene(vbox,600,400);
+		Scene scene = new Scene(vbox, 600, 400);
 		scene.setFill(Color.BURLYWOOD);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(40);
-		
-		
+
+
 		// Title
 		Label title = new Label("CHESS");
-		title.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 35));
+		title.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 35));
 		vbox.getChildren().add(title);
-		
+
 		// Buttons
 		Button start = new Button("Start");
 		start.setMinWidth(100);
-		start.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 25));
+		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
 		//start.setBackground(new Background(new BackgroundFill(Color.CORNSILK, null, null)));
-	
-		
+
+
 		Button exit = new Button("Exit");
 		exit.setMinWidth(100);
-		exit.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 25));
-		
-		vbox.getChildren().addAll(start,exit);
-		
+		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+
+		vbox.getChildren().addAll(start, exit);
+
 		// Button events
 		// Start
 		start.setOnAction(new EventHandler<ActionEvent>() {
@@ -74,13 +75,13 @@ public class JavaFXMainMenu extends Application {
 				settingBox.setAlignment(Pos.BASELINE_CENTER);
 				settingBox.setVgap(10);
 				settingBox.setHgap(10);
-				Scene scene2 = new Scene(settingBox,600,500);
+				Scene scene2 = new Scene(settingBox, 600, 500);
 				scene2.setFill(Color.BURLYWOOD);
 
 
 				Text settingTitle = new Text("Settings");
-				settingTitle.setFont(Font.font("Copperplate Gothic Light",FontWeight.NORMAL, 20));
-				settingBox.add(settingTitle,0,0);
+				settingTitle.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 20));
+				settingBox.add(settingTitle, 0, 0);
 
 				// Buttons and labels
 
@@ -137,6 +138,15 @@ public class JavaFXMainMenu extends Application {
 				settingBox.add(human, 1, 5);
 				settingBox.add(computer, 1, 6);
 
+				// Play Button
+				Label startGame = new Label("Ready...");
+				settingBox.add(startGame, 0, 10);
+
+				Button play = new Button("PLAY");
+				play.setMinWidth(150);
+				play.setDisable(true);
+				settingBox.add(play,1,10);
+
 				//Human event handling
 				human.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -146,6 +156,8 @@ public class JavaFXMainMenu extends Application {
 						medium.setDisable(true);
 						hard.setDisable(true);
 						aiDifficulty = 0;
+						// Enable Play button
+						play.setDisable(false);
 					}
 
 				});
@@ -158,11 +170,13 @@ public class JavaFXMainMenu extends Application {
 						easy.setDisable(false);
 						medium.setDisable(false);
 						hard.setDisable(false);
+						// Disable Play button
+						play.setDisable(true);
 					}
 
 				});
 
-				// Difficulty: 1,2, or 3
+				// Difficulty: 1,2, or 3				
 				Label difficulty = new Label("Choose difficulty level: ");
 				settingBox.add(difficulty, 0, 7);
 
@@ -181,6 +195,8 @@ public class JavaFXMainMenu extends Application {
 				easy.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 1;
+						// Enable Play button
+						play.setDisable(false);
 					}
 
 				});
@@ -189,6 +205,8 @@ public class JavaFXMainMenu extends Application {
 				medium.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 2;
+						// Enable Play button
+						play.setDisable(false);
 					}
 
 				});
@@ -197,18 +215,13 @@ public class JavaFXMainMenu extends Application {
 				hard.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
 						aiDifficulty = 3;
+						// Enable Play button
+						play.setDisable(false);
 					}
 
 				});
 
-				// Play (starts the game and opens the main screen)
-				Label startGame = new Label("Ready...");
-				settingBox.add(startGame, 0, 10);
-
-				Button play = new Button("PLAY");
-				play.setMinWidth(150);
-				settingBox.add(play,1,10);
-
+				// Play event handling (starts the game and opens the main screen)
 				play.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						settingStage.close();
@@ -224,16 +237,16 @@ public class JavaFXMainMenu extends Application {
 			}
 
 		});
-		
+
 		// Exit
 		exit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				System.exit(0);
 			}
-			
+
 		});
-		
-		menuStage.setScene(scene);		
+
+		menuStage.setScene(scene);
 		menuStage.show();
 	}
 
