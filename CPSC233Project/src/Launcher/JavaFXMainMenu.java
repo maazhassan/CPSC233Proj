@@ -22,10 +22,11 @@ import javafx.stage.Stage;
 
 
 public class JavaFXMainMenu extends Application {
-	
-	private char p1Color;
-	private char p2Type;
-	private int aiDifficulty;
+
+	// TODO: Check if the buttons have been selected before starting the game
+	private char p1Color = '\0';
+	private char p2Type = '\0';
+	private int aiDifficulty = -1;
 
 	//public JavaFXMainMenu() {
 	//	this.start(new Stage());

@@ -3,9 +3,15 @@ package Screens;
 import Launcher.JavaFXApp;
 import Launcher.JavaFXController;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 public class GameScreen extends BaseScreen {
 
@@ -13,13 +19,22 @@ public class GameScreen extends BaseScreen {
     private Color light = Color.rgb(241, 217, 182);
     private Color dark = Color.rgb(181, 137, 99);
 
+    private HashMap<String, Image> images = new HashMap<>();
+
     public GameScreen(JavaFXController controller) {
         this.controller = controller;
     }
 
     @Override
     public void create() {
-
+        char[] colors = {'w', 'b'};
+        char[] pieces = {'b', 'k', 'n', 'p', 'q', 'r'};
+        for (char c : colors) {
+            for (char p : pieces) {
+                String key = String.valueOf(c) + p;
+                images.put(key, loadPng(key));
+            }
+        }
     }
 
     @Override
@@ -66,5 +81,28 @@ public class GameScreen extends BaseScreen {
 
     private int getChessCoordinateY(double mouseY) {
         return (int)(mouseY / (JavaFXApp.SIZE / 8.0));
+    }
+
+    private Image loadPng(String name) {
+        return loadImage(name, ".png");
+    }
+
+    /**
+     * Loads an image with the specified path.
+     * <br />
+     * Images that do not exist will throw an exception.
+     * @param name The image name
+     * @param extension The extension type
+     * @return A new image type.
+     */
+    private Image loadImage(String name, String extension) {
+        File img = new File("assets/" + name + extension);
+        try {
+            return new Image(new FileInputStream(img));
+        } catch (FileNotFoundException e) {
+            // If it crashes here, then maybe the working directory of the Java program might be off.
+            // Try editing the line File img = new File(...) so that the "assets/" will point to the assets folder.
+            throw new RuntimeException("Cannot find image: " + img.getAbsolutePath());
+        }
     }
 }
