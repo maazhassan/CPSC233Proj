@@ -6,6 +6,7 @@ import Game.MainGame;
 import Game.Square;
 import Pieces.Piece;
 import Screens.Screen;
+import javafx.application.Platform;
 
 public class JavaFXController implements GameEventHandler {
 
@@ -22,9 +23,7 @@ public class JavaFXController implements GameEventHandler {
         game = new MainGame(this, p1Color, p2Type, aiDifficulty);
         this.window = window;
 
-        new Thread(() -> {
-            game.start();
-        }).start();
+        new Thread(() -> game.start()).start();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class JavaFXController implements GameEventHandler {
 
     @Override
     public void log(String out) {
-        window.writeToLog(out);
+        Platform.runLater(() -> window.writeToLog(out));
     }
 
     public void setNextMove(int x1, int y1, int x2, int y2) {
