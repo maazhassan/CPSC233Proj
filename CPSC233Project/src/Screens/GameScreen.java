@@ -89,6 +89,8 @@ public class GameScreen extends BaseScreen {
             startX = x;
             startY = y;
             selected = true;
+
+            controller.log("Selected piece: " + x + " " + y);
             return;
         }
 
