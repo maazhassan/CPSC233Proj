@@ -137,9 +137,13 @@ public class GameScreen extends BaseScreen {
         try {
             return new Image(new FileInputStream(img));
         } catch (FileNotFoundException e) {
-            // If it crashes here, then maybe the working directory of the Java program might be off.
-            // Try editing the line File img = new File(...) so that the "assets/" will point to the assets folder.
-            throw new RuntimeException("Cannot find image: " + img.getAbsolutePath());
-        }
+            img = new File("CPSC233Project/assets/" + name + extension);
+            try {
+                return new Image(new FileInputStream(img));
+            }
+            catch (FileNotFoundException a) {
+                throw new RuntimeException("Cannot find image: " + img.getAbsolutePath());
+            }
+        }   
     }
 }
