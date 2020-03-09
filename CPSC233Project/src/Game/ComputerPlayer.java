@@ -33,7 +33,9 @@ public class ComputerPlayer extends Player {
 	 */
 
 	public Move minimaxInit(int depth, Board board, boolean isMaximizingPlayer, boolean isWhite) {
-		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);		
+		Board temp = new Board(board);
+
+		ArrayList<Move> availableMoves = generateMovesList(temp, isWhite);
 		Move bestMove = null;
 		double bestMoveScore = -99999;
 
@@ -42,7 +44,7 @@ public class ComputerPlayer extends Player {
 			Piece endPiece = move.getEnd().getPiece();
 
 			Move.makeMove(move);
-			double moveScore = minimax(depth-1, board, -99999, 99999, !isMaximizingPlayer, !isWhite, isWhite);
+			double moveScore = minimax(depth-1, temp, -99999, 99999, !isMaximizingPlayer, !isWhite, isWhite);
 			Move.undoMove(move, pieceMoved, endPiece);
 
 			if (moveScore >= bestMoveScore) {
@@ -50,7 +52,10 @@ public class ComputerPlayer extends Player {
 				bestMove = move;
 			}
 		}
-		return bestMove;
+
+		return new Move(
+				board.getSquare(bestMove.getStart().getX(), bestMove.getStart().getY()),
+				board.getSquare(bestMove.getEnd().getX(), bestMove.getEnd().getY()));
 	}
 
 	/**
@@ -71,8 +76,7 @@ public class ComputerPlayer extends Player {
 			else return evaluateBoard(board);
 		}
 
-		Board temp = new Board(board);
-		ArrayList<Move> availableMoves = generateMovesList(temp, isWhite);
+		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);
 
 		if (isMaximizingPlayer) {
 			double bestMoveScore = -9999;
