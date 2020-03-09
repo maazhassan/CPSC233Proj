@@ -52,7 +52,8 @@ public class GameScreen extends BaseScreen {
 
         String status = "It's " + controller.getCurrentPlayer() + "'s turn!";
         if (selected) {
-            status = String.format("%s Selected piece (%d, %d)", status, startX, startY);
+            char xcoord = (char)(startX + 'a');
+            status = String.format("%s Selected: (%c%d)", status, xcoord, 8-startY);
         }
         controller.setStatus(status);
     }
