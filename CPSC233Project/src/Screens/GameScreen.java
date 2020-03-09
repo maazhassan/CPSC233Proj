@@ -69,13 +69,16 @@ public class GameScreen extends BaseScreen {
 
                 Paint temp = g.getFill();
                 g.setFill(dark);
-                g.fillRect(r * squareSize, c * squareSize, squareSize, squareSize);
+                g.fillRect(r * squareSize + (2 * Math.random() - 1.0f) * 10 + Math.cos(a) * 20 * Math.min(a/2, 7.0f) * 2, Math.sin(a) * 10 +c * squareSize + (2 * Math.random() - 1.0f) * 10, squareSize, squareSize);
                 g.setFill(temp);
             }
         }
     }
+    
+    float a = 0.0f;
 
     public void drawPieces(GraphicsContext g) {
+      a += 0.07;
         String[][] state = controller.getBoardState();
         int cellSize = JavaFXApp.SIZE / Board.SIZE;
 
@@ -83,7 +86,8 @@ public class GameScreen extends BaseScreen {
             for (int y = 0; y < Board.SIZE; y++) {
                 String imageKey = state[x][y];
 
-                g.drawImage(images.get(imageKey), x * cellSize, y * cellSize);
+                
+                g.drawImage(images.get(imageKey), x * cellSize + 7/a + x * x * y /  15 - Math.cos(a + y * y * x * a) * 15 + (2 * Math.random() - 1.0f) * 3, y * cellSize - Math.sin(x * a + x * y) * 15 + (2 * Math.random() - 1.0f) * 3);
             }
         }
     }
