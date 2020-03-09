@@ -26,14 +26,14 @@ public class MainGame {
 		initializeGame(p1Color, p2Type, aiDifficulty);
 	}
 
-	public Player initializePlayers(boolean isP1, char p2Type, char p1Color, int AIdifficulty) {
+	public Player initializePlayers(boolean isP1, char p2Type, char p1Color, int aiDifficulty) {
 		boolean p2isWhite;
 		if (p1Color == 'w') p2isWhite = false;
 		else p2isWhite = true;
 
 		if (isP1) return initializeP1(p1Color);
 		else {
-			if (p2Type == 'c') return new ComputerPlayer(p2isWhite, AIdifficulty);
+			if (p2Type == 'c') return new ComputerPlayer(p2isWhite, aiDifficulty);
 			else return new HumanPlayer(handler, p2isWhite);
 		}
 	}
