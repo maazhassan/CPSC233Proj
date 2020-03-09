@@ -22,18 +22,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-// Separate Class for Main Menu: can be put together with rest of code later.
-
 
 public class JavaFXMainMenu extends Application {
 	
 	private char p1Color = 'z';
 	private char p2Type = 'z';
 	private int aiDifficulty = 0;
-
-	//public JavaFXMainMenu() {
-	//	this.start(new Stage());
-	//}
 
 	@Override
 	public void start(Stage menuStage) {
