@@ -139,7 +139,7 @@ public class MainGame {
 			return false;
 		}
 
-		temp = board;
+		temp.copyFrom(board);
 
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
@@ -231,13 +231,11 @@ public class MainGame {
 				handler.log("Turn " + currentPlayer.printColor() + ".");
 				if (!currentPlayer.isHuman()) handler.log("Calculating...");
 
-				temp.copyFrom(board);
-
 				//Ask for/play move
 				boolean validMove = false;
 				while (validMove == false) {
 					currentPlayer.setCheck(false);
-					validMove = playMove(currentPlayer.generateMove(temp));
+					validMove = playMove(currentPlayer.generateMove(board));
 					if (currentPlayer.isInCheck()) {
 						printBoard(board);
 						handler.log("Cannot leave/put your king in check.");
@@ -250,14 +248,14 @@ public class MainGame {
 
 				//Check if this move puts the enemy king in check
 				Square enemyKingSquare = currentPlayer.findKingSquare(board);
-				if (enemyKingSquare.getPiece().canBeCheck(temp, enemyKingSquare)) {
+				if (enemyKingSquare.getPiece().canBeCheck(board, enemyKingSquare)) {
 					currentPlayer.setCheck(true);
 				}
 
 				//Check if game is over
 				boolean originalCheckState = currentPlayer.isInCheck();
 				boolean checkMate = false;
-				if (currentPlayer.generateMovesList(temp, currentPlayer.isWhite()).size() == 0) {
+				if (currentPlayer.generateMovesList(board, currentPlayer.isWhite()).size() == 0) {
 					//Update game status to stop loop
 					gameOver = true;
 
