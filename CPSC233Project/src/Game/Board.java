@@ -50,14 +50,6 @@ public class Board {
         }
     }
 
-    public void copyFrom(Board other) {
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                this.data[x][y].setPiece(other.data[x][y].getPiece());
-            }
-        }
-    }
-
     /**
      * Returns a square on the board.
      * @param x The x-value of the square, as an integer.
