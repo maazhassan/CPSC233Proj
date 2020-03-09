@@ -87,7 +87,7 @@ public class JavaFXApp {
         root.getChildren().add(createToolbar());
         root.getChildren().add(body);
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Chess");
         primaryStage.setScene(scene);
         primaryStage.show();
 
