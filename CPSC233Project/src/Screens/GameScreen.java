@@ -32,6 +32,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void create() {
+        // Fast lazy way of loading all assets.
         char[] colors = {'w', 'b'};
         char[] pieces = {'b', 'k', 'n', 'p', 'q', 'r'};
         for (char c : colors) {
@@ -48,6 +49,12 @@ public class GameScreen extends BaseScreen {
         clear(g, light);
         drawBoard(g);
         drawPieces(g);
+
+        String status = "It's " + controller.getCurrentPlayer() + "'s turn!";
+        if (selected) {
+            status = String.format("%s Selected piece (%d, %d)", status, startX, startY);
+        }
+        controller.setStatus(status);
     }
 
     public void drawBoard(GraphicsContext g) {
@@ -101,6 +108,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
+        // Thought we had to dispose loaded images after. I guess not.
     }
 
     private int getChessCoordinateX(double mouseX) {

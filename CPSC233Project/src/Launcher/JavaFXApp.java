@@ -20,11 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Optional;
 
@@ -49,6 +46,7 @@ public class JavaFXApp {
     private char p2Type;
     private int aiDifficulty;
 
+    private Label status;
     private TextArea log;
 
     public JavaFXApp(char p1Color, char p2Type, int aiDifficulty) {
@@ -67,8 +65,10 @@ public class JavaFXApp {
 
         // The main container that splits the left canvas panel with the right log panel
         HBox body = new HBox();
+        VBox rightPanel = new VBox();
 
         Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
+        status = new Label();
         log = new TextArea();
 
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -77,11 +77,14 @@ public class JavaFXApp {
                 controller.getActiveScreen().onMouseEvent(mouseEvent);
             }
         });
+        status.setFont(new Font(30.0));
         log.setEditable(false);
-        log.setMinSize(SIZE * 0.9, SIZE * 0.5);
+        VBox.setVgrow(log, Priority.ALWAYS); // Fill up all the space
+
+        rightPanel.getChildren().addAll(status, log);
 
         body.getChildren().add(canvas);
-        body.getChildren().add(log);
+        body.getChildren().add(rightPanel);
 
         // Weeeeeeee
 
@@ -152,6 +155,10 @@ public class JavaFXApp {
 
     public void writeToLog(String text) {
         log.appendText(text + '\n');
+    }
+
+    public void setStatus(String str) {
+        status.setText(str);
     }
 }
 

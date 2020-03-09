@@ -201,6 +201,11 @@ public class MainGame {
 		return board.getSquare(x,  y).getPiece();
 	}
 
+	public String getCurrentPlayer() {
+		// If we are to implement 3 or 4-player chess, then we should use and return enums instead.
+		return currentPlayer.isWhite() ? "White" : "Black";
+	}
+
 	//main method, runs the game
 	public void start() {
 

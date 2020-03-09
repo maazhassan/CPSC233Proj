@@ -60,6 +60,10 @@ public class JavaFXController implements GameEventHandler {
         }
     }
 
+    public String getCurrentPlayer() {
+        return game.getCurrentPlayer();
+    }
+
     public void undo() {
         setNextMove(8, 0, 0, 0);
     }
@@ -87,6 +91,10 @@ public class JavaFXController implements GameEventHandler {
         }
 
         return boardState;
+    }
+
+    public void setStatus(String s) {
+        window.setStatus(s);
     }
 
     public void setActiveScreen(Screen s) {
