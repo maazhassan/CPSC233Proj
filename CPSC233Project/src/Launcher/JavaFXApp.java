@@ -26,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.util.Optional;
 
 /**
  * The JavaFX implementation follows the MVC pattern.
@@ -84,7 +85,7 @@ public class JavaFXApp {
 
         // Weeeeeeee
 
-        root.getChildren().add(createToolbar());
+        root.getChildren().add(createToolbar(primaryStage));
         root.getChildren().add(body);
 
         primaryStage.setTitle("Chess");
@@ -96,7 +97,7 @@ public class JavaFXApp {
         startGameLoop(canvas.getGraphicsContext2D());
     }
 
-    public Pane createToolbar() {
+    public Pane createToolbar(Stage primaryStage) {
         GridPane toolbar = new GridPane();
         toolbar.setPadding(new Insets(4, 4, 4, 4));
         toolbar.setHgap(10);
@@ -113,12 +114,17 @@ public class JavaFXApp {
             @Override
             public void handle(ActionEvent actionEvent) {
                 //Confirmation dialog box 
-                String confirmText = "Are you sure you want to restart?";
+                String confirmText = "Are you sure you want to restart the application?";
                 Alert confirmAlert = new Alert(AlertType.CONFIRMATION, confirmText, ButtonType.YES, ButtonType.NO);
                 confirmAlert.setTitle("Restart Confirmation");
                 confirmAlert.setHeaderText(null);
                 confirmAlert.setGraphic(null);
-                confirmAlert.showAndWait();
+                confirmAlert.setResizable(false);
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+                if(result.get() == ButtonType.YES) {
+                    primaryStage.close();
+                    new JavaFXMainMenu().start(new Stage());
+                }
             }
         });
         undo.setText("Undo");

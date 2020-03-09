@@ -1,5 +1,7 @@
 package Launcher;
 
+import java.util.Observable;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -20,18 +22,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-// Separate Class for Main Menu: can be put together with rest of code later.
-
 
 public class JavaFXMainMenu extends Application {
 	
-	private char p1Color;
-	private char p2Type;
-	private int aiDifficulty;
-
-	//public JavaFXMainMenu() {
-	//	this.start(new Stage());
-	//}
+	private char p1Color = 'z';
+	private char p2Type = 'z';
+	private int aiDifficulty = 0;
 
 	@Override
 	public void start(Stage menuStage) {
@@ -85,25 +81,35 @@ public class JavaFXMainMenu extends Application {
 
 				// Buttons and labels
 
-				//Creating toggle groups and buttons
-				//Colors
+				//Play button
+				//Label
+				Label startGame = new Label("Ready...");
+				settingBox.add(startGame, 0, 10);
+				//Creating button
+				Button play = new Button("PLAY");
+				//Button settings
+				play.setMinWidth(150);
+				play.setDisable(true);
+				settingBox.add(play,1,10);
+				// Play event handling (starts the game and opens the main screen)
+				play.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						settingStage.close();
+						menuStage.close();
+						displayGame();
+					}
+				});
+
+				//Creating toggle groups and settings buttons
+				
+				//Color selection
+				//Label
+				Label colour = new Label("Choose colour to play as: ");
+				settingBox.add(colour, 0, 3);
+				//Creating toggle group and buttons
 				ToggleGroup colorGroup = new ToggleGroup();
 				ToggleButton black = new ToggleButton("Black");
 				ToggleButton white = new ToggleButton("White");
-				//Opponent
-				ToggleGroup opponentGroup = new ToggleGroup();
-				ToggleButton human = new ToggleButton("Human");
-				ToggleButton computer = new ToggleButton("Computer");
-				//Difficulty
-				ToggleGroup difficultyGroup = new ToggleGroup();
-				ToggleButton easy = new ToggleButton("Easy");
-				ToggleButton medium = new ToggleButton("Medium");
-				ToggleButton hard = new ToggleButton("Hard");
-
-				//Color selection
-				Label colour = new Label("Choose colour to play as: ");
-				settingBox.add(colour, 0, 3);
-
 				//Button settings
 				black.setToggleGroup(colorGroup);
 				white.setToggleGroup(colorGroup);
@@ -111,75 +117,37 @@ public class JavaFXMainMenu extends Application {
 				white.setMinWidth(150);
 				settingBox.add(black, 1, 3);
 				settingBox.add(white, 1, 4);
-
-				//Black event handling
-				black.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						p1Color = 'b';
+				//Event listener for toggle group
+				colorGroup.selectedToggleProperty().addListener(
+					(observable, oldToggle, newToggle) -> {
+						if (newToggle == black) {
+							p1Color = 'b';
+							updatePlayButton(play);
+						}
+						else if (newToggle == white) {
+							p1Color = 'w';
+							updatePlayButton(play);
+						}
+						else {
+							p1Color = 'z';
+							updatePlayButton(play);
+						}
 					}
-				});
+				);
 
-				//White event handling
-				white.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						p1Color = 'w';
-					}
-				});
-
-				//Opponent: computer or human
-				Label player = new Label("Choose opponent type: ");
-				settingBox.add(player, 0, 5);
-
-				//Button settings
-				human.setToggleGroup(opponentGroup);
-				computer.setToggleGroup(opponentGroup);
-				human.setMinWidth(150);
-				computer.setMinWidth(150);
-				settingBox.add(human, 1, 5);
-				settingBox.add(computer, 1, 6);
-
-				// Play Button
-				Label startGame = new Label("Ready...");
-				settingBox.add(startGame, 0, 10);
-
-				Button play = new Button("PLAY");
-				play.setMinWidth(150);
-				play.setDisable(true);
-				settingBox.add(play,1,10);
-
-				//Human event handling
-				human.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						p2Type = 'h';
-						//Disable difficulty buttons if player has selected human opponent
-						easy.setDisable(true);
-						medium.setDisable(true);
-						hard.setDisable(true);
-						aiDifficulty = 0;
-						// Enable Play button
-						play.setDisable(false);
-					}
-
-				});
-
-				//Computer event handling
-				computer.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						p2Type = 'c';
-						//Enable difficulty buttons if player has selected computer opponent
-						easy.setDisable(false);
-						medium.setDisable(false);
-						hard.setDisable(false);
-						// Disable Play button
-						play.setDisable(true);
-					}
-
-				});
-
-				// Difficulty: 1,2, or 3				
+				//Difficulty
+				//Label
 				Label difficulty = new Label("Choose difficulty level: ");
 				settingBox.add(difficulty, 0, 7);
-
+				//Creating toggle group and buttons
+				ToggleGroup difficultyGroup = new ToggleGroup();
+				ToggleButton easy = new ToggleButton("Easy");
+				ToggleButton medium = new ToggleButton("Medium");
+				ToggleButton hard = new ToggleButton("Hard");
+				//Have buttons intitially disabled
+				easy.setDisable(true);
+				medium.setDisable(true);
+				hard.setDisable(true);
 				//Button settings
 				easy.setToggleGroup(difficultyGroup);
 				medium.setToggleGroup(difficultyGroup);
@@ -190,46 +158,69 @@ public class JavaFXMainMenu extends Application {
 				settingBox.add(easy, 1, 7);
 				settingBox.add(medium, 1, 8);
 				settingBox.add(hard, 1, 9);
-
-				//Easy event handling
-				easy.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						aiDifficulty = 1;
-						// Enable Play button
-						play.setDisable(false);
+				//Event listener for toggle group
+				difficultyGroup.selectedToggleProperty().addListener(
+					(observable, oldToggle, newToggle) -> {
+						if (newToggle == easy) {
+							aiDifficulty = 1;
+							updatePlayButton(play);
+						}
+						else if (newToggle == medium) {
+							aiDifficulty = 2;
+							updatePlayButton(play);
+						}
+						else if (newToggle == hard) {
+							aiDifficulty = 3;
+							updatePlayButton(play);
+						}
+						else {
+							aiDifficulty = 0;
+							updatePlayButton(play);
+						}
 					}
+				);
 
-				});
-
-				//Medium event handling
-				medium.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						aiDifficulty = 2;
-						// Enable Play button
-						play.setDisable(false);
+				//Opponent: computer or human
+				//Label
+				Label player = new Label("Choose opponent type: ");
+				settingBox.add(player, 0, 5);
+				//Creating toggle group and buttons
+				ToggleGroup opponentGroup = new ToggleGroup();
+				ToggleButton human = new ToggleButton("Human");
+				ToggleButton computer = new ToggleButton("Computer");
+				//Button settings
+				human.setToggleGroup(opponentGroup);
+				computer.setToggleGroup(opponentGroup);
+				human.setMinWidth(150);
+				computer.setMinWidth(150);
+				settingBox.add(human, 1, 5);
+				settingBox.add(computer, 1, 6);
+				//Event listener for toggle group
+				opponentGroup.selectedToggleProperty().addListener(
+					(observable, oldToggle, newToggle) -> {
+						if (newToggle == human) {
+							p2Type = 'h';
+							easy.setDisable(true);
+							medium.setDisable(true);
+							hard.setDisable(true);
+							updatePlayButton(play);
+						}
+						else if (newToggle == computer) {
+							p2Type = 'c';
+							easy.setDisable(false);
+							medium.setDisable(false);
+							hard.setDisable(false);
+							updatePlayButton(play);
+						}
+						else {
+							p2Type = 'z';
+							easy.setDisable(true);
+							medium.setDisable(true);
+							hard.setDisable(true);
+							updatePlayButton(play);
+						}
 					}
-
-				});
-
-				//Hard event handling
-				hard.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent e) {
-						aiDifficulty = 3;
-						// Enable Play button
-						play.setDisable(false);
-					}
-
-				});
-
-				// Play event handling (starts the game and opens the main screen)
-				play.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						settingStage.close();
-						menuStage.close();
-						displayGame();
-					}
-
-				});
+				);
 
 				settingStage.setScene(scene2);
 				settingStage.show();
@@ -248,6 +239,15 @@ public class JavaFXMainMenu extends Application {
 
 		menuStage.setScene(scene);
 		menuStage.show();
+	}
+
+	public void updatePlayButton(Button play) {
+		if (p1Color != 'z' && p2Type == 'h') play.setDisable(false);
+		else if (p1Color != 'z' && p2Type == 'c') {
+			if (aiDifficulty != 0) play.setDisable(false);
+			else play.setDisable(true);
+		}
+		else play.setDisable(true);
 	}
 
 	public void displayGame() {
