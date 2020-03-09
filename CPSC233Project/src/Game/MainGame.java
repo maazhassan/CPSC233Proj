@@ -139,7 +139,7 @@ public class MainGame {
 			return false;
 		}
 
-		temp.copyFrom(board);
+		temp = board;
 
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
