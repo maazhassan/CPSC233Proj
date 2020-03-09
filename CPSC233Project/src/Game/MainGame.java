@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public class MainGame {
 
 	private Board board;
+	private Board temp;
+
 	private boolean gameOver = false;
 	private Player currentPlayer;
 	private Player p1 = null;
@@ -56,6 +58,7 @@ public class MainGame {
 
 	public void reset() {
 		this.board = new Board(p1.isWhite());
+		temp = new Board(board);
 		boardStates.clear();
 		boardStates.add(new Board(this.board));
 
@@ -136,6 +139,8 @@ public class MainGame {
 			return false;
 		}
 
+		temp.copyFrom(board);
+
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
 		Piece endPiece = move.getEnd().getPiece();
@@ -152,7 +157,7 @@ public class MainGame {
 			}
 
 			//Check if the piece can move to that square
-			if (!pieceMoved.canMove(board, move)) {
+			if (!pieceMoved.canMove(temp, move)) {
 				this.printBoard(board);
 				handler.log("That piece cannot move there.");
 				handler.log("Turn " + currentPlayer.printColor() + ".");
@@ -165,7 +170,7 @@ public class MainGame {
 
 				Square ownKingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king belonging to the player on it
 
-				if (ownKingSquare.getPiece().canBeCheck(board, ownKingSquare)) {
+				if (ownKingSquare.getPiece().canBeCheck(temp, ownKingSquare)) {
 					check = true;
 				}
 
