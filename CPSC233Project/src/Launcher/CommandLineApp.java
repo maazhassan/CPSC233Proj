@@ -31,21 +31,32 @@ public class CommandLineApp {
 
             @Override
             public int[] createMove() {
-                System.out.println("Type '8' to undo, '9' to redo.\n");
-                System.out.println("Starting square x:");
-                move[0] = input.nextInt();
+                boolean valid = false;
 
-                // Verify undo/redo
-                if (move[0] == 8 || move[0] == 9) {
-                    return move;
+                while (!valid) {
+                    try {
+                        System.out.println("Type '8' to undo, '9' to redo.\n");
+                        System.out.println("Starting square x:");
+                        move[0] = input.nextInt();
+
+                        // Verify undo/redo
+                        if (move[0] == 8 || move[0] == 9) {
+                            return move;
+                        }
+
+                        System.out.println("Starting square y:");
+                        move[1] = input.nextInt();
+                        System.out.println("Ending square x:");
+                        move[2] = input.nextInt();
+                        System.out.println("Ending square y:");
+                        move[3] = input.nextInt();
+                        valid = true;
+                    }
+                    catch (java.util.InputMismatchException e) {
+                        input.next();
+                        continue;
+                    }
                 }
-
-                System.out.println("Starting square y:");
-                move[1] = input.nextInt();
-                System.out.println("Ending square x:");
-                move[2] = input.nextInt();
-                System.out.println("Ending square y:");
-                move[3] = input.nextInt();
                 return move;
             }
 
@@ -70,9 +81,17 @@ public class CommandLineApp {
     private static int askAIDifficulty(boolean p2IsComp) {
         int difficulty = 0;
         if (p2IsComp) {
-            while (difficulty != 1 && difficulty != 2 && difficulty != 3) {
-                System.out.println("Select computer difficulty (1,2,3):");
-                difficulty = input.nextInt();
+            boolean valid = false;
+            while (!valid) {
+                try {
+                    System.out.println("Select computer difficulty (1,2,3):");
+                    difficulty = input.nextInt();
+                    if (difficulty == 1 || difficulty == 2 || difficulty == 3) valid = true;
+                }
+                catch (java.util.InputMismatchException e) {
+                    input.next();
+                    continue;
+                }
             }
         }
         return difficulty;
