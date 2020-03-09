@@ -35,21 +35,29 @@ public class CommandLineApp {
 
                 while (!valid) {
                     try {
-                        System.out.println("Type '8' to undo, '9' to redo.\n");
-                        System.out.println("Starting square x:");
-                        move[0] = input.nextInt();
+                        System.out.println("Type 'u' to undo, 'r' to redo.\n");
+                        System.out.print("Starting coordinate: ");
+                        String input1 = input.next().toLowerCase();
 
                         // Verify undo/redo
-                        if (move[0] == 8 || move[0] == 9) {
+                        if (input1.equals("u") || input1.equals("r")) {
+                            move[0] = input1.equals("u") ? 8 : 9;
                             return move;
                         }
 
-                        System.out.println("Starting square y:");
-                        move[1] = input.nextInt();
-                        System.out.println("Ending square x:");
-                        move[2] = input.nextInt();
-                        System.out.println("Ending square y:");
-                        move[3] = input.nextInt();
+                        System.out.print("Ending coordinate: ");
+                        String input2 = input.next().toLowerCase();
+
+                        if (input1.length() != 2 || input2.length() != 2) {
+                            System.out.println("Unknown coordinate!");
+                            continue;
+                        }
+
+                        move[0] = input1.charAt(0) - 'a';
+                        move[1] = 8 - (int)(input1.charAt(1) - '0');
+                        move[2] = input2.charAt(0) - 'a';
+                        move[3] = 8 - (int)(input2.charAt(1) - '0');
+
                         valid = true;
                     }
                     catch (java.util.InputMismatchException e) {

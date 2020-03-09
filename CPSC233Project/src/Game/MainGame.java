@@ -98,12 +98,12 @@ public class MainGame {
 	}
 
 	public void printBoard(Board board) {
-		String printedBoard = "     0   1   2   3   4   5   6   7" + "\n";
+		String printedBoard = "     a   b   c   d   e   f   g   h" + "\n";
 		printedBoard = printedBoard + "   ---------------------------------";
 		for (int y = 0; y < 8; y++) {
 
 			printedBoard = printedBoard + "\n";
-			printedBoard = printedBoard + y + "  |";
+			printedBoard = printedBoard + (8-y) + "  |";
 			for (int x = 0; x < 8; x++) {
 				Piece pieceOnSquare = board.getSquare(x, y).getPiece();
 
