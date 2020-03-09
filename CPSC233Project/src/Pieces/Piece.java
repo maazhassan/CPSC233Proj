@@ -10,6 +10,8 @@ public abstract class Piece {
 	private boolean white;
 	private boolean hasMoved = false;
 
+	private Board temp = null;
+
 	/**
 	 * Creates a piece.
 	 * @param isWhite True if the piece is white, false otherwise.
@@ -70,16 +72,20 @@ public abstract class Piece {
 	 */
 
     public boolean canBeCheck(Board board, Square kingSquare) {
+    	if (temp == null) temp = new Board(board);
+
+    	temp.copyFrom(board);
+
     	for (int x = 0; x < 8; x++) {
     		for (int y = 0; y < 8; y++) {
-    			Square square = board.getSquare(x, y);
+    			Square square = temp.getSquare(x, y);
     			Piece pieceOnSquare = square.getPiece();
     			if (pieceOnSquare != null) {
     				if (pieceOnSquare.isWhite() != this.isWhite() && !(pieceOnSquare instanceof King)) {
                         //System.out.println(x + "," + y);
     					Move checkTestMove = new Move(square, kingSquare);
                         //System.out.printf("Move: %d %d -> %d %d\n", square.getX(), square.getY(), kingSquare.getX(), kingSquare.getY());
-    					if (pieceOnSquare.canMove(board, checkTestMove)) return true;
+    					if (pieceOnSquare.canMove(temp, checkTestMove)) return true;
     				}
     			}
     		}
