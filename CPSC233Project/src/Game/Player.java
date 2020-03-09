@@ -11,7 +11,7 @@ public abstract class Player {
 	private boolean human;
 	private boolean inCheck = false;
 	private int difficulty = 0;
-	
+
 	/**
 	 * 
 	 * @return True if the player is white, false otherwise.
@@ -125,6 +125,7 @@ public abstract class Player {
 	 */
 
 	public ArrayList<Move> generateMovesList(Board board, boolean whitePieces) {
+
 		ArrayList<Move> availableMoves = new ArrayList<Move>();
 		
 		//Loops through every square on the board and adds all available moves to the ArrayList

@@ -71,7 +71,8 @@ public class ComputerPlayer extends Player {
 			else return evaluateBoard(board);
 		}
 
-		ArrayList<Move> availableMoves = generateMovesList(board, isWhite);
+		Board temp = new Board(board);
+		ArrayList<Move> availableMoves = generateMovesList(temp, isWhite);
 
 		if (isMaximizingPlayer) {
 			double bestMoveScore = -9999;
