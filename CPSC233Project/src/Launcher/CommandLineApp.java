@@ -60,7 +60,7 @@ public class CommandLineApp {
 
                         valid = true;
                     }
-                    catch (java.util.InputMismatchException e) {
+                    catch (Exception e) {
                         input.next();
                         continue;
                     }
@@ -79,9 +79,20 @@ public class CommandLineApp {
 
     private static char askP2Type() {
         char p2Type = 'a';
-        while (p2Type != 'c' && p2Type != 'h') {
-            System.out.println("Play against computer or another human? (enter 'c' or 'h'):");
-            p2Type = input.nextLine().charAt(0);
+        boolean valid = false;
+        while (!valid) {
+            try {
+                System.out.println("Play against computer or another human? (enter 'c' or 'h'):");
+                String p2TypeString = input.next();
+                if (p2TypeString.equals("c") || p2TypeString.equals("h")) {
+                    valid = true;
+                    p2Type = p2TypeString.charAt(0);
+                }
+            }
+            catch (Exception e) {
+                input.next();
+                continue;
+            }
         }
         return p2Type;
     }
@@ -96,7 +107,7 @@ public class CommandLineApp {
                     difficulty = input.nextInt();
                     if (difficulty == 1 || difficulty == 2 || difficulty == 3) valid = true;
                 }
-                catch (java.util.InputMismatchException e) {
+                catch (Exception e) {
                     input.next();
                     continue;
                 }
