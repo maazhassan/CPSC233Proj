@@ -3,10 +3,14 @@ package Launcher;
 import Game.Board;
 import Game.GameEventHandler;
 import Game.MainGame;
-import Game.Square;
 import Pieces.Piece;
 import Screens.Screen;
 import javafx.application.Platform;
+
+/**
+ * The controller for the JavaFX version of the game. Implements the handler,
+ * so this class can be passed to a MainGame instance to control it.
+ */
 
 public class JavaFXController implements GameEventHandler {
 
@@ -18,6 +22,15 @@ public class JavaFXController implements GameEventHandler {
 
     // Reuse the object so we don't eat up the memory
     private String[][] boardState = new String[Board.SIZE][Board.SIZE];
+
+    /**
+     * Creates an instance of the controller. Also creates a MainGame instance, and
+     * passes itself to it.
+     * @param window The JavaFXApp window that contains this controller.
+     * @param p1Color The color of player 1.
+     * @param p2Type The type of player 2.
+     * @param aiDifficulty The difficulty of the AI.
+     */
 
     public JavaFXController(JavaFXApp window, char p1Color, char p2Type, int aiDifficulty) {
         game = new MainGame(this, p1Color, p2Type, aiDifficulty);
@@ -49,6 +62,16 @@ public class JavaFXController implements GameEventHandler {
         Platform.runLater(() -> window.writeToLog(out));
     }
 
+    /**
+     * Creates the next move selected by the player. The player chooses moves by clicking on
+     * the squares of the chess board while the thread waits. Notifies the waiting thread
+     * once the user has selected a move, and passes the move to the createMove() method.
+     * @param x1 The first x coordinate.
+     * @param y1 The first y coordinate.
+     * @param x2 The second x coordinate.
+     * @param y2 The second y coordinate.
+     */
+    
     public void setNextMove(int x1, int y1, int x2, int y2) {
         synchronized(nextMove) {
             nextMove[0] = x1;
@@ -60,17 +83,41 @@ public class JavaFXController implements GameEventHandler {
         }
     }
 
+    /**
+     * 
+     * @return The current player.
+     */
+
     public String getCurrentPlayer() {
         return game.getCurrentPlayer();
     }
+
+    /**
+     * Creates the next move as one that will have its undo variable set to true.
+     * When the move is passed up to playMove() in the MainGame class, it will 
+     * know to invoke the appropriate method in order to undo the last move.
+     */
 
     public void undo() {
         setNextMove(8, 0, 0, 0);
     }
 
+    /**
+     * Creates the next move as one that will have its redo variable set to true.
+     * When the move is passed up to playMove() in the MainGame class, it will 
+     * know to invoke the appropriate method in order to redo the last move.
+     */
+
     public void redo() {
         setNextMove(9, 0, 0, 0);
     }
+
+    /**
+     * Creates a 2D array representing the current state of the board.
+     * This 2D array is used to draw the pieces onto the board, by
+     * using the elements as keys for a HashMap.
+     * @return A 2D array representing the current board state.
+     */
 
     public String[][] getBoardState() {
         for (int x = 0;  x < Board.SIZE; x++) {
@@ -93,14 +140,28 @@ public class JavaFXController implements GameEventHandler {
         return boardState;
     }
 
+    /**
+     * Used to set the status in the game window.
+     */
+
     public void setStatus(String s) {
         window.setStatus(s);
     }
+
+    /**
+     * Creates and sets the active screen.
+     * @param s The screen to be set.
+     */
 
     public void setActiveScreen(Screen s) {
         activeScreen = s;
         s.create();
     }
+
+    /**
+     * 
+     * @return The current active screen.
+     */
 
     public Screen getActiveScreen() {
         return activeScreen;

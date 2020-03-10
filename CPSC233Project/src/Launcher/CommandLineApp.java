@@ -2,11 +2,11 @@ package Launcher;
 
 import Game.GameEventHandler;
 import Game.MainGame;
-import Game.Move;
 import java.util.Scanner;
 
 /**
- * This class is used to play the command line version of the game.
+ * This class is used to play the command line version of the game. The handler
+ * created within this class is passed to a MainGame instance to control it.
  */
 
 public class CommandLineApp {
