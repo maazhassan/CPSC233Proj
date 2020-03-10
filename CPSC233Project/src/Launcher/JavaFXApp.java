@@ -49,11 +49,23 @@ public class JavaFXApp {
     private Label status;
     private TextArea log;
 
+    /**
+     * Creates an instance of JavaFXApp.
+     * @param p1Color The color of player 1.
+     * @param p2Type The type of player 2.
+     * @param aiDifficulty The difficulty of the AI.
+     */
+
     public JavaFXApp(char p1Color, char p2Type, int aiDifficulty) {
         this.p1Color = p1Color;
         this.p2Type = p2Type;
         this.aiDifficulty = aiDifficulty;
     }
+
+    /**
+     * Intitializes and runs the app. Creates the controller used to interact with 
+     * the MainGame instance currently in play. Also creates the main app window.
+     */
 
     public void run() {
         Stage primaryStage = new Stage();
@@ -86,8 +98,6 @@ public class JavaFXApp {
         body.getChildren().add(canvas);
         body.getChildren().add(rightPanel);
 
-        // Weeeeeeee
-
         root.getChildren().add(createToolbar(primaryStage));
         root.getChildren().add(body);
 
@@ -99,6 +109,12 @@ public class JavaFXApp {
         controller.setActiveScreen(new GameScreen(controller));
         startGameLoop(canvas.getGraphicsContext2D());
     }
+
+    /**
+     * Creates the toolbar displayed at the top of the main app window.
+     * @param primaryStage The primary stage.
+     * @return The toolbar.
+     */
 
     public Pane createToolbar(Stage primaryStage) {
         GridPane toolbar = new GridPane();
@@ -140,6 +156,11 @@ public class JavaFXApp {
         return toolbar;
     }
 
+    /**
+     * Starts the game loop -> checks for updates and renders them on the Canvas.
+     * @param c GraphicsContext associated with the Canvas being used.
+     */
+
     public void startGameLoop(GraphicsContext c) {
         long prev = System.nanoTime();
         new AnimationTimer() {
@@ -153,9 +174,19 @@ public class JavaFXApp {
         }.start();
     }
 
+    /**
+     * Prints text to log.
+     * @param text String containing text to log.
+     */
+
     public void writeToLog(String text) {
         log.appendText(text + '\n');
     }
+
+    /**
+     * Updates game status.
+     * @param str String containing game status.
+     */
 
     public void setStatus(String str) {
         status.setText(str);
