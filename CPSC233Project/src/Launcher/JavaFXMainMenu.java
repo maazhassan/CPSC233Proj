@@ -1,7 +1,6 @@
 package Launcher;
 
 import java.util.Observable;
-
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -22,17 +21,21 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+/**
+ * Class that creates the main menu, and creates a JavaFXApp instance.
+ */
 public class JavaFXMainMenu extends Application {
 	
 	private char p1Color = 'z';
 	private char p2Type = 'z';
 	private int aiDifficulty = 0;
 
+	//Start method
 	@Override
 	public void start(Stage menuStage) {
 		menuStage.setTitle("Main Menu");
 
+		//Setup
 		VBox vbox = new VBox();
 		vbox.setBackground(Background.EMPTY);
 		Scene scene = new Scene(vbox, 600, 400);
@@ -40,19 +43,18 @@ public class JavaFXMainMenu extends Application {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(40);
 
-
 		// Title
 		Label title = new Label("CHESS");
 		title.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 35));
 		vbox.getChildren().add(title);
 
 		// Buttons
+		//Start
 		Button start = new Button("Start");
 		start.setMinWidth(100);
 		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
-		//start.setBackground(new Background(new BackgroundFill(Color.CORNSILK, null, null)));
 
-
+		//End
 		Button exit = new Button("Exit");
 		exit.setMinWidth(100);
 		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
@@ -63,6 +65,7 @@ public class JavaFXMainMenu extends Application {
 		// Start
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
+
 				//Setup
 				Stage settingStage = new Stage();
 				settingStage.setTitle("Settings");
@@ -71,12 +74,13 @@ public class JavaFXMainMenu extends Application {
 				settingBox.setAlignment(Pos.BASELINE_CENTER);
 				settingBox.setVgap(10);
 				settingBox.setHgap(10);
+
 				Scene scene2 = new Scene(settingBox, 600, 500);
 				scene2.setFill(Color.BURLYWOOD);
 
-
 				Text settingTitle = new Text("Settings");
 				settingTitle.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 20));
+
 				settingBox.add(settingTitle, 0, 0);
 
 				// Buttons and labels
@@ -241,6 +245,11 @@ public class JavaFXMainMenu extends Application {
 		menuStage.show();
 	}
 
+	/**
+	 * Checks and updates the status of the play button on the main menu.
+	 * @param play The play button.
+	 */
+
 	public void updatePlayButton(Button play) {
 		if (p1Color != 'z' && p2Type == 'h') play.setDisable(false);
 		else if (p1Color != 'z' && p2Type == 'c') {
@@ -250,21 +259,45 @@ public class JavaFXMainMenu extends Application {
 		else play.setDisable(true);
 	}
 
+	/**
+	 * Creates an instance of JavaFXApp, where the game is run from.
+	 */
+
 	public void displayGame() {
 		new JavaFXApp(p1Color, p2Type, aiDifficulty).run();
 	}
+
+	/**
+	 * 
+	 * @return The color of player 1, chosen by the user.
+	 */
 
 	public char getP1Color() {
 		return this.p1Color;
 	}
 
+	/**
+	 * 
+	 * @return The type of player 2, chosen by the user.
+	 */
+
 	public char getP2Type() {
 		return this.p2Type;
 	}
 
+	/**
+	 * 
+	 * @return The difficult of the AI, chosen by the user.
+	 */
+
 	public int getAIDifficulty() {
 		return this.aiDifficulty;
 	}
+
+	/**
+	 * Main method, entry point of the application.
+	 * @param args
+	 */
 
 	public static void main(String[] args) {
 		launch(args);
