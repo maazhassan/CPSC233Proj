@@ -75,7 +75,7 @@ public class JavaFXController implements GameEventHandler {
     public String[][] getBoardState() {
         for (int x = 0;  x < Board.SIZE; x++) {
             for (int y = 0; y < Board.SIZE; y++) {
-                Piece piece = game.getPiece(x, y);
+                Piece piece = game.getBoard().getSquare(x, y).getPiece();
 
                 if (piece == null) {
                     boardState[x][y] = null;

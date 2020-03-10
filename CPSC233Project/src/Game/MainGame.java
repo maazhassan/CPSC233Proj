@@ -4,8 +4,7 @@ import Pieces.*;
 import java.util.ArrayList;
 
 /**
- * Main game class that puts all the other classes together.
- * Used to actually run the game.
+ * Main game class that controls the game in the back end.
  */
 
 public class MainGame {
@@ -23,10 +22,27 @@ public class MainGame {
 	private GameEventHandler handler;
 
 
+	/**
+	 * Constructor for game instance.
+	 * @param handler The handler to be used for this instance. Could be command line or JavaFX handler.
+	 * @param p1Color The color of player 1.
+	 * @param p2Type The type of player 2.
+	 * @param aiDifficulty The difficulty of the AI.
+	 */
+
 	public MainGame(GameEventHandler handler, char p1Color, char p2Type, int aiDifficulty) {
 		this.handler = handler;
 		initializeGame(p1Color, p2Type, aiDifficulty);
 	}
+	
+	/**
+	 * Method that intitializes the players.
+	 * @param isP1 True if player 1 is being initialized.
+	 * @param p2Type The type of player 2.
+	 * @param p1Color The color of player 1.
+	 * @param aiDifficulty The difficulty of the AI.
+	 * @return The player instance.
+	 */
 
 	public Player initializePlayers(boolean isP1, char p2Type, char p1Color, int aiDifficulty) {
 		boolean p2isWhite;
@@ -40,6 +56,12 @@ public class MainGame {
 		}
 	}
 
+	/**
+	 * Initializes player 1.
+	 * @param color The color of player 1.
+	 * @return A player one instance.
+	 */
+
 	public HumanPlayer initializeP1(char color) {
 		if (color == 'w') {
 			return new HumanPlayer(handler, true);
@@ -49,12 +71,23 @@ public class MainGame {
 		}
 	}
 
+	/**
+	 * Setup the game.
+	 * @param p1Color The color of player 1.
+	 * @param p2Type The type of player 2.
+	 * @param aiDifficulty The difficulty of the AI.
+	 */
+
 	public void initializeGame(char p1Color, char p2Type, int aiDifficulty) {
 		p1 = initializePlayers(true, p2Type, p1Color, aiDifficulty);
 		p2 = initializePlayers(false, p2Type, p1Color, aiDifficulty);
 
 		reset();
 	}
+
+	/**
+	 * Resets the board, setting it up for the game.
+	 */
 
 	public void reset() {
 		this.board = new Board(p1.isWhite());
@@ -75,10 +108,21 @@ public class MainGame {
 		gameOver = false;
 	}
 
+	/**
+	 * Switches the current player to the other player.
+	 */
+
 	public void switchPlayers() {
 		if (this.currentPlayer == p1) this.currentPlayer = p2;
 		else this.currentPlayer = p1;
 	}
+
+	/**
+	 * Alters the board state, performing and undo/redo operation.
+	 * This is accomplished by checking 2 flag variables attached to
+	 * the passed move object, and then performing the appropriate operation.
+	 * @param move The move object, with either isUndo() or isRedo() being true.
+	 */
 
 	public void alterBoardState(Move move) {
 		if (move.isUndo()) {
@@ -99,6 +143,11 @@ public class MainGame {
 			if (!p2.isHuman()) switchPlayers();
 		}
 	}
+
+	/**
+	 * Prints the board, used for the command line version.
+	 * @param board The board to print.
+	 */
 
 	public void printBoard(Board board) {
 		String printedBoard = "     a   b   c   d   e   f   g   h" + "\n";
@@ -127,6 +176,14 @@ public class MainGame {
 		}
 		handler.log(printedBoard);
 	}
+
+	/**
+	 * Plays the given move after performing all appropriate checks.
+	 * Used for moves inputted by a human player only.
+	 * @param move The move to play.
+	 * @return True if the move is valid -> the move is then played automatically.
+	 * 		   If false is returned, the move is not played.
+	 */
 
 	public boolean playMove(Move move) {
 
@@ -205,16 +262,28 @@ public class MainGame {
 		else return false;
 	}
 
-	public Piece getPiece(int x, int y) {
-		return board.getSquare(x,  y).getPiece();
+	/**
+	 * 
+	 * @return The main game board instance.
+	 */
+
+	public Board getBoard() {
+		return this.board;
 	}
+
+	/**
+	 * 
+	 * @return The current player.
+	 */
 
 	public String getCurrentPlayer() {
 		// If we are to implement 3 or 4-player chess, then we should use and return enums instead.
 		return currentPlayer.isWhite() ? "White" : "Black";
 	}
 
-	//main method, runs the game
+	/**
+	 * Start method, entry point for the back end game instance.
+	 */
 	public void start() {
 
 		boolean playAgain = true;
