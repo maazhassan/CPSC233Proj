@@ -158,7 +158,7 @@ public class JavaFXApp {
 
     /**
      * Starts the game loop -> checks for updates and renders them on the Canvas.
-     * @param c GraphicsContext associated with the Canvas being used.
+     * @param c The GraphicsContext associated with the Canvas being used.
      */
 
     public void startGameLoop(GraphicsContext c) {

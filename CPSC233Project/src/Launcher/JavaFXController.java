@@ -98,7 +98,6 @@ public class JavaFXController implements GameEventHandler {
     }
 
     public void setActiveScreen(Screen s) {
-        if (activeScreen != null) activeScreen.dispose();
         activeScreen = s;
         s.create();
     }

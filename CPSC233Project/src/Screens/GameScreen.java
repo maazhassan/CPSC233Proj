@@ -14,6 +14,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
+/**
+ * The game screen that displays the chess board and pieces. The user interacts
+ * with this screen in order to play the GUI version of the game.
+ */
+
 public class GameScreen extends BaseScreen {
 
     private JavaFXController controller;
@@ -25,6 +30,11 @@ public class GameScreen extends BaseScreen {
     // If a piece is currently being selected to move to another location
     private boolean selected = false;
     private int startX = 0, startY = 0;
+
+    /**
+     * Creates a GameScreen instance.
+     * @param controller The JavaFXController instance connected to this GameScreen.
+     */
 
     public GameScreen(JavaFXController controller) {
         this.controller = controller;
@@ -58,6 +68,11 @@ public class GameScreen extends BaseScreen {
         controller.setStatus(status);
     }
 
+    /**
+     * Draws the chess board by filling in the dark squares.
+     * @param g The GraphicsContext associated with the Canvas being used.
+     */
+
     public void drawBoard(GraphicsContext g) {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
@@ -74,6 +89,11 @@ public class GameScreen extends BaseScreen {
             }
         }
     }
+
+    /**
+     * Draws the pieces onto the chess board.
+     * @param g The GraphicsContext associated with the Canvas being used.
+     */
 
     public void drawPieces(GraphicsContext g) {
         String[][] state = controller.getBoardState();
@@ -107,18 +127,31 @@ public class GameScreen extends BaseScreen {
         selected = false;
     }
 
-    @Override
-    public void dispose() {
-        // Thought we had to dispose loaded images after. I guess not.
-    }
+    /**
+     * Calculates and returns the x coordinate of the square clicked by the user.
+     * @param mouseX The x coordinate of the mouse click relative to the JavaFXApp window size.
+     * @return The x coordinate of the mouse click relative to our chess coordinate system.
+     */
 
     private int getChessCoordinateX(double mouseX) {
         return (int)(mouseX / (JavaFXApp.SIZE / 8.0));
     }
 
+    /**
+     * Calculates and returns the y coordinate of the square clicked by the user.
+     * @param mouseY The y coordinate of the mouse click relative to the JavaFXApp window size.
+     * @return The y coordinate of the mouse click relative to our chess coordinate system.
+     */
+
     private int getChessCoordinateY(double mouseY) {
         return (int)(mouseY / (JavaFXApp.SIZE / 8.0));
     }
+
+    /**
+     * Loads a PNG image, used to load the chess piece assets.
+     * @param name The image name.
+     * @return The PNG image.
+     */
 
     private Image loadPng(String name) {
         return loadImage(name, ".png");
@@ -132,6 +165,7 @@ public class GameScreen extends BaseScreen {
      * @param extension The extension type
      * @return A new image type.
      */
+    
     private Image loadImage(String name, String extension) {
         File img = new File("assets/" + name + extension);
         try {
