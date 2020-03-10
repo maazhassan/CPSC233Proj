@@ -3,17 +3,24 @@ package Launcher;
 import Game.GameEventHandler;
 import Game.MainGame;
 import Game.Move;
-
 import java.util.Scanner;
+
+/**
+ * This class is used to play the command line version of the game.
+ */
 
 public class CommandLineApp {
     private static Scanner input = new Scanner(System.in);
 
+    //Main method, used to actually run the game
     public static void main(String[] args) {
+
+        //Getting information
         char p2Type = askP2Type();
         int aiDifficulty = askAIDifficulty(p2Type == 'c');
         char p1Color = askP1Color();
 
+        //Create handler for command line app
         GameEventHandler handler = new GameEventHandler() {
             private int[] move = new int[4];
 
@@ -74,8 +81,14 @@ public class CommandLineApp {
             }
         };
 
+        //Create and start an instance of MainGame with the previously defined handler
         new MainGame(handler, p1Color, p2Type, aiDifficulty).start();
     }
+
+    /**
+     * A method that asks the player to input the type of player 2. Must be either 'c' or 'h'.
+     * @return The selected type of player 2.
+     */
 
     private static char askP2Type() {
         char p2Type = 'a';
@@ -97,6 +110,13 @@ public class CommandLineApp {
         return p2Type;
     }
 
+    /**
+     * A method that asks the player to input the difficulty of the AI, if they
+     * choose to play against the computer. Must be either 1, 2, or 3.
+     * @param p2IsComp True if player 2 is computer. False otherwise.
+     * @return The selected difficulty of the AI.
+     */
+
     private static int askAIDifficulty(boolean p2IsComp) {
         int difficulty = 0;
         if (p2IsComp) {
@@ -115,6 +135,11 @@ public class CommandLineApp {
         }
         return difficulty;
     }
+
+    /**
+     * A method that asks the player to input the color they want to play as. Must be either 'w' or 'b'.
+     * @return The selected color of player 1.
+     */
 
     private static char askP1Color() {
         char p1Color = 'a';
