@@ -140,6 +140,9 @@ public class MainGame {
 		}
 
 		temp.copyFrom(board);
+		Square tempStartSquare = temp.getSquare(move.getStart().getX(), move.getStart().getY());
+		Square tempEndSquare = temp.getSquare(move.getEnd().getX(), move.getEnd().getY());
+		Move tempMove = new Move(tempStartSquare, tempEndSquare);
 
 		//The pieces involved in the move
 		Piece pieceMoved = move.getStart().getPiece();
@@ -166,15 +169,15 @@ public class MainGame {
 
 			if (!move.isCastlingMove() && !(move.getStart().getPiece() instanceof King)) {
 				// Make sure the player is not in check at the end of their move
-				Move.makeMove(move);   //temporarily make the move
+				Move.makeMove(tempMove);   //temporarily make the move
 
-				Square ownKingSquare = currentPlayer.findKingSquare(board);   //find the square that has the king belonging to the player on it
+				Square ownKingSquare = currentPlayer.findKingSquare(temp);   //find the square that has the king belonging to the player on it
 
 				if (ownKingSquare.getPiece().canBeCheck(temp, ownKingSquare)) {
 					check = true;
 				}
 
-				Move.undoMove(move, pieceMoved, endPiece);    //return piece to original position
+				Move.undoMove(tempMove, pieceMoved, endPiece);    //return piece to original position
 
 				if (check == true) {
 					currentPlayer.setCheck(true);

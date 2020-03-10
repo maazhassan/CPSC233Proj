@@ -40,6 +40,11 @@ public class Board {
         resetBoard();
     }
 
+    /**
+     * Creates a copy of the given board.
+     * @param toCopy The board to copy.
+     */
+
     public Board(Board toCopy) {
         this.isBottomWhite = toCopy.isBottomWhite;
 
@@ -49,6 +54,11 @@ public class Board {
             }
         }
     }
+
+    /**
+     * Copies the information from one instantiated board to another.
+     * @param other The board to copy information from.
+     */
 
     public void copyFrom(Board other) {
         for (int x = 0; x < SIZE; x++) {
