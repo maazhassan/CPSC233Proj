@@ -260,6 +260,7 @@ public class MainGame {
 		if (move.isCastlingMove() && !currentPlayer.isInCheck()) {
 			Move.makeCastlingMove(board, move);
 			boardStates.add(new Board(board));
+			undoneBoardStates.clear();
 			return true;
 		}
 		else if (!move.isCastlingMove()) {
@@ -400,6 +401,8 @@ public class MainGame {
 				}
 			}
 		}
+		boardStates.clear();
+		boardStates.add(new Board(board));
 	}
 
 	/**
