@@ -336,12 +336,12 @@ public class MainGame {
 
 	public void saveGame() {
 		try {
-			FileWriter writer = new FileWriter("CPSC233Project/src/save.dat", false);
+			FileWriter writer = new FileWriter("CPSC233Project/save.dat", false);
 			writeToFile(writer);
 		}
 		catch (IOException e) {
 			try {
-				FileWriter writer = new FileWriter("src/save.dat", false);
+				FileWriter writer = new FileWriter("save.dat", false);
 				writeToFile(writer);
 			}
 			catch (IOException a) {
@@ -353,11 +353,11 @@ public class MainGame {
 	public void loadGame() {
 		Scanner fileScanner;
 		try {
-			fileScanner = new Scanner(new File("CPSC233Project/src/save.dat"));
+			fileScanner = new Scanner(new File("CPSC233Project/save.dat"));
 		}
 		catch (FileNotFoundException e) {
 			try {
-				fileScanner = new Scanner(new File("src/save.dat"));
+				fileScanner = new Scanner(new File("save.dat"));
 			}
 			catch (FileNotFoundException a) {
 				throw new RuntimeException("File not found.");

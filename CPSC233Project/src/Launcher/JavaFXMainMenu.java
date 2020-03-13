@@ -247,11 +247,11 @@ public class JavaFXMainMenu extends Application {
 			public void handle(ActionEvent event) {
 				File saveFile;
 				try {
-					saveFile = new File("CPSC233Project/src/save.dat");
+					saveFile = new File("CPSC233Project/save.dat");
 				}
 				catch (Exception e) {
 					try {
-						saveFile = new File("src/save.dat");
+						saveFile = new File("save.dat");
 					}
 					catch (Exception a) {
 						throw new RuntimeException("File not found.");
@@ -300,11 +300,11 @@ public class JavaFXMainMenu extends Application {
 		else {
 			Scanner fileScanner;
 			try {
-				fileScanner = new Scanner(new File("CPSC233Project/src/save.dat"));
+				fileScanner = new Scanner(new File("CPSC233Project/save.dat"));
 			}
 			catch (FileNotFoundException e) {
 				try {
-					fileScanner = new Scanner(new File("src/save.dat"));
+					fileScanner = new Scanner(new File("save.dat"));
 				}
 				catch (FileNotFoundException a) {
 					throw new RuntimeException("File not found.");
