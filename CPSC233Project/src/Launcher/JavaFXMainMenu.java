@@ -7,6 +7,7 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -60,12 +61,22 @@ public class JavaFXMainMenu extends Application {
 		load.setMinWidth(100);
 		load.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
 
+		//Hidden label in case of loading when no game is saved
+		Label noLoad = new Label("There is no saved game!");
+		noLoad.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 10));
+		noLoad.setTextFill(Color.RED);
+		noLoad.setVisible(false);
+
 		//End
 		Button exit = new Button("Exit");
 		exit.setMinWidth(100);
 		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
 
-		vbox.getChildren().addAll(start, load, exit);
+		//Add nodes to vbox
+		VBox.setMargin(noLoad, new Insets(-20, 0, 0, 0));
+		VBox.setMargin(title, new Insets(20, 0, 0 ,0));
+		vbox.getChildren().addAll(start, load, exit, noLoad);
+		
 
 		// Button events
 		// Start
@@ -257,7 +268,10 @@ public class JavaFXMainMenu extends Application {
 						throw new RuntimeException("File not found.");
 					}
 				}
-				if (saveFile.length() != 0) {
+				if (saveFile.length() == 0) {
+					noLoad.setVisible(true);
+				}
+				else {
 					menuStage.close();
 					displayGame(true);
 				}
