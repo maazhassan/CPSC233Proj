@@ -127,20 +127,27 @@ public class MainGame {
 	public void alterBoardState(Move move) {
 		if (move.isUndo()) {
 			if (p2.isHuman()) {
-				this.board = new Board(boardStates.get(boardStates.size()-2));
-				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));
+				this.board = new Board(boardStates.get(boardStates.size()-2));      //Set board one sate before the current
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board state  
 			}
 			else {
-				this.board = new Board(boardStates.get(boardStates.size()-3));
-				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));
-				boardStates.remove(boardStates.size()-2);
-				switchPlayers();
+				this.board = new Board(boardStates.get(boardStates.size()-3));      //Set board two states before the current
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board sate
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the board state before the current as well
+				switchPlayers();    //Since start() will switch them, and we want it to be the current players turn, we switch
 			}
 		}
 		else {
-			this.board = new Board(undoneBoardStates.get(undoneBoardStates.size()-1));
-			boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));
-			if (!p2.isHuman()) switchPlayers();
+			if (p2.isHuman()) {
+				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));    //Restore the last state to the main list
+				this.board = new Board(boardStates.get(boardStates.size()-1));            //Set the board to that state
+			}
+			else {
+				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));
+				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));    //Restore the last 2 states to the main list
+				this.board = new Board(boardStates.get(boardStates.size()-1));            //Set the board to that state
+				switchPlayers();
+			}
 		}
 	}
 
