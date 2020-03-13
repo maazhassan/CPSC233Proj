@@ -1,7 +1,13 @@
 package Game;
+
 import Pieces.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Main game class that controls the game in the back end.
@@ -279,6 +285,11 @@ public class MainGame {
 		return this.board;
 	}
 	
+	/**
+	 * 
+	 * @return The player 2 instance.
+	 */
+
 	public Player getPlayer2() {
 		return p2;
 	}
@@ -288,9 +299,107 @@ public class MainGame {
 	 * @return The current player.
 	 */
 
-	public String getCurrentPlayer() {
+	public String getCurrentPlayerColor() {
 		// If we are to implement 3 or 4-player chess, then we should use and return enums instead.
 		return currentPlayer.isWhite() ? "White" : "Black";
+	}
+
+	public int getCurrentPlayerNumber() {
+		return currentPlayer == p1 ? 1 : 2;
+	}
+
+	public void writeToFile(FileWriter writer) {
+		try {
+			char p1Color = p1.isWhite() ? 'w' : 'b';
+			char p2Type = p2.isHuman() ? 'h' : 'c';
+			writer.write(p1Color + "\n");
+			writer.write(p2Type + "\n");
+			writer.write(p2.getDifficulty() + "\n");
+			writer.write(getCurrentPlayerNumber() + "\n");
+			for (int x = 0; x < 8; x++) {
+				for (int y = 0; y < 8; y++) {
+					Piece pieceOnSquare = board.getSquare(x, y).getPiece();
+					if (pieceOnSquare == null) writer.write("null\n");
+					else {
+						String line = Character.toString(pieceOnSquare.getPieceChar()) + "," + Boolean.toString(pieceOnSquare.isWhite());
+						writer.write(line + "\n");
+					}
+				}
+			}
+			handler.log("Saved!");
+			writer.close();
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Cannot find file.");
+		}
+	}
+
+	public void saveGame() {
+		try {
+			FileWriter writer = new FileWriter("CPSC233Project/src/save.dat", false);
+			writeToFile(writer);
+		}
+		catch (IOException e) {
+			try {
+				FileWriter writer = new FileWriter("src/save.dat", false);
+				writeToFile(writer);
+			}
+			catch (IOException a) {
+				throw new RuntimeException("Cannot find file.");
+			}
+		}
+	}
+
+	public void loadGame() {
+		Scanner fileScanner;
+		try {
+			fileScanner = new Scanner(new File("CPSC233Project/src/save.dat"));
+		}
+		catch (FileNotFoundException e) {
+			try {
+				fileScanner = new Scanner(new File("src/save.dat"));
+			}
+			catch (FileNotFoundException a) {
+				throw new RuntimeException("File not found.");
+			}
+		}
+		fileScanner.nextLine();
+		fileScanner.nextLine();
+		fileScanner.nextLine();
+		currentPlayer = fileScanner.nextLine().equals("1") ? p1 : p2;
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				String squareInfo = fileScanner.nextLine();
+				Square square = board.getSquare(x, y);
+				square.setPiece(null);
+				if (!squareInfo.equals("null")) {
+					String[] squareInfoArray = squareInfo.split(",");
+					String pieceChar = squareInfoArray[0];
+					Boolean isWhite = Boolean.parseBoolean(squareInfoArray[1]);
+
+					switch(pieceChar) {
+						case "p":
+							square.setPiece(new Pawn(isWhite));
+							break;
+						case "n":
+							square.setPiece(new Knight(isWhite));
+							break;
+						case "b":
+							square.setPiece(new Bishop(isWhite));
+							break;
+						case "r":
+							square.setPiece(new Rook(isWhite));
+							break;
+						case "q":
+							square.setPiece(new Queen(isWhite));
+							break;
+						case "k":
+							square.setPiece(new King(isWhite));
+							break;
+					}
+				}
+			}
+		}
 	}
 
 	/**

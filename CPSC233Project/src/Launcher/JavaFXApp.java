@@ -40,6 +40,7 @@ public class JavaFXApp {
     private char p1Color;
     private char p2Type;
     private int aiDifficulty;
+    private boolean loadingGame;
 
     private Label status;
     private TextArea log;
@@ -51,10 +52,11 @@ public class JavaFXApp {
      * @param aiDifficulty The difficulty of the AI.
      */
 
-    public JavaFXApp(char p1Color, char p2Type, int aiDifficulty) {
+    public JavaFXApp(char p1Color, char p2Type, int aiDifficulty, boolean loadingGame) {
         this.p1Color = p1Color;
         this.p2Type = p2Type;
         this.aiDifficulty = aiDifficulty;
+        this.loadingGame = loadingGame;
     }
 
     /**
@@ -101,6 +103,7 @@ public class JavaFXApp {
         primaryStage.show();
 
         controller = new JavaFXController(this, p1Color, p2Type, aiDifficulty);
+        if (loadingGame) controller.getCurrentGame().loadGame();
         controller.setActiveScreen(new GameScreen(controller));
         startGameLoop(canvas.getGraphicsContext2D());
     }
@@ -120,6 +123,7 @@ public class JavaFXApp {
         Button undo = new Button();
         Button redo = new Button();
         Button difficulty = new Button();
+        Button save = new Button();
 
         undo.setOnAction(actionEvent -> controller.undo());
         redo.setOnAction(actionEvent -> controller.redo());
@@ -160,11 +164,20 @@ public class JavaFXApp {
             }
         });
 
+        save.setText("Save");
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                controller.getCurrentGame().saveGame();
+            }
+        });
+
         toolbar.add(restart, 0, 0);
         toolbar.add(undo, 5, 0);
         toolbar.add(redo, 6, 0);
         toolbar.add(difficulty, 11, 0);
         if (p2Type != 'c') difficulty.setDisable(true);
+        toolbar.add(save, 16, 0);
 
         return toolbar;
     }

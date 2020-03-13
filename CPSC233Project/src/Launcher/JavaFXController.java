@@ -89,7 +89,7 @@ public class JavaFXController implements GameEventHandler {
      */
 
     public String getCurrentPlayer() {
-        return game.getCurrentPlayer();
+        return game.getCurrentPlayerColor();
     }
 
     /**

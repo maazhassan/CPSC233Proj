@@ -1,5 +1,9 @@
 package Launcher;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -51,17 +55,23 @@ public class JavaFXMainMenu extends Application {
 		start.setMinWidth(100);
 		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
 
+		//Load
+		Button load = new Button("Load");
+		load.setMinWidth(100);
+		load.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+
 		//End
 		Button exit = new Button("Exit");
 		exit.setMinWidth(100);
 		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
 
-		vbox.getChildren().addAll(start, exit);
+		vbox.getChildren().addAll(start, load, exit);
 
 		// Button events
 		// Start
 		start.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent event) {
 
 				//Setup
 				Stage settingStage = new Stage();
@@ -94,10 +104,11 @@ public class JavaFXMainMenu extends Application {
 				settingBox.add(play,1,10);
 				// Play event handling (starts the game and opens the main screen)
 				play.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
 					public void handle(ActionEvent event) {
 						settingStage.close();
 						menuStage.close();
-						displayGame();
+						displayGame(false);
 					}
 				});
 
@@ -230,8 +241,32 @@ public class JavaFXMainMenu extends Application {
 
 		});
 
+		// Load
+		load.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				File saveFile;
+				try {
+					saveFile = new File("CPSC233Project/src/save.dat");
+				}
+				catch (Exception e) {
+					try {
+						saveFile = new File("src/save.dat");
+					}
+					catch (Exception a) {
+						throw new RuntimeException("File not found.");
+					}
+				}
+				if (saveFile.length() != 0) {
+					menuStage.close();
+					displayGame(true);
+				}
+			}
+		});
+
 		// Exit
 		exit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);
 			}
@@ -260,8 +295,26 @@ public class JavaFXMainMenu extends Application {
 	 * Creates an instance of JavaFXApp, where the game is run from.
 	 */
 
-	public void displayGame() {
-		new JavaFXApp(p1Color, p2Type, aiDifficulty).run();
+	public void displayGame(boolean load) {
+		if (!load) new JavaFXApp(p1Color, p2Type, aiDifficulty, false).run();
+		else {
+			Scanner fileScanner;
+			try {
+				fileScanner = new Scanner(new File("CPSC233Project/src/save.dat"));
+			}
+			catch (FileNotFoundException e) {
+				try {
+					fileScanner = new Scanner(new File("src/save.dat"));
+				}
+				catch (FileNotFoundException a) {
+					throw new RuntimeException("File not found.");
+				}
+			}
+			this.p1Color = fileScanner.nextLine().charAt(0);
+			this.p2Type = fileScanner.nextLine().charAt(0);
+			this.aiDifficulty = Integer.parseInt(fileScanner.nextLine());
+			new JavaFXApp(p1Color, p2Type, aiDifficulty, true).run();
+		}
 	}
 
 	/**
