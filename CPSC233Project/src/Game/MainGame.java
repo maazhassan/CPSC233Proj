@@ -278,6 +278,10 @@ public class MainGame {
 	public Board getBoard() {
 		return this.board;
 	}
+	
+	public Player getPlayer2() {
+		return p2;
+	}
 
 	/**
 	 * 

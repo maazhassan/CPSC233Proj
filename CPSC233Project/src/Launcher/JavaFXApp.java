@@ -119,6 +119,7 @@ public class JavaFXApp {
         Button restart = new Button();
         Button undo = new Button();
         Button redo = new Button();
+        Button difficulty = new Button();
 
         undo.setOnAction(actionEvent -> controller.undo());
         redo.setOnAction(actionEvent -> controller.redo());
@@ -141,12 +142,29 @@ public class JavaFXApp {
                 }
             }
         });
+
         undo.setText("Undo");
         redo.setText("Redo");
+
+        String difficultyText = "Difficulty: " + aiDifficulty;
+        difficulty.setText(difficultyText);
+        difficulty.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (aiDifficulty == 3) aiDifficulty = 1;
+                else aiDifficulty += 1;
+                controller.getCurrentGame().getPlayer2().setDifficulty(aiDifficulty);
+                String difficultyText = "Difficulty: " + aiDifficulty;
+                difficulty.setText(difficultyText);
+                
+            }
+        });
 
         toolbar.add(restart, 0, 0);
         toolbar.add(undo, 5, 0);
         toolbar.add(redo, 6, 0);
+        toolbar.add(difficulty, 11, 0);
+        if (p2Type != 'c') difficulty.setDisable(true);
 
         return toolbar;
     }

@@ -166,4 +166,13 @@ public class JavaFXController implements GameEventHandler {
     public Screen getActiveScreen() {
         return activeScreen;
     }
+    
+    /**
+     * 
+     * @return The current game instance.
+     */
+
+    public MainGame getCurrentGame() {
+        return game;
+    }
 }
