@@ -264,6 +264,7 @@ public class MainGame {
 			if (move.isPromotionMove()) move.getEnd().setPiece(new Queen(currentPlayer.isWhite()));
 
 			boardStates.add(new Board(board));
+			undoneBoardStates.clear();
 			return true;
 		}
 		else return false;
