@@ -9,11 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -45,6 +47,21 @@ public class JavaFXMainMenu extends Application {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(40);
 
+		//Handlers for when mouse hovers a button
+		EventHandler<MouseEvent> enterEvent = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				scene.setCursor(Cursor.HAND);
+			}
+		};
+
+		EventHandler<MouseEvent> exitEvent = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				scene.setCursor(Cursor.DEFAULT);
+			}
+		};
+
 		// Title
 		Label title = new Label("CHESS");
 		title.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 35));
@@ -55,11 +72,15 @@ public class JavaFXMainMenu extends Application {
 		Button start = new Button("Start");
 		start.setMinWidth(100);
 		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		start.setOnMouseEntered(enterEvent);
+		start.setOnMouseExited(exitEvent);
 
 		//Load
 		Button load = new Button("Load");
 		load.setMinWidth(100);
 		load.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		load.setOnMouseEntered(enterEvent);
+		load.setOnMouseExited(exitEvent);
 
 		//Hidden label in case of loading when no game is saved
 		Label noLoad = new Label("There is no saved game!");
@@ -71,6 +92,8 @@ public class JavaFXMainMenu extends Application {
 		Button exit = new Button("Exit");
 		exit.setMinWidth(100);
 		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		exit.setOnMouseExited(exitEvent);
+		exit.setOnMouseEntered(enterEvent);
 
 		//Add nodes to vbox
 		VBox.setMargin(noLoad, new Insets(-20, 0, 0, 0));
@@ -101,6 +124,20 @@ public class JavaFXMainMenu extends Application {
 
 				settingBox.add(settingTitle, 0, 0);
 
+				EventHandler<MouseEvent> enterEvent = new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent mouseEvent) {
+						scene2.setCursor(Cursor.HAND);
+					}
+				};
+		
+				EventHandler<MouseEvent> exitEvent = new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent mouseEvent) {
+						scene2.setCursor(Cursor.DEFAULT);
+					}
+				};
+
 				// Buttons and labels
 
 				//Play button
@@ -122,6 +159,8 @@ public class JavaFXMainMenu extends Application {
 						displayGame(false);
 					}
 				});
+				play.setOnMouseEntered(enterEvent);
+				play.setOnMouseExited(exitEvent);
 
 				//Creating toggle groups and settings buttons
 				
@@ -140,6 +179,10 @@ public class JavaFXMainMenu extends Application {
 				white.setMinWidth(150);
 				settingBox.add(black, 1, 3);
 				settingBox.add(white, 1, 4);
+				black.setOnMouseEntered(enterEvent);
+				black.setOnMouseExited(exitEvent);
+				white.setOnMouseEntered(enterEvent);
+				white.setOnMouseExited(exitEvent);
 				//Event listener for toggle group
 				colorGroup.selectedToggleProperty().addListener(
 					(observable, oldToggle, newToggle) -> {
@@ -181,6 +224,12 @@ public class JavaFXMainMenu extends Application {
 				settingBox.add(easy, 1, 7);
 				settingBox.add(medium, 1, 8);
 				settingBox.add(hard, 1, 9);
+				easy.setOnMouseEntered(enterEvent);
+				easy.setOnMouseExited(exitEvent);
+				medium.setOnMouseEntered(enterEvent);
+				medium.setOnMouseExited(exitEvent);
+				hard.setOnMouseEntered(enterEvent);
+				hard.setOnMouseExited(exitEvent);
 				//Event listener for toggle group
 				difficultyGroup.selectedToggleProperty().addListener(
 					(observable, oldToggle, newToggle) -> {
@@ -218,6 +267,10 @@ public class JavaFXMainMenu extends Application {
 				computer.setMinWidth(150);
 				settingBox.add(human, 1, 5);
 				settingBox.add(computer, 1, 6);
+				human.setOnMouseEntered(enterEvent);
+				human.setOnMouseExited(exitEvent);
+				computer.setOnMouseEntered(enterEvent);
+				computer.setOnMouseExited(exitEvent);
 				//Event listener for toggle group
 				opponentGroup.selectedToggleProperty().addListener(
 					(observable, oldToggle, newToggle) -> {

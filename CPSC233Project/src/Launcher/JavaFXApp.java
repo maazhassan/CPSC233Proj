@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -70,6 +71,21 @@ public class JavaFXApp {
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it
 
+        //Handlers for when mouse hovers a button
+		EventHandler<MouseEvent> enterEvent = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				scene.setCursor(Cursor.HAND);
+			}
+		};
+
+		EventHandler<MouseEvent> exitEvent = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				scene.setCursor(Cursor.DEFAULT);
+			}
+		};
+
         // Body
 
         // The main container that splits the left canvas panel with the right log panel
@@ -86,6 +102,10 @@ public class JavaFXApp {
                 controller.getActiveScreen().onMouseEvent(mouseEvent);
             }
         });
+
+        canvas.setOnMouseEntered(enterEvent);
+        canvas.setOnMouseExited(exitEvent);
+
         status.setFont(new Font(30.0));
         log.setEditable(false);
         VBox.setVgrow(log, Priority.ALWAYS); // Fill up all the space
@@ -95,7 +115,7 @@ public class JavaFXApp {
         body.getChildren().add(canvas);
         body.getChildren().add(rightPanel);
 
-        root.getChildren().add(createToolbar(primaryStage));
+        root.getChildren().add(createToolbar(primaryStage, enterEvent, exitEvent));
         root.getChildren().add(body);
 
         primaryStage.setTitle("Chess");
@@ -114,7 +134,7 @@ public class JavaFXApp {
      * @return The toolbar.
      */
 
-    public Pane createToolbar(Stage primaryStage) {
+    public Pane createToolbar(Stage primaryStage, EventHandler<MouseEvent> enterEvent, EventHandler<MouseEvent> exitEvent) {
         GridPane toolbar = new GridPane();
         toolbar.setPadding(new Insets(4, 4, 4, 4));
         toolbar.setHgap(10);
@@ -124,6 +144,16 @@ public class JavaFXApp {
         Button redo = new Button();
         Button difficulty = new Button();
         Button save = new Button();
+        restart.setOnMouseEntered(enterEvent);
+        restart.setOnMouseExited(exitEvent);
+        undo.setOnMouseEntered(enterEvent);
+        undo.setOnMouseExited(exitEvent);
+        redo.setOnMouseEntered(enterEvent);
+        redo.setOnMouseExited(exitEvent);
+        difficulty.setOnMouseEntered(enterEvent);
+        difficulty.setOnMouseExited(exitEvent);
+        save.setOnMouseEntered(enterEvent);
+        save.setOnMouseExited(exitEvent);
 
         undo.setOnAction(actionEvent -> controller.undo());
         redo.setOnAction(actionEvent -> controller.redo());
