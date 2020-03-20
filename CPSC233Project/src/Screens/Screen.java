@@ -17,11 +17,10 @@ public interface Screen {
 
     /**
      * Method that renders the screen.
-     * @param delta 
      * @param g The GraphicsContext associated with the Canvas being used.
      */
 
-    void render(float delta, GraphicsContext g);
+    void render(GraphicsContext g);
 
     /**
      * Method that handles mouse events (clicks).

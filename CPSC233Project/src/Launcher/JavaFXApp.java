@@ -53,6 +53,9 @@ public class JavaFXApp {
     private Label status;
     private TextArea log;
     private Stage primaryStage = new Stage();
+    private Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
+
+    private AnimationTimer timer;
 
     /**
      * Creates an instance of JavaFXApp.
@@ -98,7 +101,6 @@ public class JavaFXApp {
         HBox body = new HBox();
         VBox rightPanel = new VBox();
 
-        Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
         status = new Label();
         log = new TextArea();
 
@@ -224,16 +226,21 @@ public class JavaFXApp {
      */
 
     public void startGameLoop(GraphicsContext c) {
-        long prev = System.nanoTime();
-        new AnimationTimer() {
-
+        //long prev = System.nanoTime();
+        timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                float delta = Math.max((float) ((System.nanoTime() - prev) / 1E9), 1.0f / 30.0f);
+                //float delta = Math.max((float) ((System.nanoTime() - prev) / 1E9), 1.0f / 30.0f);
 
-                controller.getActiveScreen().render(delta, c);
+                controller.getActiveScreen().render(c);
             }
-        }.start();
+        };
+
+        timer.start();
+    }
+
+    public void stopGameLoop() {
+        timer.stop();
     }
 
     /**
@@ -254,12 +261,22 @@ public class JavaFXApp {
         status.setText(str);
     }
 
-    public boolean endGameOptions() {
+    public boolean endGameOptions(String winMessage) {
         String confirmText = "Do you want to play again?";
 
         final FutureTask<Boolean> playAgain = new FutureTask<Boolean>(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+                // try {
+                //     Thread.sleep(500);
+                // }
+                // catch (Exception e) {
+                //     System.out.println(e.getMessage());
+                // }
+                controller.getActiveScreen().render(canvas.getGraphicsContext2D());
+                playWinSound();
+                setStatus(winMessage);
+                stopGameLoop();
                 Alert confirmAlert = new Alert(AlertType.CONFIRMATION, confirmText, ButtonType.YES, ButtonType.NO);
                 confirmAlert.setTitle("Restart Confirmation");
                 confirmAlert.setHeaderText(null);
@@ -277,6 +294,7 @@ public class JavaFXApp {
                     primaryStage.close();
                 });
             }
+            else startGameLoop(canvas.getGraphicsContext2D());
             return result;
         }
         catch (Exception e) {

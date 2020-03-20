@@ -15,7 +15,7 @@ public interface GameEventHandler {
      *    <li> False otherwise. </li>
      */
 
-    boolean requestShouldPlayAgain();
+    boolean requestShouldPlayAgain(String winMessage);
 
     /**
      * A method that creates an integer array that represents a move.

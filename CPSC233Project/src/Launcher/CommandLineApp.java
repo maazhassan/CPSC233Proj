@@ -25,9 +25,9 @@ public class CommandLineApp {
             private int[] move = new int[4];
 
             @Override
-            public boolean requestShouldPlayAgain() {
+            public boolean requestShouldPlayAgain(String winMessage) {
+                log(winMessage);
                 log("\nDo you want to play again? (enter 'y' or 'n'):");
-                log("\n");
 
                 char playAgainChar = 'a';
                 while (playAgainChar != 'y' && playAgainChar != 'n') {

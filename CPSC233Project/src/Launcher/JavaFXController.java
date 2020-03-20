@@ -40,15 +40,8 @@ public class JavaFXController implements GameEventHandler {
     }
 
     @Override
-    public boolean requestShouldPlayAgain() {
-        window.playWinSound();
-        try {
-            Thread.sleep(3000);
-        }
-        catch (Exception e) {
-            System.out.println("Exception!" + e.getMessage());
-        }
-        return window.endGameOptions();
+    public boolean requestShouldPlayAgain(String winMessage) {
+        return window.endGameOptions(winMessage);
     }
 
     @Override

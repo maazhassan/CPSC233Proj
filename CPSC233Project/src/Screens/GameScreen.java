@@ -65,7 +65,7 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
-    public void render(float delta, GraphicsContext g) {
+    public void render(GraphicsContext g) {
         // Clear the background
         clear(g, light);
         drawBoard(g);

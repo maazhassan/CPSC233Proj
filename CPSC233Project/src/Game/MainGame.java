@@ -451,6 +451,7 @@ public class MainGame {
 				//Check if game is over
 				boolean originalCheckState = currentPlayer.isInCheck();
 				boolean checkMate = false;
+				String winMessage;
 				if (currentPlayer.generateMovesList(board, currentPlayer.isWhite()).size() == 0) {
 					//Update game status to stop loop
 					gameOver = true;
@@ -466,11 +467,11 @@ public class MainGame {
 
 					//Print winning message
 					if (checkMate)
-					handler.log("Checkmate. " + currentPlayer.printColor().replace(currentPlayer.printColor().charAt(0),
-										Character.toUpperCase(currentPlayer.printColor().charAt(0))) + " wins.");
-					else handler.log("Stalemate.");
+					winMessage = "Checkmate. " + currentPlayer.printColor().replace(currentPlayer.printColor().charAt(0),
+								Character.toUpperCase(currentPlayer.printColor().charAt(0))) + " wins.";
+					else winMessage = "Stalemate.";
 					//Ask to play again
-					playAgain = handler.requestShouldPlayAgain();
+					playAgain = handler.requestShouldPlayAgain(winMessage);
 				}
 				currentPlayer.setCheck(originalCheckState);
 			}
