@@ -18,8 +18,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -278,6 +282,26 @@ public class JavaFXApp {
         catch (Exception e) {
             System.out.println("Exception!" + e.getMessage());
             return false;
+        }
+    }
+
+    public void playWinSound() {
+        File winSound = new File("CPSC233Project/assets/win.wav");
+        try {
+            Media sound = new Media(winSound.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        }
+        catch (Exception e) {
+            winSound = new File("assets/win.wav");
+            try {
+                Media sound = new Media(winSound.toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(sound);
+                mediaPlayer.play();
+            }
+            catch (Exception a) {
+                System.out.println("Cannot find sound file:" + winSound.getAbsolutePath());
+            }
         }
     }
 }
