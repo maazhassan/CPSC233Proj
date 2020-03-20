@@ -41,7 +41,7 @@ public class JavaFXController implements GameEventHandler {
 
     @Override
     public boolean requestShouldPlayAgain() {
-        return false;
+        return window.endGameOptions();
     }
 
     @Override

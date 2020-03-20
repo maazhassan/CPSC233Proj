@@ -2,6 +2,7 @@ package Launcher;
 
 import Screens.GameScreen;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,6 +21,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  * The JavaFX implementation follows the MVC pattern.
@@ -45,6 +48,7 @@ public class JavaFXApp {
 
     private Label status;
     private TextArea log;
+    private Stage primaryStage = new Stage();
 
     /**
      * Creates an instance of JavaFXApp.
@@ -66,8 +70,6 @@ public class JavaFXApp {
      */
 
     public void run() {
-        Stage primaryStage = new Stage();
-
         VBox root = new VBox();
         Scene scene = new Scene(root); // No idea what this is for. JavaFX needs it
 
@@ -115,7 +117,7 @@ public class JavaFXApp {
         body.getChildren().add(canvas);
         body.getChildren().add(rightPanel);
 
-        root.getChildren().add(createToolbar(primaryStage, enterEvent, exitEvent));
+        root.getChildren().add(createToolbar(enterEvent, exitEvent));
         root.getChildren().add(body);
 
         primaryStage.setTitle("Chess");
@@ -134,7 +136,7 @@ public class JavaFXApp {
      * @return The toolbar.
      */
 
-    public Pane createToolbar(Stage primaryStage, EventHandler<MouseEvent> enterEvent, EventHandler<MouseEvent> exitEvent) {
+    public Pane createToolbar(EventHandler<MouseEvent> enterEvent, EventHandler<MouseEvent> exitEvent) {
         GridPane toolbar = new GridPane();
         toolbar.setPadding(new Insets(4, 4, 4, 4));
         toolbar.setHgap(10);
@@ -246,6 +248,37 @@ public class JavaFXApp {
 
     public void setStatus(String str) {
         status.setText(str);
+    }
+
+    public boolean endGameOptions() {
+        String confirmText = "Do you want to play again?";
+
+        final FutureTask<Boolean> playAgain = new FutureTask<Boolean>(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Alert confirmAlert = new Alert(AlertType.CONFIRMATION, confirmText, ButtonType.YES, ButtonType.NO);
+                confirmAlert.setTitle("Restart Confirmation");
+                confirmAlert.setHeaderText(null);
+                confirmAlert.setGraphic(null);
+                confirmAlert.setResizable(false);
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+                return result.get() == ButtonType.YES ? true : false;
+            }
+        });
+        Platform.runLater(playAgain);
+        try {
+            Boolean result = playAgain.get();
+            if (!result) {
+                Platform.runLater( () -> {
+                    primaryStage.close();
+                });
+            }
+            return result;
+        }
+        catch (Exception e) {
+            System.out.println("Exception!" + e.getMessage());
+            return false;
+        }
     }
 }
 
