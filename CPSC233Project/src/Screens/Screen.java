@@ -28,5 +28,5 @@ public interface Screen {
      * @param event The MouseEvent to handle.
      */
 
-    void onMouseEvent(MouseEvent event);
+    void onMouseEvent(GraphicsContext g, MouseEvent event);
 }

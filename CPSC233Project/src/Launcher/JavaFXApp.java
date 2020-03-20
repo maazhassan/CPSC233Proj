@@ -99,7 +99,7 @@ public class JavaFXApp {
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                controller.getActiveScreen().onMouseEvent(mouseEvent);
+                controller.getActiveScreen().onMouseEvent(canvas.getGraphicsContext2D(), mouseEvent);
             }
         });
 

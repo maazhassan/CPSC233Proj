@@ -26,6 +26,7 @@ public class GameScreen extends BaseScreen {
     private Color dark = Color.rgb(181, 137, 99);
 
     private HashMap<String, Image> images = new HashMap<>();
+    private HashMap<String, int[]> coords = new HashMap<>();
 
     // If a piece is currently being selected to move to another location
     private boolean selected = false;
@@ -51,6 +52,16 @@ public class GameScreen extends BaseScreen {
                 images.put(key, loadPng(key));
             }
         }
+
+        // Adding coords of squares
+        final int WIDTH = 64;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                String key = Integer.toString(i) + Integer.toString(j);
+                int[] value = {WIDTH * i, WIDTH * j};
+                coords.put(key, value);
+            }
+        }
     }
 
     @Override
@@ -61,9 +72,24 @@ public class GameScreen extends BaseScreen {
         drawPieces(g);
 
         String status = "It's " + controller.getCurrentPlayer() + "'s turn!";
+
+        Color select = Color.rgb(175, 132, 181);
+        String key = Integer.toString(startX) + Integer.toString(startY);
+        int[] coordsArray = coords.get(key);
+        Color original = ((startX + startY) % 2) == 0 ? light : dark;
+
         if (selected) {
             char xcoord = (char)(startX + 'a');
             status = String.format("%s Selected: (%c%d)", status, xcoord, 8-startY);
+
+            g.setFill(select);
+            g.fillRect(coordsArray[0], coordsArray[1], 64, 64);
+            drawPieces(g);
+        }
+        else {
+            g.setFill(original);
+            g.fillRect(coordsArray[0], coordsArray[1], 64, 64);
+            drawPieces(g);
         }
         controller.setStatus(status);
     }
@@ -109,7 +135,7 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
-    public void onMouseEvent(MouseEvent event) {
+    public void onMouseEvent(GraphicsContext g, MouseEvent event) {
         int x = getChessCoordinateX(event.getX());
         int y = getChessCoordinateY(event.getY());
 

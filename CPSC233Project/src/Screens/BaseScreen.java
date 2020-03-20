@@ -34,7 +34,7 @@ public abstract class BaseScreen implements Screen {
     }
 
     @Override
-    public void onMouseEvent(MouseEvent event) {
+    public void onMouseEvent(GraphicsContext g, MouseEvent event) {
         // Stub!
     }
 }
