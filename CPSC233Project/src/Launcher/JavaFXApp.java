@@ -273,8 +273,8 @@ public class JavaFXApp {
                 // catch (Exception e) {
                 //     System.out.println(e.getMessage());
                 // }
-                controller.getActiveScreen().render(canvas.getGraphicsContext2D());
                 playWinSound();
+                controller.getActiveScreen().render(canvas.getGraphicsContext2D());
                 setStatus(winMessage);
                 stopGameLoop();
                 Alert confirmAlert = new Alert(AlertType.CONFIRMATION, confirmText, ButtonType.YES, ButtonType.NO);
