@@ -86,12 +86,17 @@ public class JavaFXController implements GameEventHandler {
 
     /**
      * 
-     * @return The current player.
+     * @return The current player's color as a string.
      */
 
     public String getCurrentPlayerColor() {
         return game.getCurrentPlayerColor();
     }
+
+    /**
+     * 
+     * @return The current player instance.
+     */
 
     public Player getCurrentPlayer() {
         return game.getCurrentPlayer();

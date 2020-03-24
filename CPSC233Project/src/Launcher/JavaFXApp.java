@@ -239,6 +239,10 @@ public class JavaFXApp {
         timer.start();
     }
 
+    /**
+     * Stops the game loop.
+     */
+
     public void stopGameLoop() {
         timer.stop();
     }
@@ -261,18 +265,20 @@ public class JavaFXApp {
         status.setText(str);
     }
 
+    /**
+     * Creates the popup alert and handles the actions that take place
+     * after the game is over, including asking the user if they want
+     * to play again, playing a sound and updating the status.
+     * @param winMessage The status message to be set.
+     * @return True if the user wants to play again, false otherwise.
+     */
+
     public boolean endGameOptions(String winMessage) {
         String confirmText = "Do you want to play again?";
 
         final FutureTask<Boolean> playAgain = new FutureTask<Boolean>(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                // try {
-                //     Thread.sleep(500);
-                // }
-                // catch (Exception e) {
-                //     System.out.println(e.getMessage());
-                // }
                 playWinSound();
                 controller.getActiveScreen().render(canvas.getGraphicsContext2D());
                 setStatus(winMessage);
@@ -302,6 +308,10 @@ public class JavaFXApp {
             return false;
         }
     }
+
+    /**
+     * Plays the sound file win.wav. To be used when the game is over.
+     */
 
     public void playWinSound() {
         File winSound = new File("CPSC233Project/assets/win.wav");

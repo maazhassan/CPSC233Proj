@@ -295,6 +295,11 @@ public class MainGame {
 		return p2;
 	}
 
+	/**
+	 * 
+	 * @return The current player instance.
+	 */
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -309,9 +314,20 @@ public class MainGame {
 		return currentPlayer.isWhite() ? "White" : "Black";
 	}
 
+	/**
+	 * 
+	 * @return The number of the current player as an integer.
+	 */
+
 	public int getCurrentPlayerNumber() {
 		return currentPlayer == p1 ? 1 : 2;
 	}
+
+	/**
+	 * A method that writes the current state of the game to a file using the
+	 * given file writer.
+	 * @param writer The file writer to be used.
+	 */
 
 	public void writeToFile(FileWriter writer) {
 		try {
@@ -339,6 +355,11 @@ public class MainGame {
 		}
 	}
 
+	/**
+	 * A method that creates a file writer, links it to the save.dat file
+	 * and then writes the current state of the game to that file.
+	 */
+
 	public void saveGame() {
 		try {
 			FileWriter writer = new FileWriter("CPSC233Project/save.dat", false);
@@ -354,6 +375,10 @@ public class MainGame {
 			}
 		}
 	}
+
+	/**
+	 * A method that loads the game saved in the save.dat file.
+	 */
 
 	public void loadGame() {
 		Scanner fileScanner;
