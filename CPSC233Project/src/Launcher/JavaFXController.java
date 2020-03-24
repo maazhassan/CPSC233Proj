@@ -3,6 +3,7 @@ package Launcher;
 import Game.Board;
 import Game.GameEventHandler;
 import Game.MainGame;
+import Game.Player;
 import Pieces.Piece;
 import Screens.Screen;
 import javafx.application.Platform;
@@ -88,8 +89,12 @@ public class JavaFXController implements GameEventHandler {
      * @return The current player.
      */
 
-    public String getCurrentPlayer() {
+    public String getCurrentPlayerColor() {
         return game.getCurrentPlayerColor();
+    }
+
+    public Player getCurrentPlayer() {
+        return game.getCurrentPlayer();
     }
 
     /**

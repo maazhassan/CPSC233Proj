@@ -295,9 +295,13 @@ public class MainGame {
 		return p2;
 	}
 
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
 	/**
 	 * 
-	 * @return The current player.
+	 * @return The current player's color as a string.
 	 */
 
 	public String getCurrentPlayerColor() {

@@ -1,8 +1,10 @@
 package Screens;
 
 import Game.Board;
+import Game.Player;
 import Launcher.JavaFXApp;
 import Launcher.JavaFXController;
+import Pieces.Piece;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -30,6 +32,7 @@ public class GameScreen extends BaseScreen {
 
     // If a piece is currently being selected to move to another location
     private boolean selected = false;
+    private boolean validPiece = false;
     private int startX = 0, startY = 0;
 
     /**
@@ -71,7 +74,7 @@ public class GameScreen extends BaseScreen {
         drawBoard(g);
         drawPieces(g);
 
-        String status = "It's " + controller.getCurrentPlayer() + "'s turn!";
+        String status = "It's " + controller.getCurrentPlayerColor() + "'s turn!";
 
         Color select = Color.rgb(175, 132, 181);
         String key = Integer.toString(startX) + Integer.toString(startY);
@@ -138,19 +141,27 @@ public class GameScreen extends BaseScreen {
     public void onMouseEvent(GraphicsContext g, MouseEvent event) {
         int x = getChessCoordinateX(event.getX());
         int y = getChessCoordinateY(event.getY());
+        Piece pieceOnSquare = controller.getCurrentGame().getBoard().getSquare(x, y).getPiece();
+        Player currentPlayer = controller.getCurrentPlayer();
 
         if (!selected) {
-            startX = x;
-            startY = y;
-            selected = true;
+            if (pieceOnSquare != null && pieceOnSquare.isWhite() == currentPlayer.isWhite()) {
+                startX = x;
+                startY = y;
+                selected = true;
+                validPiece = true;
 
-            controller.log("Selected piece: " + x + " " + y);
-            return;
+                controller.log("Selected piece: " + x + " " + y);
+                return;
+            }
         }
 
         // At this part of the code, the user has clicked on a square for the second time
-        controller.setNextMove(startX, startY, x, y);
-        selected = false;
+        if (validPiece) {
+            controller.setNextMove(startX, startY, x, y);
+            selected = false;
+            validPiece = false;
+        }
     }
 
     /**
