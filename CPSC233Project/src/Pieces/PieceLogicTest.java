@@ -8,6 +8,12 @@ import Game.Board;
 import Game.Move;
 import Game.Square;
 
+/**
+ * JUnit class that tests the getChar() method in each piece class and also the logic of ALL of the pieces
+ * The logic tests include checking: the pieces' normal moves, if the player clicked the same square, invalid moves,
+ * killing moves, and valid moves, but with an ally piece already there.
+ */
+
 public class PieceLogicTest {
 
 public static final Board board = new Board(true);
@@ -37,36 +43,60 @@ public static final Board board = new Board(true);
 		
 	}
 
+	public void checkingStraight(Piece p) {
+		
+		// Move left
+		assertTrue(p.canMove(board, new Move(new Square(3,2,null), new Square(1,2,null))));
+		// Move Right
+		assertTrue(p.canMove(board, new Move(new Square(3,2,null), new Square(5,2,null))));
+		// Move Up
+		assertTrue(p.canMove(board, new Move(new Square(3,2,null), new Square(3,5,null))));
+		// Move Down
+		assertTrue(p.canMove(board, new Move(new Square(3,2,null), new Square(2,2,null))));
+		// Invalid Move
+		assertFalse(p.canMove(board, new Move(new Square(5,6,null), new Square(4,4,null))));
+		// Same Spot
+		assertFalse(p.canMove(board, new Move(new Square(5,4,null), new Square(5,4,null))));
+		// Valid move, but already an ally piece
+		assertFalse(p.canMove(board, new Move(new Square(3,2,null), new Square(2,2,new Pawn(false)))));
+		// Killing move
+		assertTrue(p.canMove(board, new Move(new Square(3,2,null), new Square(2,2,new Pawn(true)))));
+		
+	}	
+
+	public void checkingDiagonal(Piece p) {
+		
+		// Move NE
+		assertTrue(p.canMove(board, new Move(new Square(2,2,null), new Square(5,5,null))));
+		// Move NW
+		assertTrue(p.canMove(board, new Move(new Square(4,2,null), new Square(3,3,null))));
+		// Move SE
+		assertTrue(p.canMove(board, new Move(new Square(0,5,null), new Square(2,3,null))));
+		// Move SW
+		assertTrue(p.canMove(board, new Move(new Square(5,5,null), new Square(2,2,null))));
+		// Invalid Move
+		assertFalse(p.canMove(board, new Move(new Square(2,5,null), new Square(3,3,null))));
+		// Same spot
+		assertFalse(p.canMove(board, new Move(new Square(5,5,null), new Square(5,5,null))));
+		// Valid move, but already an ally piece
+		assertFalse(p.canMove(board, new Move(new Square(5,5,null), new Square(2,2,new Pawn(false)))));
+		// Killing Move
+		assertTrue(p.canMove(board, new Move(new Square(5,5,null), new Square(2,2,new Pawn(true)))));
+		
+	}
+	
 	@Test
 	public void checkRook() {
 		Rook r = new Rook(false);
-		
-		// Move left
-		assertTrue(r.canMove(board, new Move(new Square(3,2,null), new Square(1,2,null))));
-		// Move Right
-		assertTrue(r.canMove(board, new Move(new Square(3,2,null), new Square(5,2,null))));
-		// Move Up
-		assertTrue(r.canMove(board, new Move(new Square(3,2,null), new Square(3,5,null))));
-		// Move Down
-		assertTrue(r.canMove(board, new Move(new Square(3,2,null), new Square(2,2,null))));
-		// Invalid Move
-		assertFalse(r.canMove(board, new Move(new Square(5,4,null), new Square(3,2,null))));
-	}	
+		checkingStraight(r);
+	}
+	
 	@Test
 	public void checkBishop() {
 		Bishop b = new Bishop(false);
-		
-		// Move NE
-		assertTrue(b.canMove(board, new Move(new Square(2,2,null), new Square(5,5,null))));
-		// Move NW
-		assertTrue(b.canMove(board, new Move(new Square(4,2,null), new Square(3,3,null))));
-		// Move SE
-		assertTrue(b.canMove(board, new Move(new Square(0,5,null), new Square(2,3,null))));
-		// Move SW
-		assertTrue(b.canMove(board, new Move(new Square(5,5,null), new Square(2,2,null))));
-		// Invalid Move
-		assertFalse(b.canMove(board, new Move(new Square(3,2,null), new Square(4,2,null))));
+		checkingDiagonal(b);
 	}
+	
 	@Test
 	public void checkKing() {
 		King k = new King(false);
@@ -81,6 +111,14 @@ public static final Board board = new Board(true);
 		assertTrue(k.canMove(board, new Move(new Square(2,2,null), new Square(1,3,null))));
 		// Invalid Move
 		assertFalse(k.canMove(board, new Move(new Square(2,2,null), new Square(4,5,null))));
+		// Same Spot
+		assertFalse(k.canMove(board, new Move(new Square(2,5,null), new Square(2,5,null))));
+		// Valid move, but already an ally piece
+		assertFalse(k.canMove(board, new Move(new Square(2,2,null), new Square(1,3,new Pawn(false)))));
+		// Killing Move
+		assertTrue(k.canMove(board, new Move(new Square(2,2,null), new Square(1,3,new Pawn(true)))));
+
+
 	}
 	@Test
 	public void checkKnight() {
@@ -96,46 +134,30 @@ public static final Board board = new Board(true);
 		assertTrue(n.canMove(board, new Move(new Square(3,3,null), new Square(4,5,null))));
 		// Invalid Move
 		assertFalse(n.canMove(board, new Move(new Square(3,3,null), new Square(4,4,null))));
+		// Same spot
+		assertFalse(n.canMove(board, new Move(new Square(3,3,null), new Square(3,3,null))));
+		// Valid move, but there's already an ally piece there
+		assertFalse(n.canMove(board, new Move(new Square(3,3,null), new Square(4,5,new Pawn(false)))));
+		// Valid Move with opponent piece
+		assertTrue(n.canMove(board, new Move(new Square(3,3,null), new Square(4,5,new Pawn(true)))));
 	}
 	@Test
-//	public void checkPawn() {
-//		Pawn p = new Pawn(false);
-//		
-//		assertTrue(p.canMove(board, new Move(new Square(4,1,null), new Square(4,2,null))));
+	public void checkPawn() {
+		Pawn p = new Pawn(false);
+		
+//		assertTrue(p.canMove(board, new Move(new Square(0,6,null), new Square(0,5,null))));
 //		assertTrue(p.canMove(board, new Move(new Square(3,1,null), new Square(3,3,null))));
 //		// Two steps NOT first turn
 //		assertFalse(p.canMove(board, new Move(new Square(3,2,null), new Square(3,3,null))));
 //		// Diagonal
 //		assertFalse(p.canMove(board, new Move(new Square(3,3,null), new Square(4,4,null))));
-//		
-//	}
+		
+	}
 	
 	public void checkQueen() {
 		Queen q = new Queen(false);
+		checkingStraight(q);
+		checkingDiagonal(q);
 		
-		// Rook Logic
-		
-		// Move left
-		assertTrue(q.canMove(board, new Move(new Square(3,2,null), new Square(1,2,null))));
-		// Move Right
-		assertTrue(q.canMove(board, new Move(new Square(3,2,null), new Square(5,2,null))));
-		// Move Up
-		assertTrue(q.canMove(board, new Move(new Square(3,2,null), new Square(3,5,null))));
-		// Move Down
-		assertTrue(q.canMove(board, new Move(new Square(3,2,null), new Square(2,2,null))));	
-		
-		// Bishop Logic
-		
-		// Move NE
-		assertTrue(q.canMove(board, new Move(new Square(2,2,null), new Square(5,5,null))));
-		// Move NW
-		assertTrue(q.canMove(board, new Move(new Square(4,2,null), new Square(3,3,null))));
-		// Move SE
-		assertTrue(q.canMove(board, new Move(new Square(0,5,null), new Square(2,3,null))));
-		// Move SW
-		assertTrue(q.canMove(board, new Move(new Square(5,5,null), new Square(2,2,null))));
-	
-		// Invalid Move
-		assertFalse(q.canMove(board, new Move(new Square(5,5,null), new Square(6,7,null))));
 	}
 }
