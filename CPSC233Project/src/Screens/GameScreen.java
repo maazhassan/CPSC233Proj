@@ -151,7 +151,7 @@ public class GameScreen extends BaseScreen {
                 selected = true;
                 validPiece = true;
 
-                controller.log("Selected piece: " + x + " " + y);
+                //controller.log("Selected piece: " + x + " " + y);
                 return;
             }
         }

@@ -207,7 +207,7 @@ public class MainGame {
 			return true;
 		}
 		else if (move.isUndo() || move.isRedo()) {
-			handler.log("Turn " + currentPlayer.printColor() + ".");
+			if (!(handler instanceof JavaFXController)) handler.log("Turn " + currentPlayer.printColor() + ".");
 			return false;
 		}
 
@@ -235,7 +235,7 @@ public class MainGame {
 			if (!pieceMoved.canMove(temp, move)) {
 				this.printBoard(board);
 				handler.log("That piece cannot move there.");
-				handler.log("Turn " + currentPlayer.printColor() + ".");
+				if (!(handler instanceof JavaFXController)) handler.log("Turn " + currentPlayer.printColor() + ".");
 				return false;
 			}
 
@@ -455,8 +455,8 @@ public class MainGame {
 
 				//Print other info
 				if (currentPlayer.isInCheck()) handler.log("Check.");
-				handler.log("Turn " + currentPlayer.printColor() + ".");
-				if (!currentPlayer.isHuman()) handler.log("Calculating...");
+				if (!(handler instanceof JavaFXController)) handler.log("Turn " + currentPlayer.printColor() + ".");
+				if (!currentPlayer.isHuman() && !(handler instanceof JavaFXController)) handler.log("Calculating...");
 
 				//Ask for/play move
 				boolean validMove = false;
@@ -466,7 +466,7 @@ public class MainGame {
 					if (currentPlayer.isInCheck()) {
 						printBoard(board);
 						handler.log("Cannot leave/put your king in check.");
-						handler.log("Turn " + currentPlayer.printColor() + ".");
+						if (!(handler instanceof JavaFXController)) handler.log("Turn " + currentPlayer.printColor() + ".");
 					}
 				}
 
