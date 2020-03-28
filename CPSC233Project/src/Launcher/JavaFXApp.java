@@ -52,6 +52,8 @@ public class JavaFXApp {
 
     private Label status;
     private TextArea log;
+    private TextArea leftMoveLog;
+    private TextArea rightMoveLog;
     private Stage primaryStage = new Stage();
     private Canvas canvas = new Canvas(SIZE, SIZE); // The main canvas object that we'll be using to draw images
 
@@ -104,6 +106,17 @@ public class JavaFXApp {
         status = new Label();
         log = new TextArea();
         log.setPrefWidth(330);
+        log.setPrefHeight(312);
+
+        leftMoveLog = new TextArea();
+        leftMoveLog.setPrefWidth(165);
+        leftMoveLog.setPrefHeight(155);
+
+        rightMoveLog = new TextArea();
+        rightMoveLog.setPrefWidth(165);
+        rightMoveLog.setPrefHeight(155);
+
+        HBox moveLog = new HBox(leftMoveLog, rightMoveLog);
 
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -117,9 +130,10 @@ public class JavaFXApp {
 
         status.setFont(new Font(30.0));
         log.setEditable(false);
-        VBox.setVgrow(log, Priority.ALWAYS); // Fill up all the space
+        leftMoveLog.setEditable(false);
+        rightMoveLog.setEditable(false);
 
-        rightPanel.getChildren().addAll(status, log);
+        rightPanel.getChildren().addAll(status, log, moveLog);
 
         body.getChildren().add(canvas);
         body.getChildren().add(rightPanel);
