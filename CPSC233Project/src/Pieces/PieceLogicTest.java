@@ -145,12 +145,12 @@ public static final Board board = new Board(true);
 	public void checkPawn() {
 		Pawn p = new Pawn(false);
 		
-//		assertTrue(p.canMove(board, new Move(new Square(0,6,null), new Square(0,5,null))));
-//		assertTrue(p.canMove(board, new Move(new Square(3,1,null), new Square(3,3,null))));
-//		// Two steps NOT first turn
-//		assertFalse(p.canMove(board, new Move(new Square(3,2,null), new Square(3,3,null))));
-//		// Diagonal
-//		assertFalse(p.canMove(board, new Move(new Square(3,3,null), new Square(4,4,null))));
+		assertTrue(p.canMove(board, new Move(new Square(3,1,new Pawn(false)), new Square(3,2,null))));
+		assertTrue(p.canMove(board, new Move(new Square(3,1,new Pawn(false)), new Square(3,3,null))));
+		// Two steps NOT first turn
+		assertFalse(p.canMove(board, new Move(new Square(3,2,new Pawn(false)), new Square(3,4,null))));
+		// Diagonal
+		assertFalse(p.canMove(board, new Move(new Square(3,3,new Pawn(false)), new Square(4,4,null))));
 		
 	}
 	
