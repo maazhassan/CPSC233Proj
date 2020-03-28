@@ -144,6 +144,7 @@ public class MainGame {
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the board state before the current as well
 				switchPlayers();    //Since start() will switch them, and we want it to be the current players turn, we switch
 			}
+			handler.log("Move undone.");
 		}
 		else {
 			if (p2.isHuman()) {
@@ -156,6 +157,7 @@ public class MainGame {
 				this.board = new Board(boardStates.get(boardStates.size()-1));            //Set the board to that state
 				switchPlayers();
 			}
+			handler.log("Move redone.");
 		}
 	}
 
