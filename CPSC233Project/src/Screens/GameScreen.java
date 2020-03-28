@@ -82,8 +82,8 @@ public class GameScreen extends BaseScreen {
         Color original = ((startX + startY) % 2) == 0 ? light : dark;
 
         if (selected) {
-            char xcoord = (char)(startX + 'a');
-            status = String.format("%s Selected: (%c%d)", status, xcoord, 8-startY);
+            //char xcoord = (char)(startX + 'a');
+            //status = String.format("%s Selected: (%c%d)", status, xcoord, 8-startY);
 
             g.setFill(select);
             g.fillRect(coordsArray[0], coordsArray[1], 64, 64);

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Launcher.JavaFXController;
+
 /**
  * Main game class that controls the game in the back end.
  */
@@ -187,7 +189,7 @@ public class MainGame {
 			printedBoard = printedBoard + "\n";
 			printedBoard = printedBoard + "   ---------------------------------";
 		}
-		handler.log(printedBoard);
+		if (!(handler instanceof JavaFXController)) handler.log(printedBoard);
 	}
 
 	/**

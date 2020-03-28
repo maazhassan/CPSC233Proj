@@ -103,6 +103,7 @@ public class JavaFXApp {
 
         status = new Label();
         log = new TextArea();
+        log.setPrefWidth(330);
 
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
