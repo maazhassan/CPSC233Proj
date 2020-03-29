@@ -34,4 +34,6 @@ public interface GameEventHandler {
     void log(String out);
 
     void moveLog(String move, boolean left);
+
+    void removeFromMoveLog(boolean left, int len);
 }

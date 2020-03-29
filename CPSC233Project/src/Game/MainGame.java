@@ -26,6 +26,8 @@ public class MainGame {
 	private Player p2 = null;
 	private ArrayList<Board> boardStates = new ArrayList<Board>();
 	private ArrayList<Board> undoneBoardStates = new ArrayList<Board>();
+	private ArrayList<String> loggedMoves = new ArrayList<String>();
+	private ArrayList<String> undoneLoggedMoves = new ArrayList<String>();
 	Piece pieceMoved;
 	Piece endPiece;
 
@@ -139,11 +141,17 @@ public class MainGame {
 			if (p2.isHuman()) {
 				this.board = new Board(boardStates.get(boardStates.size()-2));      //Set board one state before the current
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board state  
+				handler.removeFromMoveLog(currentPlayer != p1, loggedMoves.get(loggedMoves.size()-1).length());
+				undoneLoggedMoves.add(loggedMoves.remove(loggedMoves.size()-1));
 			}
 			else {
 				this.board = new Board(boardStates.get(boardStates.size()-3));      //Set board two states before the current
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board state
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the board state before the current as well
+				handler.removeFromMoveLog(false, loggedMoves.get(loggedMoves.size()-1).length());
+				undoneLoggedMoves.add(loggedMoves.remove(loggedMoves.size()-1));
+				handler.removeFromMoveLog(true, loggedMoves.get(loggedMoves.size()-1).length());
+				undoneLoggedMoves.add(loggedMoves.remove(loggedMoves.size()-1));
 				switchPlayers();    //Since start() will switch them, and we want it to be the current players turn, we switch
 			}
 			handler.log("Move undone.");
@@ -151,11 +159,17 @@ public class MainGame {
 		else {
 			if (p2.isHuman()) {
 				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));    //Restore the last state to the main list
+				loggedMoves.add(undoneLoggedMoves.remove(undoneLoggedMoves.size()-1));
 				this.board = new Board(boardStates.get(boardStates.size()-1));            //Set the board to that state
+				handler.moveLog(loggedMoves.get(loggedMoves.size()-1), currentPlayer == p1);
 			}
 			else {
 				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));
 				boardStates.add(undoneBoardStates.remove(undoneBoardStates.size()-1));    //Restore the last 2 states to the main list
+				loggedMoves.add(undoneLoggedMoves.remove(undoneLoggedMoves.size()-1));
+				handler.moveLog(loggedMoves.get(loggedMoves.size()-1), true);
+				loggedMoves.add(undoneLoggedMoves.remove(undoneLoggedMoves.size()-1));
+				handler.moveLog(loggedMoves.get(loggedMoves.size()-1), false);
 				this.board = new Board(boardStates.get(boardStates.size()-1));            //Set the board to that state
 				switchPlayers();
 			}
@@ -267,6 +281,7 @@ public class MainGame {
 			Move.makeCastlingMove(board, move);
 			boardStates.add(new Board(board));
 			undoneBoardStates.clear();
+			undoneLoggedMoves.clear();
 			return true;
 		}
 		else if (!move.isCastlingMove()) {
@@ -278,6 +293,7 @@ public class MainGame {
 
 			boardStates.add(new Board(board));
 			undoneBoardStates.clear();
+			undoneLoggedMoves.clear();
 			return true;
 		}
 		else return false;
@@ -500,7 +516,7 @@ public class MainGame {
 					}
 				}
 
-				String moveLog = moveNotation(pieceMoved, endPiece, move);
+				String moveLogText = moveNotation(pieceMoved, endPiece, move);
 
 				//Switch player
 				switchPlayers();
@@ -509,10 +525,13 @@ public class MainGame {
 				Square enemyKingSquare = currentPlayer.findKingSquare(board);
 				if (enemyKingSquare.getPiece().canBeCheck(board, enemyKingSquare)) {
 					currentPlayer.setCheck(true);
-					moveLog += "+";
+					moveLogText += "+";
 				}
 
-				handler.moveLog(moveLog, currentPlayer != p1);
+				if (!(move.isUndo() || move.isRedo())) {
+					loggedMoves.add(moveLogText);
+					handler.moveLog(moveLogText, currentPlayer != p1);
+				}
 
 				//Check if game is over
 				boolean originalCheckState = currentPlayer.isInCheck();

@@ -285,6 +285,11 @@ public class JavaFXApp {
         else rightMoveLog.appendText(move + '\n');
     }
 
+    public void removeFromMoveLog(boolean left, int len) {
+        if (left) leftMoveLog.deleteText(leftMoveLog.getLength() - (len + 1), leftMoveLog.getLength());
+        else rightMoveLog.deleteText(rightMoveLog.getLength() - (len + 1), rightMoveLog.getLength());
+    }
+
     /**
      * Creates the popup alert and handles the actions that take place
      * after the game is over, including asking the user if they want

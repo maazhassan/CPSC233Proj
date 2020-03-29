@@ -84,6 +84,11 @@ public class CommandLineApp {
             public void moveLog(String move, boolean left) {
                 //Nothing
             }
+
+            @Override
+            public void removeFromMoveLog(boolean left, int len) {
+                //Nothing
+            }
         };
 
         //Create and start an instance of MainGame with the previously defined handler

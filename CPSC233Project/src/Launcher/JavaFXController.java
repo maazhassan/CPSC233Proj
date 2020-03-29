@@ -68,6 +68,11 @@ public class JavaFXController implements GameEventHandler {
         Platform.runLater(() -> window.writeMoveLog(move, left));
     }
 
+    @Override
+    public void removeFromMoveLog(boolean left, int len) {
+        Platform.runLater(() -> window.removeFromMoveLog(left, len));
+    }
+
     /**
      * Creates the next move selected by the player. The player chooses moves by clicking on
      * the squares of the chess board while the thread waits. Notifies the waiting thread
