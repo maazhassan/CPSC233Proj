@@ -82,17 +82,18 @@ public class GameScreen extends BaseScreen {
         Color original = ((startX + startY) % 2) == 0 ? light : dark;
 
         if (selected) {
-            //char xcoord = (char)(startX + 'a');
-            //status = String.format("%s Selected: (%c%d)", status, xcoord, 8-startY);
-
             g.setFill(select);
             g.fillRect(coordsArray[0], coordsArray[1], 64, 64);
             drawPieces(g);
+            drawNumbers(g);
+            drawLetters(g);
         }
         else {
             g.setFill(original);
             g.fillRect(coordsArray[0], coordsArray[1], 64, 64);
             drawPieces(g);
+            drawNumbers(g);
+            drawLetters(g);
         }
         controller.setStatus(status);
     }
@@ -116,6 +117,27 @@ public class GameScreen extends BaseScreen {
                 g.fillRect(r * squareSize, c * squareSize, squareSize, squareSize);
                 g.setFill(temp);
             }
+        }
+    }
+
+    public void drawNumbers(GraphicsContext g) {
+        for (int x = 0; x < 8; x++) {
+            int number = 8 - x;
+            String numString = number + "";
+            Paint temp = g.getFill();
+            g.setFill(Color.BLACK);
+            g.fillText(numString, 504, 14 + (x * 64));
+            g.setFill(temp);
+        }
+    }
+
+    public void drawLetters(GraphicsContext g) {
+        for (int x = 0; x < 8; x++) {
+            String letter = Character.toString((char)(x + 'a'));
+            Paint temp = g.getFill();
+            g.setFill(Color.BLACK);
+            g.fillText(letter, 2 + (x * 64), 510);
+            g.setFill(temp);
         }
     }
 
