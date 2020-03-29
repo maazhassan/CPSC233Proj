@@ -65,7 +65,7 @@ public class JavaFXController implements GameEventHandler {
 
     @Override
     public void moveLog(String move, boolean left) {
-        Platform.runLater(() -> window.writeMoveLog(move, true));
+        Platform.runLater(() -> window.writeMoveLog(move, left));
     }
 
     /**

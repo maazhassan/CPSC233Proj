@@ -281,7 +281,8 @@ public class JavaFXApp {
     }
 
     public void writeMoveLog(String move, boolean left) {
-        leftMoveLog.appendText(move + '\n');
+        if (left) leftMoveLog.appendText(move + '\n');
+        else rightMoveLog.appendText(move + '\n');
     }
 
     /**

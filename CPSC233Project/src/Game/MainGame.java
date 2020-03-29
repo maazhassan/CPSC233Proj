@@ -512,7 +512,7 @@ public class MainGame {
 					moveLog += "+";
 				}
 
-				handler.moveLog(moveLog, true);
+				handler.moveLog(moveLog, currentPlayer != p1);
 
 				//Check if game is over
 				boolean originalCheckState = currentPlayer.isInCheck();
