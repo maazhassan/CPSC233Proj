@@ -488,9 +488,10 @@ public class MainGame {
 
 				//Ask for/play move
 				boolean validMove = false;
-				Move move = currentPlayer.generateMove(board);
+				Move move = null;
 				while (validMove == false) {
 					currentPlayer.setCheck(false);
+					move = currentPlayer.generateMove(board);
 					validMove = playMove(move);
 					if (currentPlayer.isInCheck()) {
 						printBoard(board);
@@ -499,10 +500,10 @@ public class MainGame {
 					}
 				}
 
+				String moveLog = moveNotation(pieceMoved, endPiece, move);
+
 				//Switch player
 				switchPlayers();
-
-				String moveLog = moveNotation(pieceMoved, endPiece, move);
 
 				//Check if this move puts the enemy king in check
 				Square enemyKingSquare = currentPlayer.findKingSquare(board);
