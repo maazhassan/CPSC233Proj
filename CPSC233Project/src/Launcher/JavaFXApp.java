@@ -280,6 +280,10 @@ public class JavaFXApp {
         status.setText(str);
     }
 
+    public void writeMoveLog(String move, boolean left) {
+        leftMoveLog.appendText(move + '\n');
+    }
+
     /**
      * Creates the popup alert and handles the actions that take place
      * after the game is over, including asking the user if they want

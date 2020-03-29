@@ -26,6 +26,8 @@ public class MainGame {
 	private Player p2 = null;
 	private ArrayList<Board> boardStates = new ArrayList<Board>();
 	private ArrayList<Board> undoneBoardStates = new ArrayList<Board>();
+	Piece pieceMoved;
+	Piece endPiece;
 
 	private GameEventHandler handler;
 
@@ -135,12 +137,12 @@ public class MainGame {
 	public void alterBoardState(Move move) {
 		if (move.isUndo()) {
 			if (p2.isHuman()) {
-				this.board = new Board(boardStates.get(boardStates.size()-2));      //Set board one sate before the current
+				this.board = new Board(boardStates.get(boardStates.size()-2));      //Set board one state before the current
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board state  
 			}
 			else {
 				this.board = new Board(boardStates.get(boardStates.size()-3));      //Set board two states before the current
-				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board sate
+				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the current board state
 				undoneBoardStates.add(boardStates.remove(boardStates.size()-1));    //Remove the board state before the current as well
 				switchPlayers();    //Since start() will switch them, and we want it to be the current players turn, we switch
 			}
@@ -219,8 +221,8 @@ public class MainGame {
 		Move tempMove = new Move(tempStartSquare, tempEndSquare);
 
 		//The pieces involved in the move
-		Piece pieceMoved = move.getStart().getPiece();
-		Piece endPiece = move.getEnd().getPiece();
+		pieceMoved = move.getStart().getPiece();
+		endPiece = move.getEnd().getPiece();
 
 		boolean check = false;
 
@@ -438,6 +440,30 @@ public class MainGame {
 		boardStates.add(new Board(board));
 	}
 
+	public String moveNotation(Piece pieceMoved, Piece endPiece, Move move) {
+		if (move.isCastlingMove()) return "O-O";
+
+		char pieceChar = Character.toUpperCase(pieceMoved.getPieceChar());
+		String first = pieceMoved instanceof Pawn ? "" : Character.toString(pieceChar);
+
+		String kill = endPiece != null ? "x" : "";
+
+		Square startSquare = move.getStart();
+		Square endSquare = move.getEnd();
+
+		char secondLetter = (char)(endSquare.getX() + 'a');
+		int secondNumber = 8 - endSquare.getY();
+
+		if (pieceMoved instanceof Pawn && !kill.equals("")) {
+			char pawnLetter = (char)(startSquare.getX() + 'a');
+			kill = pawnLetter + "x";
+		}
+
+		//String checkPlus = check == true ? "+" : "";
+
+		return first + kill + secondLetter + secondNumber;
+	}
+
 	/**
 	 * Start method, entry point for the back end game instance.
 	 */
@@ -462,9 +488,10 @@ public class MainGame {
 
 				//Ask for/play move
 				boolean validMove = false;
+				Move move = currentPlayer.generateMove(board);
 				while (validMove == false) {
 					currentPlayer.setCheck(false);
-					validMove = playMove(currentPlayer.generateMove(board));
+					validMove = playMove(move);
 					if (currentPlayer.isInCheck()) {
 						printBoard(board);
 						handler.log("Cannot leave/put your king in check.");
@@ -475,11 +502,16 @@ public class MainGame {
 				//Switch player
 				switchPlayers();
 
+				String moveLog = moveNotation(pieceMoved, endPiece, move);
+
 				//Check if this move puts the enemy king in check
 				Square enemyKingSquare = currentPlayer.findKingSquare(board);
 				if (enemyKingSquare.getPiece().canBeCheck(board, enemyKingSquare)) {
 					currentPlayer.setCheck(true);
+					moveLog += "+";
 				}
+
+				handler.moveLog(moveLog, true);
 
 				//Check if game is over
 				boolean originalCheckState = currentPlayer.isInCheck();

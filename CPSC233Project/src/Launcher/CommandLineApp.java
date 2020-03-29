@@ -79,6 +79,11 @@ public class CommandLineApp {
             public void log(String out) {
                 System.out.println(out);
             }
+
+            @Override
+            public void moveLog(String move, boolean left) {
+                //Nothing
+            }
         };
 
         //Create and start an instance of MainGame with the previously defined handler

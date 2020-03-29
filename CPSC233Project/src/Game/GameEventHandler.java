@@ -1,9 +1,8 @@
 package Game;
 
 /**
- * An interface for methods used in game handlers. These handlers
- * are passed to an instance of MainGame to control the back end
- * execution of the game.
+ * An interface for methods used in game handlers. These handlers are passed to
+ * an instance of MainGame to control the back end execution of the game.
  */
 
 public interface GameEventHandler {
@@ -33,4 +32,6 @@ public interface GameEventHandler {
      */
 
     void log(String out);
+
+    void moveLog(String move, boolean left);
 }
