@@ -21,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -106,7 +107,7 @@ public class JavaFXApp {
         status = new Label();
         log = new TextArea();
         log.setPrefWidth(330);
-        log.setPrefHeight(312);
+        log.setPrefHeight(295);
 
         leftMoveLog = new TextArea();
         leftMoveLog.setPrefWidth(165);
@@ -116,6 +117,12 @@ public class JavaFXApp {
         rightMoveLog.setPrefWidth(165);
         rightMoveLog.setPrefHeight(155);
 
+        Label player1 = new Label(" Player 1 Moves");
+        Label player2 = new Label("Player 2 Moves");
+        player1.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        player2.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+        HBox moveLogLabels = new HBox(64, player1, player2);
         HBox moveLog = new HBox(leftMoveLog, rightMoveLog);
 
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -133,7 +140,7 @@ public class JavaFXApp {
         leftMoveLog.setEditable(false);
         rightMoveLog.setEditable(false);
 
-        rightPanel.getChildren().addAll(status, log, moveLog);
+        rightPanel.getChildren().addAll(status, log, moveLogLabels, moveLog);
 
         body.getChildren().add(canvas);
         body.getChildren().add(rightPanel);
@@ -280,10 +287,22 @@ public class JavaFXApp {
         status.setText(str);
     }
 
+    /**
+     * Writes a formatted move to the move log.
+     * @param move The chess algebraic notation of the move as a string.
+     * @param left True if the move is to be written to the left log.
+     */
+
     public void writeMoveLog(String move, boolean left) {
         if (left) leftMoveLog.appendText(move + '\n');
         else rightMoveLog.appendText(move + '\n');
     }
+
+    /**
+     * Removes the last move from the given move log.
+     * @param left True if the move is to be removed from the left log.
+     * @param len The length of the move string.
+     */
 
     public void removeFromMoveLog(boolean left, int len) {
         if (left) leftMoveLog.deleteText(leftMoveLog.getLength() - (len + 1), leftMoveLog.getLength());
