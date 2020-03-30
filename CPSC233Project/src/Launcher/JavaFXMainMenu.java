@@ -1,6 +1,7 @@
 package Launcher;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -15,8 +16,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -42,11 +50,27 @@ public class JavaFXMainMenu extends Application {
 		//Setup
 		VBox vbox = new VBox();
 		vbox.setBackground(Background.EMPTY);
-		Scene scene = new Scene(vbox, 600, 400);
-		scene.setFill(Color.BURLYWOOD);
+		Scene scene = new Scene(vbox, 600, 375);
+		//scene.setFill(Color.BURLYWOOD);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(40);
 
+		// Background
+		File file = new File("CPSC233Project/background_image.jpg");
+		Image img = null;
+		try {
+			img = new Image(new FileInputStream(file));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException("Could not find file");
+		}
+		BackgroundImage bgImg = new BackgroundImage(img, 
+			    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+			    BackgroundPosition.DEFAULT, 
+			    BackgroundSize.DEFAULT);
+		
+		vbox.setBackground(new Background(bgImg));
+		
 		//Handlers for when mouse hovers a button
 		EventHandler<MouseEvent> enterEvent = new EventHandler<MouseEvent>() {
 			@Override
@@ -63,22 +87,28 @@ public class JavaFXMainMenu extends Application {
 		};
 
 		// Title
-		Label title = new Label("CHESS");
-		title.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 35));
+		Label title = new Label("♚  C H E S S ♚");
+		title.setFont(Font.font("Baskerville Old Face", FontWeight.BOLD, 45));
 		vbox.getChildren().add(title);
-
+		
 		// Buttons
 		//Start
-		Button start = new Button("Start");
+		Button start = new Button("Start ♟");
+		start.setTextFill(Color.WHITESMOKE);
 		start.setMinWidth(100);
 		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		start.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		start.setStyle("-fx-border-color: black;");
 		start.setOnMouseEntered(enterEvent);
 		start.setOnMouseExited(exitEvent);
 
 		//Load
-		Button load = new Button("Load");
+		Button load = new Button("Load ♟");
+		load.setTextFill(Color.WHITESMOKE);
 		load.setMinWidth(100);
 		load.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		load.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		load.setStyle("-fx-border-color: black;");
 		load.setOnMouseEntered(enterEvent);
 		load.setOnMouseExited(exitEvent);
 
@@ -89,9 +119,12 @@ public class JavaFXMainMenu extends Application {
 		noLoad.setVisible(false);
 
 		//End
-		Button exit = new Button("Exit");
+		Button exit = new Button("Exit ♟");
+		exit.setTextFill(Color.WHITESMOKE);
 		exit.setMinWidth(100);
 		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
+		exit.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		exit.setStyle("-fx-border-color: black;");
 		exit.setOnMouseExited(exitEvent);
 		exit.setOnMouseEntered(enterEvent);
 
@@ -111,16 +144,16 @@ public class JavaFXMainMenu extends Application {
 				Stage settingStage = new Stage();
 				settingStage.setTitle("Settings");
 				GridPane settingBox = new GridPane();
-				settingBox.setBackground(Background.EMPTY);
+				settingBox.setBackground(new Background(bgImg));
 				settingBox.setAlignment(Pos.BASELINE_CENTER);
 				settingBox.setVgap(10);
 				settingBox.setHgap(10);
 
-				Scene scene2 = new Scene(settingBox, 600, 500);
+				Scene scene2 = new Scene(settingBox, 600, 375);
 				scene2.setFill(Color.BURLYWOOD);
 
 				Text settingTitle = new Text("Settings");
-				settingTitle.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 20));
+				settingTitle.setFont(Font.font("Baskerville Old Face", FontWeight.BOLD, 35));
 
 				settingBox.add(settingTitle, 0, 0);
 
@@ -143,9 +176,12 @@ public class JavaFXMainMenu extends Application {
 				//Play button
 				//Label
 				Label startGame = new Label("Ready...");
+				startGame.setFont(Font.font("Baskerville Old Face", FontWeight.EXTRA_BOLD, 20));
+				startGame.setTextFill(Color.BLACK);
 				settingBox.add(startGame, 0, 10);
 				//Creating button
 				Button play = new Button("PLAY");
+				setButtonBackground(null,play);
 				//Button settings
 				play.setMinWidth(150);
 				play.setDisable(true);
@@ -166,12 +202,20 @@ public class JavaFXMainMenu extends Application {
 				
 				//Color selection
 				//Label
-				Label colour = new Label("Choose colour to play as: ");
+				Label colour = new Label("Colour: ");
+				colour.setFont(Font.font("Baskerville Old Face", FontWeight.EXTRA_BOLD, 20));
+				colour.setTextFill(Color.BLACK);
 				settingBox.add(colour, 0, 3);
+				
 				//Creating toggle group and buttons
 				ToggleGroup colorGroup = new ToggleGroup();
+				//Black
 				ToggleButton black = new ToggleButton("Black");
+				setButtonBackground(black,null);
+				//White
 				ToggleButton white = new ToggleButton("White");
+				setButtonBackground(white,null);
+
 				//Button settings
 				black.setToggleGroup(colorGroup);
 				white.setToggleGroup(colorGroup);
@@ -203,13 +247,20 @@ public class JavaFXMainMenu extends Application {
 
 				//Difficulty
 				//Label
-				Label difficulty = new Label("Choose difficulty level: ");
+				Label difficulty = new Label("Difficulty: ");
+				difficulty.setFont(Font.font("Baskerville Old Face", FontWeight.EXTRA_BOLD, 20));
+				difficulty.setTextFill(Color.BLACK);
 				settingBox.add(difficulty, 0, 7);
+				
 				//Creating toggle group and buttons
 				ToggleGroup difficultyGroup = new ToggleGroup();
+				// Easy
 				ToggleButton easy = new ToggleButton("Easy");
+				setButtonBackground(easy,null);
 				ToggleButton medium = new ToggleButton("Medium");
+				setButtonBackground(medium,null);
 				ToggleButton hard = new ToggleButton("Hard");
+				setButtonBackground(hard,null);
 				//Have buttons intitially disabled
 				easy.setDisable(true);
 				medium.setDisable(true);
@@ -254,12 +305,16 @@ public class JavaFXMainMenu extends Application {
 
 				//Opponent: computer or human
 				//Label
-				Label player = new Label("Choose opponent type: ");
+				Label player = new Label("Opponent: ");
+				player.setFont(Font.font("Baskerville Old Face", FontWeight.EXTRA_BOLD, 20));
+				player.setTextFill(Color.BLACK);
 				settingBox.add(player, 0, 5);
 				//Creating toggle group and buttons
 				ToggleGroup opponentGroup = new ToggleGroup();
 				ToggleButton human = new ToggleButton("Human");
+				setButtonBackground(human,null);
 				ToggleButton computer = new ToggleButton("Computer");
+				setButtonBackground(computer,null);
 				//Button settings
 				human.setToggleGroup(opponentGroup);
 				computer.setToggleGroup(opponentGroup);
@@ -344,6 +399,21 @@ public class JavaFXMainMenu extends Application {
 		menuStage.show();
 	}
 
+	public void setButtonBackground(ToggleButton tb, Button b) {
+		if (b != null) {
+			b.setTextFill(Color.WHITESMOKE);
+			b.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 15));
+			b.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+			b.setStyle("-fx-border-color: black;");
+		}
+//		else {
+//		tb.setTextFill(Color.WHITESMOKE);
+//		tb.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 15));
+//		//tb.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+//		tb.setStyle("-fx-border-color: black;");
+//		}
+	}
+	
 	/**
 	 * Checks and updates the status of the play button on the main menu.
 	 * @param play The play button.
