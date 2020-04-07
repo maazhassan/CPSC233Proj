@@ -94,21 +94,15 @@ public class JavaFXMainMenu extends Application {
 		// Buttons
 		//Start
 		Button start = new Button("Start ♟");
-		start.setTextFill(Color.WHITESMOKE);
 		start.setMinWidth(100);
-		start.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
-		start.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		start.setStyle("-fx-border-color: black;");
+		setButtonBackground(null, start, 25);
 		start.setOnMouseEntered(enterEvent);
 		start.setOnMouseExited(exitEvent);
 
 		//Load
 		Button load = new Button("Load ♟");
-		load.setTextFill(Color.WHITESMOKE);
 		load.setMinWidth(100);
-		load.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
-		load.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		load.setStyle("-fx-border-color: black;");
+		setButtonBackground(null, load, 25);
 		load.setOnMouseEntered(enterEvent);
 		load.setOnMouseExited(exitEvent);
 
@@ -120,11 +114,8 @@ public class JavaFXMainMenu extends Application {
 
 		//End
 		Button exit = new Button("Exit ♟");
-		exit.setTextFill(Color.WHITESMOKE);
 		exit.setMinWidth(100);
-		exit.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 25));
-		exit.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		exit.setStyle("-fx-border-color: black;");
+		setButtonBackground(null, exit, 25);
 		exit.setOnMouseExited(exitEvent);
 		exit.setOnMouseEntered(enterEvent);
 
@@ -181,7 +172,7 @@ public class JavaFXMainMenu extends Application {
 				settingBox.add(startGame, 0, 10);
 				//Creating button
 				Button play = new Button("PLAY");
-				setButtonBackground(null,play);
+				setButtonBackground(null,play,15);
 				//Button settings
 				play.setMinWidth(150);
 				play.setDisable(true);
@@ -211,10 +202,10 @@ public class JavaFXMainMenu extends Application {
 				ToggleGroup colorGroup = new ToggleGroup();
 				//Black
 				ToggleButton black = new ToggleButton("Black");
-				setButtonBackground(black,null);
+				setButtonBackground(black,null,15);
 				//White
 				ToggleButton white = new ToggleButton("White");
-				setButtonBackground(white,null);
+				setButtonBackground(white,null,15);
 
 				//Button settings
 				black.setToggleGroup(colorGroup);
@@ -232,10 +223,12 @@ public class JavaFXMainMenu extends Application {
 					(observable, oldToggle, newToggle) -> {
 						if (newToggle == black) {
 							p1Color = 'b';
+							selectedButton(black,white);
 							updatePlayButton(play);
 						}
 						else if (newToggle == white) {
 							p1Color = 'w';
+							selectedButton(white,black);
 							updatePlayButton(play);
 						}
 						else {
@@ -256,11 +249,11 @@ public class JavaFXMainMenu extends Application {
 				ToggleGroup difficultyGroup = new ToggleGroup();
 				// Easy
 				ToggleButton easy = new ToggleButton("Easy");
-				setButtonBackground(easy,null);
+				setButtonBackground(easy,null,15);
 				ToggleButton medium = new ToggleButton("Medium");
-				setButtonBackground(medium,null);
+				setButtonBackground(medium,null,15);
 				ToggleButton hard = new ToggleButton("Hard");
-				setButtonBackground(hard,null);
+				setButtonBackground(hard,null,15);
 				//Have buttons intitially disabled
 				easy.setDisable(true);
 				medium.setDisable(true);
@@ -286,14 +279,20 @@ public class JavaFXMainMenu extends Application {
 					(observable, oldToggle, newToggle) -> {
 						if (newToggle == easy) {
 							aiDifficulty = 1;
+							selectedButton(easy,medium);
+							selectedButton(easy,hard);
 							updatePlayButton(play);
 						}
 						else if (newToggle == medium) {
 							aiDifficulty = 2;
+							selectedButton(medium,easy);
+							selectedButton(medium,hard);
 							updatePlayButton(play);
 						}
 						else if (newToggle == hard) {
 							aiDifficulty = 3;
+							selectedButton(hard,easy);
+							selectedButton(hard,medium);
 							updatePlayButton(play);
 						}
 						else {
@@ -312,9 +311,9 @@ public class JavaFXMainMenu extends Application {
 				//Creating toggle group and buttons
 				ToggleGroup opponentGroup = new ToggleGroup();
 				ToggleButton human = new ToggleButton("Human");
-				setButtonBackground(human,null);
+				setButtonBackground(human,null,15);
 				ToggleButton computer = new ToggleButton("Computer");
-				setButtonBackground(computer,null);
+				setButtonBackground(computer,null,15);
 				//Button settings
 				human.setToggleGroup(opponentGroup);
 				computer.setToggleGroup(opponentGroup);
@@ -334,6 +333,7 @@ public class JavaFXMainMenu extends Application {
 							easy.setDisable(true);
 							medium.setDisable(true);
 							hard.setDisable(true);
+							selectedButton(human,computer);
 							updatePlayButton(play);
 						}
 						else if (newToggle == computer) {
@@ -341,6 +341,7 @@ public class JavaFXMainMenu extends Application {
 							easy.setDisable(false);
 							medium.setDisable(false);
 							hard.setDisable(false);
+							selectedButton(computer,human);
 							updatePlayButton(play);
 						}
 						else {
@@ -399,19 +400,26 @@ public class JavaFXMainMenu extends Application {
 		menuStage.show();
 	}
 
-	public void setButtonBackground(ToggleButton tb, Button b) {
+	public void setButtonBackground(ToggleButton tb, Button b, int size) {
 		if (b != null) {
 			b.setTextFill(Color.WHITESMOKE);
-			b.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 15));
+			b.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, size));
 			b.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 			b.setStyle("-fx-border-color: black;");
 		}
-//		else {
-//		tb.setTextFill(Color.WHITESMOKE);
-//		tb.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, 15));
-//		//tb.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-//		tb.setStyle("-fx-border-color: black;");
-//		}
+		else {
+		tb.setTextFill(Color.WHITESMOKE);
+		tb.setFont(Font.font("Copperplate Gothic Light", FontWeight.NORMAL, size));
+		tb.setBackground(new Background(new BackgroundFill(Color.DARKSLATEGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		tb.setStyle("-fx-border-color: black;");
+		}
+	}
+	
+	public void selectedButton(ToggleButton press, ToggleButton unpress) {
+		press.setTextFill(Color.RED);
+		press.setStyle("-fx-border-color: red");
+		unpress.setTextFill(Color.WHITESMOKE);
+		unpress.setStyle("-fx-border-color: black");
 	}
 	
 	/**
