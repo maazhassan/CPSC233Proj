@@ -11,12 +11,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -83,6 +85,19 @@ public class JavaFXMainMenu extends Application {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				scene.setCursor(Cursor.DEFAULT);
+			}
+		};
+		
+		// Handler for when the same toggle button is clicked again
+		EventHandler<MouseEvent> sameClickEvent = new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					ToggleButton b = (ToggleButton) mouseEvent.getSource();
+					if(b.isSelected()== false) {
+						b.setTextFill(Color.WHITESMOKE);
+						b.setStyle("-fx-border-color: black");
+					}
+				}
 			}
 		};
 
@@ -224,11 +239,13 @@ public class JavaFXMainMenu extends Application {
 						if (newToggle == black) {
 							p1Color = 'b';
 							selectedButton(black,white);
+							black.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else if (newToggle == white) {
 							p1Color = 'w';
 							selectedButton(white,black);
+							white.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else {
@@ -281,18 +298,21 @@ public class JavaFXMainMenu extends Application {
 							aiDifficulty = 1;
 							selectedButton(easy,medium);
 							selectedButton(easy,hard);
+							easy.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else if (newToggle == medium) {
 							aiDifficulty = 2;
 							selectedButton(medium,easy);
 							selectedButton(medium,hard);
+							medium.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else if (newToggle == hard) {
 							aiDifficulty = 3;
 							selectedButton(hard,easy);
 							selectedButton(hard,medium);
+							hard.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else {
@@ -334,6 +354,7 @@ public class JavaFXMainMenu extends Application {
 							medium.setDisable(true);
 							hard.setDisable(true);
 							selectedButton(human,computer);
+							human.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else if (newToggle == computer) {
@@ -342,6 +363,7 @@ public class JavaFXMainMenu extends Application {
 							medium.setDisable(false);
 							hard.setDisable(false);
 							selectedButton(computer,human);
+							computer.setOnMouseClicked(sameClickEvent);
 							updatePlayButton(play);
 						}
 						else {
@@ -400,6 +422,12 @@ public class JavaFXMainMenu extends Application {
 		menuStage.show();
 	}
 
+	/**
+	 * Sets the background, font, text colour, and border colour of the button.
+	 * @param tb: The toggle button 
+	 * @param b: the button
+	 * @param size: font size
+	 */
 	public void setButtonBackground(ToggleButton tb, Button b, int size) {
 		if (b != null) {
 			b.setTextFill(Color.WHITESMOKE);
@@ -415,7 +443,13 @@ public class JavaFXMainMenu extends Application {
 		}
 	}
 	
-	public void selectedButton(ToggleButton press, ToggleButton unpress) {
+	/**
+	 * Sets the selected button's border and text to red to indicate it was selected. 
+	 * Makes sure the other buttons in the toggle group are not red.
+	 * @param press: The button that was selected
+	 * @param unpress: The other buttons in the same toggle group
+	 */
+	public void selectedButton(ToggleButton press, ToggleButton unpress) {	
 		press.setTextFill(Color.RED);
 		press.setStyle("-fx-border-color: red");
 		unpress.setTextFill(Color.WHITESMOKE);
