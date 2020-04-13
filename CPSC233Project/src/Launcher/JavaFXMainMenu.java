@@ -11,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -63,7 +62,6 @@ public class JavaFXMainMenu extends Application {
 		try {
 			img = new Image(new FileInputStream(file));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			throw new RuntimeException("Could not find file");
 		}
 		BackgroundImage bgImg = new BackgroundImage(img, 
