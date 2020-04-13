@@ -1,7 +1,6 @@
 package Screens;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -31,10 +30,5 @@ public abstract class BaseScreen implements Screen {
 
     public final void clear(GraphicsContext g) {
         clear(g, Color.WHITE);
-    }
-
-    @Override
-    public void onMouseEvent(GraphicsContext g, MouseEvent event) {
-        // Stub!
     }
 }
