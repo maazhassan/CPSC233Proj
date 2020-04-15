@@ -17,17 +17,17 @@ The game should now be running in the console.
 
 You will first be prompted with a few questions in order to set up the options for the game.
 
-![Options](https://imgur.com/a/rPd8Ojf)
+![Options](https://i.imgur.com/aneJZog.png)
 
 You play the game by typing in the coordinate of the piece you want to move (a letter and a number), and then typing in the coordinate of the square that you want to move your selected piece to. There are numbers and letters along the top and side to help with finding the locations of the squares.
 
 For example, in order to make the move:
 
-![Move](https://imgur.com/a/gpzY2wn)
+![Move](https://i.imgur.com/9hqhspP.png)
 
 You would input:
 
-![Input](https://imgur.com/a/hP1EYAw)
+![Input](https://i.imgur.com/0F4dTM1.png)
 
 # Playing the Game With GUI (Through JavaFX)
 To run the game:
